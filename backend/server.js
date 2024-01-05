@@ -9,6 +9,9 @@ connectDB();
 
 const app = express();
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.use(notFound);
 app.use(errorHandler);
 
