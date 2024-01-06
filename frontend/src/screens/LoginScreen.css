@@ -1,0 +1,52 @@
+body {
+  background-color: #fff;
+  font-family: "Poppins", arial, tahoma;
+  font-weight: 400;
+}
+
+.login-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 30px;
+  margin-bottom: 30px;
+}
+
+.login-section,
+.register-section {
+  padding: 15px;
+  border: 1px solid gray;
+}
+
+.login-heading,
+.register-heading {
+  padding-bottom: 10px;
+  border-bottom: 1px solid gray;
+}
+
+.login-description {
+  margin-top: 5px;
+  font-style: italic;
+  font-weight: 300;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  margin-bottom: 10px;
+}
+
+.actions-toolbar {
+  display: flex;
+}
+
+.submit-button {
+  margin-right: 20px;
+}
+
+.forgot-password {
+  margin-top: 3px;
+}
