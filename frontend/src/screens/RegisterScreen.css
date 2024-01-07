@@ -1,0 +1,35 @@
+.register-form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 30px;
+  margin-bottom: 30px;
+}
+
+.personal-data-section,
+.login-details-section {
+  padding: 15px;
+  border: 1px solid gray;
+}
+
+.section-heading {
+  padding-bottom: 10px;
+  border-bottom: 1px solid gray;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  margin-bottom: 10px;
+}
+
+.submit-button {
+  margin-right: 20px;
+}
+
+.forgot-password {
+  margin-top: 3px;
+}
