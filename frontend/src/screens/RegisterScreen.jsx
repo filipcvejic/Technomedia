@@ -1,5 +1,9 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { useRegisterMutation } from "../slices/usersApiSlice";
+import { setCredentials } from "../slices/authSlice";
 
 import "./RegisterScreen.css";
 
@@ -10,9 +14,34 @@ const RegisterScreen = () => {
   const [password, setPassword] = useState("");
   const [confirmedPassword, setConfirmedPassword] = useState("");
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { userInfo } = useSelector((state) => state.auth);
+
+  const [register, { isLoading }] = useRegisterMutation();
+
+  useEffect(() => {
+    if (userInfo) {
+      navigate("/");
+    }
+  }, [navigate, userInfo]);
+
   const submitHandler = async (e) => {
+    console.log(surname);
+
     e.preventDefault();
-    console.log("submit");
+    if (password !== confirmedPassword) {
+      toast.error("Passwords do not match");
+    } else {
+      try {
+        const res = await register({ name, surname, email, password }).unwrap();
+        dispatch(setCredentials({ ...res }));
+        navigate("/");
+      } catch (err) {
+        toast.error(err?.data?.message || err.error);
+      }
+    }
   };
 
   return (
@@ -95,9 +124,11 @@ const RegisterScreen = () => {
             />
           </div>
         </div>
-        <button className="submit-button" type="submit">
-          Register
-        </button>
+        <div className="registration-actions">
+          <button className="registration-button" type="submit">
+            Register
+          </button>
+        </div>
       </form>
     </div>
   );
