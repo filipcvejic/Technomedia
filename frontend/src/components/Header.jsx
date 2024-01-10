@@ -74,7 +74,7 @@ const Header = () => {
             </button>
           </div>
         ) : (
-          <div className="user">
+          <a href="/login" className="user">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="35"
@@ -90,7 +90,7 @@ const Header = () => {
               />
             </svg>
             <div>Login / Register</div>
-          </div>
+          </a>
         )}
         <div className="shopping-cart">
           <svg
