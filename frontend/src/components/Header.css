@@ -1,12 +1,19 @@
+.home-link {
+  text-decoration: none;
+  color: white;
+  font-size: 24px;
+}
+
 .header {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  background-color: #2ecc71;
+  background-color: #3498db;
   color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.main {
+.main-link {
   text-decoration: none;
   color: white;
   font-size: 24px;
@@ -42,30 +49,24 @@
   margin-left: 50px;
 }
 
-.user,
+.user-menu,
 .shopping-cart {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  background-color: #f4f4f4;
-  padding: 5px 15px;
+  cursor: pointer;
   border-radius: 20px;
   position: relative;
   font-size: 18px;
-  color: #333; /* Boja teksta, promenite prema potrebi */
+  color: #333;
 }
 
-.user:hover,
-.shopping-cart:hover {
-  background-color: #ddd;
-  cursor: pointer;
+.user-menu:hover .bi-person-icon,
+.shopping-cart:hover .bi-cart-icon {
+  fill: red;
 }
 
 .cart-counter {
   position: absolute;
   top: -5px;
-  right: 48px;
+  right: -5px;
   background-color: yellow;
   border-radius: 50%;
   height: 10px;
@@ -77,27 +78,51 @@
   text-align: center;
 }
 
+.user-dropdown-menu {
+  border-radius: 10px;
+  background-color: #2c3e50;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.user-dropdown-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.user-dropdown-menu li {
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+.user-dropdown-menu a {
+  text-decoration: none;
+  color: #ffffff;
+  padding: 12px 20px 8px;
+  display: block;
+  text-align: left;
+  white-space: nowrap;
+}
+
 .logout-button {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background-color: #f4f4f4;
-  padding: 5px 15px;
-  border-radius: 20px;
-  position: relative;
-  color: black;
-}
-
-.logout-button span {
-  font-size: 20px;
-  margin-left: 5px;
-}
-
-.logout-button button {
-  background: none;
+  background-color: transparent;
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
-  color: inherit;
+  color: #ffffff;
+  padding: 12px 20px 8px;
+}
+
+.logout-button span {
+  font-size: 18px;
+}
+
+.logout-button:hover,
+.user-dropdown-menu li:hover a {
+  color: red;
 }
