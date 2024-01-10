@@ -18,9 +18,25 @@ const authSlice = createSlice({
       state.userInfo = null;
       localStorage.removeItem("userInfo");
     },
+    checkAndRemoveUserInfo: (state) => {
+      const userInfoString = localStorage.getItem("userInfo");
+
+      if (userInfoString) {
+        const userInfoObject = JSON.parse(userInfoString);
+        const currentTime = new Date().getTime();
+
+        if (currentTime > userInfoObject.expiration) {
+          console.log("traje jos");
+          // Vreme je isteklo, obriši userInfo iz local storage-a
+          state.userInfo = null;
+          localStorage.removeItem("userInfo");
+        }
+      }
+    },
   },
 });
 
-export const { setCredentials, logout } = authSlice.actions;
+export const { setCredentials, logout, checkAndRemoveUserInfo } =
+  authSlice.actions;
 
 export default authSlice.reducer;

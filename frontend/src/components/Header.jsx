@@ -23,8 +23,15 @@ const Header = () => {
     }
   };
 
+  const buttonHandler = (event) => {
+    event.preventDefault();
+
+    console.log("hop");
+  };
+
   return (
     <header className="header">
+      <button onClick={buttonHandler}>Button</button>
       <div>
         <a href="localhost:3000" className="main">
           Technomedia
