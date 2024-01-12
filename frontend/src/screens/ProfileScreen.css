@@ -1,0 +1,50 @@
+.update-container {
+  max-width: 500px;
+  margin: 100px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.update-form .form-group {
+  margin-bottom: 20px;
+}
+
+.update-form .form-group label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.update-form .form-group input {
+  height: 25px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.update-form .update-button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.update-form .update-button:hover {
+  background-color: #0056b3;
+}
+
+.loader {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #3498db;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
