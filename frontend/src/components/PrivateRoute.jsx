@@ -11,9 +11,18 @@ const PrivateRoute = () => {
     dispatch(checkAndRemoveUserInfo());
   }, []);
 
-  if (!userInfo || userInfo.expiration < new Date().getTime()) {
+  if (
+    !userInfo ||
+    !userInfo.expiration ||
+    userInfo.expiration < new Date().getTime()
+  ) {
     return <Navigate to="/login" replace />;
   }
+  console.log(
+    userInfo.expiration,
+    new Date().getTime(),
+    userInfo.expiration && userInfo.expiration < new Date().getTime()
+  );
 
   return <Outlet />;
 };

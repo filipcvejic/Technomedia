@@ -35,18 +35,22 @@ body {
   margin-bottom: 15px;
 }
 
-.form-group label {
+.login-form .form-group label {
   margin-bottom: 10px;
 }
 
-.actions-toolbar {
+.login-form .form-group input {
+  height: 25px;
+}
+
+.login-form .actions-toolbar {
   display: flex;
 }
 
-.submit-button {
+.login-form .actions-toolbar .submit-button {
   margin-right: 20px;
 }
 
-.forgot-password {
+.login-form .forgot-password {
   margin-top: 3px;
 }

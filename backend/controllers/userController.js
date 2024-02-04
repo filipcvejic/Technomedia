@@ -1,6 +1,6 @@
-import asyncHandler from "express-async-handler";
-import User from "../models/userModel.js";
-import generateToken from "../utils/generateToken.js";
+const asyncHandler = require("express-async-handler");
+const User = require("../models/userModel");
+const generateToken = require("../utils/generateToken");
 
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -8,17 +8,31 @@ const authUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email });
 
   if (user && (await user.matchPassword(password))) {
+    const expiration = new Date();
+    expiration.setTime(expiration.getTime() + 24 * 60 * 60 * 1000);
+
     generateToken(res, user._id);
     res.status(200).json({
       _id: user._id,
       name: user.name,
       email: user.email,
+      expiration: expiration.getTime(),
     });
   } else {
     res.status(400);
     throw new Error("Invalid email or password");
   }
 });
+
+// const googleAuth = asyncHandler(async (req, res) => {
+//   passport.use(
+//     new GoogleStrategy({
+//       clientID: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+//       clientSecret: process.env.REACT_APP_GOOGLE_SECRET,
+//       callbackURL
+//     })
+//   );
+// });
 
 const registerUser = asyncHandler(async (req, res) => {
   const { name, surname, email, password } = req.body;
@@ -94,7 +108,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-export {
+module.exports = {
   authUser,
   registerUser,
   logoutUser,

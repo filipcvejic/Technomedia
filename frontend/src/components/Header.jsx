@@ -29,7 +29,7 @@ const Header = () => {
     <>
       <header className="header">
         <div>
-          <a href="localhost:3000" className="home-link">
+          <a href="/" className="home-link">
             Technomedia
           </a>
         </div>
@@ -76,7 +76,7 @@ const Header = () => {
               <div className="user-dropdown-menu">
                 <ul>
                   <li>
-                    <a href="/:username">My user account</a>
+                    <a href="/profile">My user account</a>
                   </li>
                   <li>
                     <a href="/cart">My cart</a>

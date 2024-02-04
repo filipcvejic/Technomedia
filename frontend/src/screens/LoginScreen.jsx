@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useLoginMutation } from "../slices/usersApiSlice";
@@ -24,8 +24,11 @@ const LoginScreen = () => {
     }
   }, [navigate, userInfo]);
 
+  const google = async () => {
+    window.open("http://localhost:5000/api/v1/login/google", "_self");
+  };
+
   const submitHandler = async (e) => {
-    console.log(email, password);
     e.preventDefault();
     try {
       const res = await login({ email, password }).unwrap();
@@ -83,6 +86,9 @@ const LoginScreen = () => {
             </div>
           </div>
         </form>
+      </div>
+      <div className="google-sign-in-container">
+        <button onClick={google}>Google</button>
       </div>
       <div className="register-section">
         <h2 className="register-heading">New user</h2>

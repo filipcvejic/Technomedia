@@ -49,7 +49,7 @@ const ProfileScreen = () => {
 
       <form className="update-form" onSubmit={updateProfileHandler}>
         <div className="form-group">
-          <label for="name">Name</label>
+          <label htmlFor="name">Name</label>
           <input
             type="text"
             placeholder="Enter name"
@@ -61,7 +61,7 @@ const ProfileScreen = () => {
         </div>
 
         <div className="form-group">
-          <label for="email">Email Address</label>
+          <label htmlFor="email">Email Address</label>
           <input
             type="email"
             placeholder="Enter email"
@@ -73,7 +73,7 @@ const ProfileScreen = () => {
         </div>
 
         <div className="form-group">
-          <label for="password">Password</label>
+          <label htmlFor="password">Password</label>
           <input
             type="password"
             placeholder="Enter password"
@@ -85,7 +85,7 @@ const ProfileScreen = () => {
         </div>
 
         <div className="form-group">
-          <label for="confirmPassword">Confirm Password</label>
+          <label htmlFor="confirmPassword">Confirm Password</label>
           <input
             type="password"
             placeholder="Confirm password"

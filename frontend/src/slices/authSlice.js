@@ -26,8 +26,6 @@ const authSlice = createSlice({
         const currentTime = new Date().getTime();
 
         if (currentTime > userInfoObject.expiration) {
-          console.log("traje jos");
-          // Vreme je isteklo, obriši userInfo iz local storage-a
           state.userInfo = null;
           localStorage.removeItem("userInfo");
         }
