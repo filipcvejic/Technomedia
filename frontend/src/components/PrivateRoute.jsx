@@ -1,28 +1,28 @@
-import { Navigate, Outlet } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { Outlet, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { checkAndRemoveUserInfo } from "../slices/authSlice";
+import { logout, setCredentials } from "../slices/authSlice";
 
 const PrivateRoute = () => {
-  const { userInfo } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(checkAndRemoveUserInfo());
-  }, []);
+    const checkUser = async () => {
+      const res = await fetch("http://localhost:3000/api/profile");
 
-  if (
-    !userInfo ||
-    !userInfo.expiration ||
-    userInfo.expiration < new Date().getTime()
-  ) {
-    return <Navigate to="/login" replace />;
-  }
-  console.log(
-    userInfo.expiration,
-    new Date().getTime(),
-    userInfo.expiration && userInfo.expiration < new Date().getTime()
-  );
+      const resData = await res.json();
+
+      if (!resData.user) {
+        dispatch(logout());
+        navigate("/login");
+      } else {
+        dispatch(setCredentials({ ...resData.user }));
+      }
+    };
+
+    checkUser();
+  }, [dispatch]);
 
   return <Outlet />;
 };

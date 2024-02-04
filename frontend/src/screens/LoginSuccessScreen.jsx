@@ -18,7 +18,6 @@ function LoginSuccessScreen() {
         _id: user._id,
         name: user.name,
         email: user.email,
-        expiration: user.expiration,
       };
       dispatch(setCredentials(userInfo));
       navigate("/");

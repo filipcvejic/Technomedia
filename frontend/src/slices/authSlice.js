@@ -4,6 +4,7 @@ const initialState = {
   userInfo: localStorage.getItem("userInfo")
     ? JSON.parse(localStorage.getItem("userInfo"))
     : null,
+  isLoading: false,
 };
 
 const authSlice = createSlice({
@@ -18,23 +19,12 @@ const authSlice = createSlice({
       state.userInfo = null;
       localStorage.removeItem("userInfo");
     },
-    checkAndRemoveUserInfo: (state) => {
-      const userInfoString = localStorage.getItem("userInfo");
-
-      if (userInfoString) {
-        const userInfoObject = JSON.parse(userInfoString);
-        const currentTime = new Date().getTime();
-
-        if (currentTime > userInfoObject.expiration) {
-          state.userInfo = null;
-          localStorage.removeItem("userInfo");
-        }
-      }
+    setLoading: (state, action) => {
+      state.isLoading = action.payload;
     },
   },
 });
 
-export const { setCredentials, logout, checkAndRemoveUserInfo } =
-  authSlice.actions;
+export const { setCredentials, logout, setLoading } = authSlice.actions;
 
 export default authSlice.reducer;

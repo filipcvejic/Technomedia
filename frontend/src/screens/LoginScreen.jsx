@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useLoginMutation } from "../slices/usersApiSlice";
-import { setCredentials } from "../slices/authSlice";
+import { setCredentials, setLoading } from "../slices/authSlice";
 import { toast } from "react-toastify";
 
 import "./LoginScreen.css";
@@ -14,9 +13,8 @@ const LoginScreen = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [login, { isLoading }] = useLoginMutation();
-
   const { userInfo } = useSelector((state) => state.auth);
+  const { isLoading } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (userInfo) {
@@ -30,9 +28,17 @@ const LoginScreen = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+
     try {
-      const res = await login({ email, password }).unwrap();
-      dispatch(setCredentials({ ...res }));
+      dispatch(setLoading(true));
+      const res = await fetch("http://localhost:3000/api/auth", {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+      });
+
+      const resData = res.json();
+      dispatch(setCredentials({ ...resData }));
+      dispatch(setLoading(false));
       navigate("/");
     } catch (err) {
       toast.error(err?.data?.message || err.error);
