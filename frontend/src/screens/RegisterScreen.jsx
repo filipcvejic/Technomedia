@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { setCredentials, setLoading } from "../slices/authSlice";
+import { useRegisterMutation } from "../slices/usersApiSlice";
+import { setCredentials } from "../slices/authSlice";
 
 import "./RegisterScreen.css";
 
@@ -17,7 +18,8 @@ const RegisterScreen = () => {
   const dispatch = useDispatch();
 
   const { userInfo } = useSelector((state) => state.auth);
-  const { isLoading } = useSelector((state) => state.auth);
+
+  const [register, { isLoading }] = useRegisterMutation();
 
   useEffect(() => {
     if (userInfo) {
@@ -33,21 +35,8 @@ const RegisterScreen = () => {
       toast.error("Passwords do not match");
     } else {
       try {
-        dispatch(setLoading(true));
-
-        const res = await fetch("http://localhost:3000/api/register", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({ name, surname, email, password }),
-        });
-
-        const resData = await res.json();
-
-        dispatch(setCredentials({ ...resData }));
-        dispatch(setLoading(false));
+        const res = await register({ name, surname, email, password }).unwrap();
+        dispatch(setCredentials({ ...res }));
         navigate("/");
       } catch (err) {
         toast.error(err?.data?.message || err.error);

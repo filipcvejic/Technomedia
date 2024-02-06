@@ -33,10 +33,6 @@ const LoginScreen = () => {
       dispatch(setLoading(true));
       const res = await fetch("http://localhost:3000/api/auth", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
         body: JSON.stringify({ email, password }),
       });
 
