@@ -40,7 +40,8 @@ const LoginScreen = () => {
         body: JSON.stringify({ email, password }),
       });
 
-      const resData = res.json();
+      const resData = await res.json();
+
       dispatch(setCredentials({ ...resData }));
       dispatch(setLoading(false));
       navigate("/");
@@ -92,7 +93,7 @@ const LoginScreen = () => {
               Sign In
             </button>
             <div className="forgot-password">
-              <Link to="/forgot-password">Forgot password?</Link>
+              <Link to="/forgotpassword">Forgot password?</Link>
             </div>
           </div>
         </form>

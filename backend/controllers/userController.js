@@ -1,6 +1,9 @@
 const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
 const generateToken = require("../utils/generateToken");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+var nodemailer = require("nodemailer");
 
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -108,10 +111,69 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
+const forgotPassword = asyncHandler(async (req, res, next) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    res.status(404);
+    throw new Error("User does not exist");
+  }
+
+  const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+    expiresIn: "1d",
+  });
+
+  var transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.GOOGLE_EMAIL,
+      pass: process.env.GOOGLE_PASSWORD,
+    },
+  });
+
+  var mailOptions = {
+    from: process.env.GOOGLE_EMAIL,
+    to: email,
+    subject: "Reset your password",
+    text: `http://localhost:3000/resetpassword/${user._id}/${token}`,
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      return res.json({ message: "Success" });
+    }
+  });
+});
+
+const resetPassword = asyncHandler(async (req, res, next) => {
+  const { id, token } = req.params;
+  const { password } = req.body;
+
+  jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
+    if (err) {
+      res.status(404);
+      throw new Error(err.message);
+    } else {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const user = await User.findByIdAndUpdate(
+        { _id: id },
+        { password: hashedPassword }
+      );
+      console.log(user);
+      res.json({ message: "Password successfully changed" });
+    }
+  });
+});
+
 module.exports = {
   authUser,
   registerUser,
   logoutUser,
   getUserProfile,
   updateUserProfile,
+  forgotPassword,
+  resetPassword,
 };

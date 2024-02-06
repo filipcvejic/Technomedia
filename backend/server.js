@@ -7,8 +7,7 @@ const userRoutes = require("./routes/userRoutes");
 const googleRoutes = require("./routes/googleRoutes");
 const cors = require("cors");
 const passport = require("passport");
-const session = require("express-session");
-require("./auth/passport");
+// require("./auth/passport");
 require("./auth/passportGoogleSSO");
 require("./models/userModel");
 
@@ -43,16 +42,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use(passport.initialize());
 // app.use(passport.session());
 
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-  res.header("Access-Control-Allow-Credentials", "true");
-  res.header("Access-Control-Allow-Methods", "OPTIONS, GET, POST, PUT, DELETE");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-});
+// app.use((req, res, next) => {
+//   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+//   res.header("Access-Control-Allow-Credentials", "true");
+//   res.header("Access-Control-Allow-Methods", "OPTIONS, GET, POST, PUT, DELETE");
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept"
+//   );
+//   next();
+// });
 
 app.use("/api", userRoutes);
 app.use("/api/v1", googleRoutes);

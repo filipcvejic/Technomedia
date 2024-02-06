@@ -37,7 +37,6 @@ const ProfileScreen = () => {
           },
           credentials: "include",
           body: JSON.stringify({
-            _id: userInfo._id,
             name,
             email,
             password,
