@@ -2,7 +2,6 @@ import { useDispatch, useSelector } from "react-redux";
 import "./Header.css";
 import { toast } from "react-toastify";
 import { logout } from "../slices/authSlice";
-import { useLogoutMutation } from "../slices/usersApiSlice";
 import { useState } from "react";
 
 const Header = () => {
@@ -12,13 +11,17 @@ const Header = () => {
 
   const dispatch = useDispatch();
 
-  const [logoutApiCall] = useLogoutMutation();
-
   const logoutHandler = async (e) => {
     e.preventDefault();
 
     try {
-      await logoutApiCall().unwrap();
+      await fetch("http://localhost:3000/api/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
       dispatch(logout());
     } catch (err) {
       toast.error(err?.data?.message || err.error);
