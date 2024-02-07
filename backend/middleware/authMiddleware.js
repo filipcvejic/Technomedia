@@ -10,16 +10,12 @@ const protect = asyncHandler(async (req, res, next) => {
   if (token) {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      const expiration = new Date();
-      expiration.setTime(expiration.getTime() + 24 * 60 * 60 * 1000);
 
       const user = await User.findById(decoded.userId).select("-password");
 
-      req.user = { ...user._doc, expiration: expiration.getTime() };
-
+      req.user = user;
       next();
     } catch (error) {
-      console.error(error);
       res.status(401);
       throw new Error("Not authorized, token failed");
     }

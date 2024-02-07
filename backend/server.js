@@ -7,7 +7,6 @@ const userRoutes = require("./routes/userRoutes");
 const googleRoutes = require("./routes/googleRoutes");
 const cors = require("cors");
 const passport = require("passport");
-// require("./auth/passport");
 require("./auth/passportGoogleSSO");
 require("./models/userModel");
 

@@ -25,9 +25,7 @@ const RegisterScreen = () => {
     }
   }, [navigate, userInfo]);
 
-  const submitHandler = async (e) => {
-    console.log(surname);
-
+  const registerHandler = async (e) => {
     e.preventDefault();
     if (password !== confirmedPassword) {
       toast.error("Passwords do not match");
@@ -45,10 +43,7 @@ const RegisterScreen = () => {
         });
 
         const resData = await res.json();
-
-        dispatch(setCredentials({ ...resData }));
         dispatch(setLoading(false));
-        navigate("/");
       } catch (err) {
         toast.error(err?.data?.message || err.error);
       }

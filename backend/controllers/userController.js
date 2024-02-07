@@ -4,6 +4,9 @@ const generateToken = require("../utils/generateToken");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 var nodemailer = require("nodemailer");
+const Token = require("../models/tokenModel");
+const crypto = require("crypto");
+const sendEmail = require("../utils/sendEmail");
 
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -11,6 +14,10 @@ const authUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email });
 
   if (user && (await user.matchPassword(password))) {
+    if (!user.verified) {
+      res.status(400);
+      throw new Error("You have to verify email, please check your mail");
+    }
     const expiration = new Date();
     expiration.setTime(expiration.getTime() + 24 * 60 * 60 * 1000);
 
@@ -26,16 +33,6 @@ const authUser = asyncHandler(async (req, res) => {
     throw new Error("Invalid email or password");
   }
 });
-
-// const googleAuth = asyncHandler(async (req, res) => {
-//   passport.use(
-//     new GoogleStrategy({
-//       clientID: process.env.REACT_APP_GOOGLE_CLIENT_ID,
-//       clientSecret: process.env.REACT_APP_GOOGLE_SECRET,
-//       callbackURL
-//     })
-//   );
-// });
 
 const registerUser = asyncHandler(async (req, res) => {
   const { name, surname, email, password } = req.body;
@@ -54,17 +51,44 @@ const registerUser = asyncHandler(async (req, res) => {
     password,
   });
 
-  if (user) {
-    generateToken(res, user._id);
-    res.status(200).json({
-      _id: user._id,
-      name: user.name,
-      surname: user.surname,
-      email: user.email,
+  const token = await Token.create({
+    userId: user._id,
+    token: crypto.randomBytes(16).toString("hex"),
+  });
+
+  const link = `http://localhost:3000/users/${user._id}/verify/${token.token}`;
+
+  const subject = "Verify your email";
+
+  await sendEmail(res, user.email, subject, link);
+
+  res.status(200).json({
+    message: "Email sent, check your mail",
+  });
+});
+
+const confirmUser = asyncHandler(async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.params.id });
+
+    if (!user) return res.status(400).send({ message: "Invalid link" });
+
+    const token = await Token.findOne({
+      userId: user._id,
+      token: req.params.token,
     });
-  } else {
-    res.status(400);
-    throw new Error("Invalid user data");
+    if (!token) return res.status(400).send({ message: "Invalid link" });
+
+    await User.updateOne({ _id: token.userId }, { verified: true });
+
+    await token.deleteOne({
+      userId: user._id,
+      token: req.params.token,
+    });
+
+    res.status(200).send({ message: "Email verified successfully" });
+  } catch (error) {
+    res.status(500).send({ message: "Internal Server Error" });
   }
 });
 
@@ -124,28 +148,11 @@ const forgotPassword = asyncHandler(async (req, res, next) => {
     expiresIn: "1d",
   });
 
-  var transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.GOOGLE_EMAIL,
-      pass: process.env.GOOGLE_PASSWORD,
-    },
-  });
+  const subject = "Reset your password";
 
-  var mailOptions = {
-    from: process.env.GOOGLE_EMAIL,
-    to: email,
-    subject: "Reset your password",
-    text: `http://localhost:3000/resetpassword/${user._id}/${token}`,
-  };
+  const content = `http://localhost:3000/resetpassword/${user._id}/${token}`;
 
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      console.log(error);
-    } else {
-      return res.json({ message: "Success" });
-    }
-  });
+  await sendEmail(res, user.email, subject, content);
 });
 
 const resetPassword = asyncHandler(async (req, res, next) => {
@@ -176,4 +183,5 @@ module.exports = {
   updateUserProfile,
   forgotPassword,
   resetPassword,
+  confirmUser,
 };

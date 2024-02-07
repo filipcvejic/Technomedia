@@ -8,8 +8,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { Outlet, useNavigate } from "react-router-dom";
 import { gapi } from "gapi-script";
 import { useDispatch, useSelector } from "react-redux";
-import { setCredentials } from "./slices/authSlice";
-import { useCheckGoogleAuthMutation } from "./slices/usersApiSlice";
 
 function App() {
   const dispatch = useDispatch();

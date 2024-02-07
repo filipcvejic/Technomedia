@@ -23,9 +23,7 @@ function ForgotPasswordScreen() {
 
       const resData = await res.json();
 
-      // if (resData.message === "Success") {
-      //   toast.success("Mail sent successfully");
-      // }
+      toast.success("Mail sent successfully");
       navigate("/login");
     } catch (err) {
       console.log(err);

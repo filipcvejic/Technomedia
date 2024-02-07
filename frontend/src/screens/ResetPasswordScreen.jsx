@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 
 import "./ResetPasswordScreen.css";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function ResetPasswordScreen() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const { id, token } = useParams();
+  const navigate = useNavigate();
 
   const resetPasswordHandler = async (e) => {
     e.preventDefault();
@@ -16,7 +17,7 @@ function ResetPasswordScreen() {
       toast.error("Passwords do not match");
     } else {
       try {
-        const res = await fetch( 
+        const res = await fetch(
           `http://localhost:3000/api/reset-password/${id}/${token}`,
           {
             method: "POST",
@@ -30,7 +31,8 @@ function ResetPasswordScreen() {
 
         const resData = await res.json();
 
-        console.log(resData, "uff");
+        navigate("/login");
+        toast.success("You have successfully changed the password");
       } catch (err) {
         toast.error(err?.data?.message || err.error);
       }

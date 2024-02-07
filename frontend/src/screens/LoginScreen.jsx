@@ -26,7 +26,7 @@ const LoginScreen = () => {
     window.open("http://localhost:5000/api/v1/login/google", "_self");
   };
 
-  const submitHandler = async (e) => {
+  const loginHandler = async (e) => {
     e.preventDefault();
 
     try {
@@ -58,7 +58,7 @@ const LoginScreen = () => {
           If you have an account, sign in using your email address.
         </p>
 
-        <form className="login-form" onSubmit={submitHandler}>
+        <form className="login-form" onSubmit={loginHandler}>
           <div className="form-group">
             <label htmlFor="email" className="form-label">
               Email Address
