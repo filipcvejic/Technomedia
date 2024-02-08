@@ -15,9 +15,10 @@ import LoginScreen from "./screens/LoginScreen.jsx";
 import RegisterScreen from "./screens/RegisterScreen.jsx";
 import PrivateRoute from "./components/PrivateRoute.jsx";
 import ProfileScreen from "./screens/ProfileScreen.jsx";
-import LoginSuccessScreen from "./screens/LoginSuccessScreen.jsx";
+import GoogleLoginSuccess from "./components/GoogleLoginSuccess.jsx";
 import ForgotPasswordScreen from "./screens/ForgotPasswordScreen.jsx";
 import ResetPasswordScreen from "./screens/ResetPasswordScreen.jsx";
+import EmailVerify from "./components/EmailVerify.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,9 +31,10 @@ const router = createBrowserRouter(
         path="/resetpassword/:id/:token"
         element={<ResetPasswordScreen />}
       />
+      <Route path="/users/:id/verify/:token" element={<EmailVerify />} />
       <Route path="" element={<PrivateRoute />}>
         <Route path="/profile" element={<ProfileScreen />} />
-        <Route path="/SSO/success" element={<LoginSuccessScreen />} />
+        <Route path="/SSO/success" element={<GoogleLoginSuccess />} />
       </Route>
     </Route>
   )
@@ -40,8 +42,8 @@ const router = createBrowserRouter(
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
-    <React.StrictMode>
-      <RouterProvider router={router} />
-    </React.StrictMode>
+    {/* <React.StrictMode> */}
+    <RouterProvider router={router} />
+    {/* </React.StrictMode> */}
   </Provider>
 );

@@ -52,7 +52,7 @@ const RegisterScreen = () => {
 
   return (
     <div className="register-container">
-      <form className="register-form" onSubmit={submitHandler}>
+      <form className="register-form" onSubmit={registerHandler}>
         <div className="personal-data-section">
           <h2 className="section-heading">Personal Data</h2>
 

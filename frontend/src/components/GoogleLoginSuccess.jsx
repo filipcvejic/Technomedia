@@ -3,7 +3,7 @@ import { setCredentials } from "../slices/authSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-function LoginSuccessScreen() {
+function GoogleLoginSuccess() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -24,9 +24,7 @@ function LoginSuccessScreen() {
     };
 
     checkUser();
-  }, []);
-
-  return <div>LoginSuccessScreen</div>;
+  }, [navigate, dispatch]);
 }
 
-export default LoginSuccessScreen;
+export default GoogleLoginSuccess;

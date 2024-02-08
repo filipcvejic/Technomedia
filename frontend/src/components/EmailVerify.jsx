@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -33,8 +33,6 @@ function EmailVerify() {
 
     verifyEmail();
   }, [params, verified]);
-
-  return <div>EmailVerify</div>;
 }
 
 export default EmailVerify;
