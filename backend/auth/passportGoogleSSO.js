@@ -1,6 +1,7 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const User = require("../models/userModel");
+const bcrypt = require("bcryptjs");
 
 passport.use(
   new GoogleStrategy(
@@ -11,12 +12,16 @@ passport.use(
       passReqToCallback: true,
     },
     async (req, _accessToken, _refreshToken, profile, done) => {
-      // console.log(accessToken, refreshToken);
+      const password = await bcrypt.genSalt(10);
+
+      const surname = profile.name.familyName;
+
       const condition = { googleId: profile.id };
       const doc = {
         name: profile.name.givenName,
+        surname: surname ? surname : "",
         email: profile.emails[0].value,
-        googleId: profile.id,
+        password,
       };
 
       try {

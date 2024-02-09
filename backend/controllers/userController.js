@@ -3,12 +3,11 @@ const User = require("../models/userModel");
 const generateToken = require("../utils/generateToken");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-var nodemailer = require("nodemailer");
 const Token = require("../models/tokenModel");
 const crypto = require("crypto");
 const sendEmail = require("../utils/sendEmail");
 
-const authUser = asyncHandler(async (req, res) => {
+const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
@@ -67,7 +66,7 @@ const registerUser = asyncHandler(async (req, res) => {
   });
 });
 
-const confirmUser = asyncHandler(async (req, res) => {
+const confirmUserRegistration = asyncHandler(async (req, res) => {
   try {
     const user = await User.findOne({ _id: req.params.id });
 
@@ -176,12 +175,12 @@ const resetPassword = asyncHandler(async (req, res, next) => {
 });
 
 module.exports = {
-  authUser,
+  loginUser,
   registerUser,
   logoutUser,
   getUserProfile,
   updateUserProfile,
   forgotPassword,
   resetPassword,
-  confirmUser,
+  confirmUserRegistration,
 };

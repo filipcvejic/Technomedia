@@ -1,21 +1,21 @@
 const express = require("express");
 const {
-  authUser,
+  loginUser,
   registerUser,
   logoutUser,
   getUserProfile,
   updateUserProfile,
   forgotPassword,
   resetPassword,
-  confirmUser,
+  confirmUserRegistration,
 } = require("../controllers/userController");
 const { protect } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
 router.post("/register", registerUser);
-router.get("/users/:id/verify/:token", confirmUser);
-router.post("/auth", authUser);
+router.get("/users/:id/verify/:token", confirmUserRegistration);
+router.post("/auth", loginUser);
 router.post("/logout", logoutUser);
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password/:id/:token", resetPassword);

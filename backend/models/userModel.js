@@ -9,19 +9,19 @@ const userSchema = mongoose.Schema(
     },
     surname: {
       type: String,
-      // required: true,
     },
     email: {
       type: String,
       required: true,
       unique: true,
     },
-    googleId: {
-      type: String,
-    },
     password: {
       type: String,
-      // required: true,
+      required: true,
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false,
     },
     verified: {
       type: Boolean,
