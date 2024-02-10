@@ -1,7 +1,8 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { logout, setCredentials } from "../slices/authSlice";
+import { logout, setCredentials } from "../../slices/authSlice";
+import { toast } from "react-toastify";
 
 const PrivateRoute = () => {
   const dispatch = useDispatch();
@@ -15,6 +16,11 @@ const PrivateRoute = () => {
 
       if (!resData.user) {
         dispatch(logout());
+        navigate("/login");
+      } else if (!resData.isVerified) {
+        toast.warn(
+          "If you are registered, please check your email and verify your account."
+        );
         navigate("/login");
       } else {
         dispatch(setCredentials({ ...resData.user }));

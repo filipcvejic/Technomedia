@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { setCredentials, setLoading } from "../slices/authSlice";
+import { setCredentials, setLoading } from "../../slices/authSlice";
 
 import "./RegisterScreen.css";
 
