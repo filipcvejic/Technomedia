@@ -15,13 +15,15 @@ passport.use(
       const password = await bcrypt.genSalt(10);
 
       const surname = profile.name.familyName;
+      const email = profile.emails[0].value;
 
-      const condition = { googleId: profile.id };
+      const condition = { email };
       const doc = {
         name: profile.name.givenName,
         surname: surname ? surname : "",
         email: profile.emails[0].value,
         password,
+        verified: profile.emails[0].verified,
       };
 
       try {

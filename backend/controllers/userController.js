@@ -104,10 +104,11 @@ const getUserProfile = asyncHandler(async (req, res) => {
   const user = {
     _id: req.user._id,
     name: req.user.name,
+    surname: req.user.surname ? req.user.surname : null,
     email: req.user.email,
   };
 
-  res.status(200).json({ user });
+  res.status(200).json({ user, isVerified: req.user.verified });
 });
 
 const updateUserProfile = asyncHandler(async (req, res) => {
@@ -115,17 +116,24 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 
   if (user) {
     user.name = req.body.name || user.name;
+    user.surname = req.body.surname || user.surname;
     user.email = req.body.email || user.email;
 
-    if (req.body.password) {
-      user.password = req.body.password;
+    const matchPassword = await user.matchPassword(req.body.oldPassword);
+
+    if (!matchPassword) {
+      res.status(401);
+      throw new Error("Your old password is incorrect");
     }
+
+    user.password = req.body.newPassword;
 
     const updatedUser = await user.save();
 
     res.status(200).json({
       _id: updatedUser._id,
       name: updatedUser.name,
+      surname: updatedUser.surname,
       email: updatedUser.email,
     });
   } else {
