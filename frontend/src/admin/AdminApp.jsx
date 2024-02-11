@@ -1,12 +1,12 @@
-import Header from "./user/components/Header";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Outlet } from "react-router-dom";
+import AdminHeader from "./components/AdminHeader";
 
-function App() {
+function AdminApp() {
   return (
     <>
-      <Header />
+      <AdminHeader />
       <ToastContainer />
       <div>
         <Outlet />
@@ -15,4 +15,4 @@ function App() {
   );
 }
 
-export default App;
+export default AdminApp;

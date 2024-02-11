@@ -12,7 +12,7 @@ const protect = asyncHandler(async (req, res, next) => {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      const user = await User.findById(decoded.userId).select("-password");
+      const user = await User.findById(decoded.id).select("-password");
 
       req.user = user;
       next();
@@ -35,7 +35,13 @@ const adminProtect = asyncHandler(async (req, res, next) => {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      const admin = await Admin.findById(decoded.adminId).select("-password");
+      const admin = await Admin.findById(decoded.id).select("-password");
+
+      if (!admin) {
+        res.clearCookie("jwt");
+        res.statusCode = 401;
+        throw new Error("Not authorized");
+      }
 
       req.admin = admin;
       next();

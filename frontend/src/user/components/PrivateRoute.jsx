@@ -1,7 +1,7 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { logout, setCredentials } from "../../slices/authSlice";
+import { logout, setCredentials } from "../../slices/userAuthSlice";
 import { toast } from "react-toastify";
 
 const PrivateRoute = () => {

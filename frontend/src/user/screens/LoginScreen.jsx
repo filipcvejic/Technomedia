@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setCredentials, setLoading } from "../../slices/authSlice";
+import { setCredentials, setLoading } from "../../slices/userAuthSlice";
 import { toast } from "react-toastify";
 
 import "./LoginScreen.css";
@@ -13,8 +13,8 @@ const LoginScreen = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { userInfo } = useSelector((state) => state.auth);
-  const { isLoading } = useSelector((state) => state.auth);
+  const { userInfo } = useSelector((state) => state.userAuth);
+  const { isLoading } = useSelector((state) => state.userAuth);
 
   useEffect(() => {
     if (userInfo) {

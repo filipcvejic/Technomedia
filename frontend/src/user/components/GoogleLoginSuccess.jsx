@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { setCredentials } from "../../slices/authSlice";
+import { setCredentials } from "../../slices/userAuthSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 

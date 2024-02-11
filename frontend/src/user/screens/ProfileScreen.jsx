@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { setCredentials, setLoading } from "../../slices/authSlice";
+import { setCredentials, setLoading } from "../../slices/userAuthSlice";
 
 import "./ProfileScreen.css";
 
@@ -13,8 +13,8 @@ const ProfileScreen = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const { userInfo } = useSelector((state) => state.auth);
-  const { isLoading } = useSelector((state) => state.auth);
+  const { userInfo } = useSelector((state) => state.userAuth);
+  const { isLoading } = useSelector((state) => state.userAuth);
 
   const dispatch = useDispatch();
 

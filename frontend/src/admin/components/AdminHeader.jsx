@@ -1,11 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
-import "./Header.css";
 import { toast } from "react-toastify";
-import { logout } from "../../slices/userAuthSlice";
+import { logout } from "../../slices/adminAuthSlice";
 import { useState } from "react";
 
-const Header = () => {
-  const { userInfo } = useSelector((state) => state.userAuth);
+const AdminHeader = () => {
+  const { adminInfo } = useSelector((state) => state.adminAuth);
 
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -15,7 +14,7 @@ const Header = () => {
     e.preventDefault();
 
     try {
-      await fetch("http://localhost:3000/api/logout", {
+      await fetch("http://localhost:3000/api/admin/logout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -79,12 +78,12 @@ const Header = () => {
               <div className="user-dropdown-menu">
                 <ul>
                   <li>
-                    <a href="/profile">My user account</a>
+                    <a href="/admin/profile">My user account</a>
                   </li>
                   <li>
-                    <a href="/cart">My cart</a>
+                    <a href="/admin/cart">My cart</a>
                   </li>
-                  {userInfo ? (
+                  {adminInfo ? (
                     <li>
                       <button className="logout-button" onClick={logoutHandler}>
                         <span>Logout</span>
@@ -93,10 +92,10 @@ const Header = () => {
                   ) : (
                     <>
                       <li>
-                        <a href="/register">Create a user account</a>
+                        <a href="/admin/users">All users</a>
                       </li>
                       <li>
-                        <a href="/login">Login</a>
+                        <a href="/admin/products">All products</a>
                       </li>
                     </>
                   )}
@@ -123,4 +122,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default AdminHeader;

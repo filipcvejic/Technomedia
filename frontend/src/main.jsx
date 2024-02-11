@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
 import store from "./store.js";
 import { Provider } from "react-redux";
-import App from "./App.jsx";
+import App from "./user/App.jsx";
 import "./index.css";
 import HomeScreen from "./user/screens/HomeScreen.jsx";
 import LoginScreen from "./user/screens/LoginScreen.jsx";
@@ -15,6 +15,9 @@ import ForgotPasswordScreen from "./user/screens/ForgotPasswordScreen.jsx";
 import ResetPasswordScreen from "./user/screens/ResetPasswordScreen.jsx";
 import EmailVerify from "./user/components/EmailVerify.jsx";
 import AdminLoginScreen from "./admin/screens/AdminLoginScreen.jsx";
+import AdminHomeScreen from "./admin/screens/AdminHomeScreen.jsx";
+import AdminApp from "./admin/AdminApp.jsx";
+import AdminPrivateRoute from "./admin/components/AdminPrivateRoute.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
@@ -36,9 +39,12 @@ ReactDOM.createRoot(document.getElementById("root")).render(
               <Route path="/SSO/success" element={<GoogleLoginSuccess />} />
             </Route>
           </Route>
-          {/* <Route path="/admin" element={<AdminApp />}> */}
-          <Route path="/admin" element={<AdminLoginScreen />} />
-          {/* </Route> */}
+          <Route path="/" element={<AdminApp />}>
+            <Route path="/admin/login" element={<AdminLoginScreen />} />
+            <Route path="" element={<AdminPrivateRoute />}>
+              <Route path="/admin" element={<AdminHomeScreen />} />
+            </Route>
+          </Route>
         </Routes>
       </Router>
     </React.StrictMode>
