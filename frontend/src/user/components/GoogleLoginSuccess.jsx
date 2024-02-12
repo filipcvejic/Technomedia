@@ -1,11 +1,14 @@
 import React, { useEffect } from "react";
 import { setCredentials } from "../../slices/userAuthSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { logout as adminLogout } from "../../slices/adminAuthSlice";
 
 function GoogleLoginSuccess() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { adminInfo } = useSelector((state) => state.adminAuth);
 
   useEffect(() => {
     const checkUser = async () => {
@@ -19,6 +22,11 @@ function GoogleLoginSuccess() {
         name: user.name,
         email: user.email,
       };
+
+      if (adminInfo) {
+        dispatch(adminLogout());
+      }
+
       dispatch(setCredentials(userInfo));
       navigate("/");
     };

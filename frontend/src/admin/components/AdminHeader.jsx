@@ -83,6 +83,12 @@ const AdminHeader = () => {
                   <li>
                     <a href="/admin/cart">My cart</a>
                   </li>
+                  <li>
+                    <a href="/admin/users">All users</a>
+                  </li>
+                  <li>
+                    <a href="/admin/products">All products</a>
+                  </li>
                   {adminInfo ? (
                     <li>
                       <button className="logout-button" onClick={logoutHandler}>
@@ -90,14 +96,9 @@ const AdminHeader = () => {
                       </button>
                     </li>
                   ) : (
-                    <>
-                      <li>
-                        <a href="/admin/users">All users</a>
-                      </li>
-                      <li>
-                        <a href="/admin/products">All products</a>
-                      </li>
-                    </>
+                    <li>
+                      <a href="/admin/login">Login</a>
+                    </li>
                   )}
                 </ul>
               </div>

@@ -17,15 +17,11 @@ const loginUser = asyncHandler(async (req, res) => {
       res.status(400);
       throw new Error("You have to verify email, please check your mail");
     }
-    const expiration = new Date();
-    expiration.setTime(expiration.getTime() + 24 * 60 * 60 * 1000);
-
     generateToken(res, user._id);
     res.status(200).json({
       _id: user._id,
       name: user.name,
       email: user.email,
-      expiration: expiration.getTime(),
     });
   } else {
     res.status(400);

@@ -2,7 +2,6 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { logout, setCredentials } from "../../slices/adminAuthSlice";
-import { logout as userLogout } from "../../slices/userAuthSlice";
 import { toast } from "react-toastify";
 
 const AdminPrivateRoute = () => {
@@ -10,8 +9,6 @@ const AdminPrivateRoute = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(userLogout());
-
     const checkUser = async () => {
       const res = await fetch("http://localhost:3000/api/admin/profile");
 
@@ -26,7 +23,7 @@ const AdminPrivateRoute = () => {
     };
 
     checkUser();
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   return <Outlet />;
 };

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setCredentials, setLoading } from "../../slices/userAuthSlice";
+import { logout as adminLogout } from "../../slices/adminAuthSlice";
 import { toast } from "react-toastify";
 
 import "./LoginScreen.css";
@@ -14,6 +15,7 @@ const LoginScreen = () => {
   const dispatch = useDispatch();
 
   const { userInfo } = useSelector((state) => state.userAuth);
+  const { adminInfo } = useSelector((state) => state.adminAuth);
   const { isLoading } = useSelector((state) => state.userAuth);
 
   useEffect(() => {
@@ -41,6 +43,10 @@ const LoginScreen = () => {
       });
 
       const resData = await res.json();
+
+      if (adminInfo) {
+        dispatch(adminLogout());
+      }
 
       dispatch(setCredentials({ ...resData }));
       dispatch(setLoading(false));

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { setCredentials, setLoading } from "../../slices/adminAuthSlice";
-import { logout } from "../../slices/userAuthSlice";
+import { logout as userLogout } from "../../slices/userAuthSlice";
 import { toast } from "react-toastify";
 
 function AdminLoginScreen() {
@@ -17,12 +17,10 @@ function AdminLoginScreen() {
   const { isLoading } = useSelector((state) => state.adminAuth);
 
   useEffect(() => {
-    if (userInfo) {
-      dispatch(logout());
-    } else if (adminInfo) {
+    if (adminInfo) {
       navigate("/admin");
     }
-  }, [userInfo, adminInfo]);
+  }, [adminInfo]);
 
   const loginHandler = async (e) => {
     e.preventDefault();
@@ -43,6 +41,10 @@ function AdminLoginScreen() {
       // if (resData.message === "Not authorized, no token") {
       //   dispatch(logout());
       // }
+
+      if (userInfo) {
+        dispatch(userLogout());
+      }
 
       dispatch(setCredentials({ ...resData }));
       dispatch(setLoading(false));

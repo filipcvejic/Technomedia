@@ -38,7 +38,6 @@ const adminProtect = asyncHandler(async (req, res, next) => {
       const admin = await Admin.findById(decoded.id).select("-password");
 
       if (!admin) {
-        res.clearCookie("jwt");
         res.statusCode = 401;
         throw new Error("Not authorized");
       }
