@@ -12,23 +12,35 @@ function GoogleLoginSuccess() {
 
   useEffect(() => {
     const checkUser = async () => {
-      const res = await fetch("http://localhost:3000/api/v1/login/success", {
-        credentials: "include",
-      });
-      const resData = await res.json();
-      const { user } = resData;
-      const userInfo = {
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-      };
+      try {
+        const response = await fetch(
+          "http://localhost:3000/api/v1/login/success",
+          {
+            credentials: "include",
+          }
+        );
+        const data = await response.json();
 
-      if (adminInfo) {
-        dispatch(adminLogout());
+        if (!response.ok) {
+          throw new Error(data.message);
+        }
+
+        const { user } = resData;
+        const userInfo = {
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+        };
+
+        if (adminInfo) {
+          dispatch(adminLogout());
+        }
+
+        dispatch(setCredentials(userInfo));
+        navigate("/");
+      } catch (err) {
+        toast.error(err?.message);
       }
-
-      dispatch(setCredentials(userInfo));
-      navigate("/");
     };
 
     checkUser();

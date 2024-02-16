@@ -15,16 +15,23 @@ const Header = () => {
     e.preventDefault();
 
     try {
-      await fetch("http://localhost:3000/api/logout", {
+      const response = await fetch("http://localhost:3000/api/logout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         credentials: "include",
       });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+
       dispatch(logout());
     } catch (err) {
-      toast.error(err?.data?.message || err.error);
+      toast.error(err?.message);
     }
   };
 

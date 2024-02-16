@@ -30,7 +30,6 @@ passport.use(
         const user = await User.findOrCreate(condition, doc);
         return done(null, user);
       } catch (err) {
-        console.log("Error siggning up", err);
         return done(err, null);
       }
     }
@@ -38,14 +37,10 @@ passport.use(
 );
 
 passport.serializeUser((user, done) => {
-  console.log("Serializing user:", user);
   done(null, user._id);
 });
 
 passport.deserializeUser(async (id, done) => {
-  const user = await User.findById(id).catch((err) => {
-    console.log("Error deserializing", err);
-  });
-  console.log("Deserialized user:", user);
+  const user = await User.findById(id);
   if (user) done(null, user);
 });

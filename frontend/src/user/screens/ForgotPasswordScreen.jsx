@@ -12,22 +12,28 @@ function ForgotPasswordScreen() {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:3000/api/forgot-password", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ email }),
-      });
+      const response = await fetch(
+        "http://localhost:3000/api/forgot-password",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ email }),
+        }
+      );
 
-      const resData = await res.json();
+      const data = await response.json();
 
-      toast.success("Mail sent successfully");
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+
+      toast.success(data.message);
       navigate("/login");
     } catch (err) {
-      console.log(err);
-      toast.error(err?.data?.message || err.error);
+      toast.error(err?.message);
     }
   };
 

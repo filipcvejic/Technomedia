@@ -4,6 +4,9 @@ const {
   logoutAdmin,
   getAdminProfile,
   updateAdminProfile,
+  addProduct,
+  getProductByCategory,
+  getProductByCategoryAndSubcategory,
 } = require("../controllers/adminController");
 const { adminProtect } = require("../middleware/authMiddleware");
 
@@ -17,5 +20,12 @@ router
   .route("/profile")
   .get(adminProtect, getAdminProfile)
   .put(adminProtect, updateAdminProfile);
+
+router.post("/add", addProduct);
+router.get("/products/:category", getProductByCategory);
+router.get(
+  "/products/:category/:subcategory",
+  getProductByCategoryAndSubcategory
+);
 
 module.exports = router;

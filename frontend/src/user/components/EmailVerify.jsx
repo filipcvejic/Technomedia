@@ -12,22 +12,24 @@ function EmailVerify() {
       try {
         if (verified) return;
 
-        const res = await fetch(
+        const response = await fetch(
           `http://localhost:3000/api/users/${params.id}/verify/${params.token}`,
           {
             credentials: "include",
           }
         );
 
-        const resData = await res.json();
+        const data = await response.json();
 
-        console.log(resData);
+        if (!response.ok) {
+          throw new Error(data.message);
+        }
 
-        toast.success(resData.message);
+        toast.success(data.message);
         setVerified(true);
         navigate("/login");
       } catch (error) {
-        toast.error(err?.data?.message || err.error);
+        toast.error(err?.message);
       }
     };
 

@@ -6,6 +6,9 @@ const bcrypt = require("bcryptjs");
 const Token = require("../models/tokenModel");
 const crypto = require("crypto");
 const sendEmail = require("../utils/sendEmail");
+const Product = require("../models/productModel");
+const Category = require("../models/categoryModel");
+const Subcategory = require("../models/subcategoryModel");
 
 const loginAdmin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -13,6 +16,7 @@ const loginAdmin = asyncHandler(async (req, res) => {
   const admin = await Admin.findOne({ email });
 
   if (admin && (await admin.matchPassword(password))) {
+    res.clearCookie("jwt");
     generateToken(res, admin._id);
     res.status(200).json({
       _id: admin._id,
@@ -76,9 +80,111 @@ const updateAdminProfile = asyncHandler(async (req, res) => {
   }
 });
 
+const addProduct = asyncHandler(async (req, res, next) => {
+  try {
+    const { name, description, price, category, subcategory } = req.body;
+
+    let categoryID, subcategoryID;
+
+    let foundCategory = await Category.findOne({ name: category });
+    if (!foundCategory) {
+      foundCategory = new Category({ name: category });
+      await foundCategory.save();
+    }
+    categoryID = foundCategory._id;
+
+    let foundSubcategory = await Subcategory.findOne({ name: subcategory });
+    if (!foundSubcategory) {
+      foundSubcategory = new Subcategory({
+        name: subcategory,
+        category: categoryID,
+      });
+      await foundSubcategory.save();
+
+      foundCategory.subcategories.push(foundSubcategory._id);
+      await foundCategory.save();
+    }
+    subcategoryID = foundSubcategory._id;
+
+    const newProduct = new Product({
+      name,
+      description,
+      price,
+      category: categoryID,
+      subcategory: subcategoryID,
+    });
+
+    const savedProduct = await newProduct.save();
+
+    res.status(200).json(savedProduct);
+  } catch (error) {
+    res.status(500).json({ message: "Error adding product" });
+  }
+});
+
+const getProductByCategory = asyncHandler(async (req, res, next) => {
+  try {
+    const categoryName = req.params.category;
+
+    const category = await Category.findOne({ name: categoryName });
+    if (!category) {
+      return res.status(404).json({ message: "Kategorija nije pronađena" });
+    }
+
+    const products = await Product.find({ category: category._id }).select(
+      "-category -subcategory -createdAt -updatedAt -__v"
+    );
+
+    res.json(products);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Greška prilikom dohvatanja proizvoda" });
+  }
+});
+
+const getProductByCategoryAndSubcategory = asyncHandler(
+  async (req, res, next) => {
+    try {
+      const categoryName = req.params.category;
+      const subcategoryName = req.params.subcategory;
+
+      const category = await Category.findOne({ name: categoryName });
+      if (!category) {
+        return res.status(404).json({ message: "Kategorija nije pronađena" });
+      }
+
+      let filter = { category: category._id };
+
+      if (subcategoryName) {
+        const subcategory = await Subcategory.findOne({
+          name: subcategoryName,
+        });
+        if (!subcategory) {
+          return res
+            .status(404)
+            .json({ message: "Podkategorija nije pronađena" });
+        }
+        filter.subcategory = subcategory._id;
+      }
+
+      const products = await Product.find(filter).select(
+        "-category -subcategory -createdAt -updatedAt -__v"
+      );
+
+      res.json(products);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Greška prilikom dohvatanja proizvoda" });
+    }
+  }
+);
+
 module.exports = {
   loginAdmin,
   logoutAdmin,
   getAdminProfile,
   updateAdminProfile,
+  addProduct,
+  getProductByCategory,
+  getProductByCategoryAndSubcategory,
 };

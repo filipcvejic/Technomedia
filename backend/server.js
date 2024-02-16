@@ -28,30 +28,7 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// app.use(
-//   session({
-//     secret: process.env.COOKIE_KEY,
-//     resave: false,
-//     saveUninitialized: false,
-//     cookie: {
-//       maxAge: 24 * 60 * 60 * 1000,
-//     },
-//   })
-// );
-
 app.use(passport.initialize());
-// app.use(passport.session());
-
-// app.use((req, res, next) => {
-//   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-//   res.header("Access-Control-Allow-Credentials", "true");
-//   res.header("Access-Control-Allow-Methods", "OPTIONS, GET, POST, PUT, DELETE");
-//   res.header(
-//     "Access-Control-Allow-Headers",
-//     "Origin, X-Requested-With, Content-Type, Accept"
-//   );
-//   next();
-// });
 
 app.use("/api", userRoutes);
 app.use("/api/admin", adminRoutes);

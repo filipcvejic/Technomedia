@@ -21,6 +21,7 @@ const loginUser = asyncHandler(async (req, res) => {
     res.status(200).json({
       _id: user._id,
       name: user.name,
+      surname: user.surname || "",
       email: user.email,
     });
   } else {
@@ -57,8 +58,8 @@ const registerUser = asyncHandler(async (req, res) => {
 
   await sendEmail(res, user.email, subject, link);
 
-  res.status(200).json({
-    message: "Email sent, check your mail",
+  res.status(201).json({
+    message: "A verification email has been sent, please check your email",
   });
 });
 
@@ -100,7 +101,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
   const user = {
     _id: req.user._id,
     name: req.user.name,
-    surname: req.user.surname ? req.user.surname : null,
+    surname: req.user.surname || "",
     email: req.user.email,
   };
 
@@ -118,7 +119,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     const matchPassword = await user.matchPassword(req.body.oldPassword);
 
     if (!matchPassword) {
-      res.status(401);
+      res.status(400);
       throw new Error("Your old password is incorrect");
     }
 
@@ -143,7 +144,7 @@ const forgotPassword = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({ email });
 
   if (!user) {
-    res.status(404);
+    res.status(400);
     throw new Error("User does not exist");
   }
 
@@ -156,6 +157,11 @@ const forgotPassword = asyncHandler(async (req, res, next) => {
   const content = `http://localhost:3000/resetpassword/${user._id}/${token}`;
 
   await sendEmail(res, user.email, subject, content);
+
+  res.json({
+    message:
+      "An email for password reset has been sent. Please check your email.",
+  });
 });
 
 const resetPassword = asyncHandler(async (req, res, next) => {
@@ -173,7 +179,7 @@ const resetPassword = asyncHandler(async (req, res, next) => {
         { password: hashedPassword }
       );
       console.log(user);
-      res.json({ message: "Password successfully changed" });
+      res.json({ message: "You have successfully changed the password" });
     }
   });
 });

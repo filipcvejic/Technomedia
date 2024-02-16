@@ -17,7 +17,7 @@ function ResetPasswordScreen() {
       toast.error("Passwords do not match");
     } else {
       try {
-        const res = await fetch(
+        const response = await fetch(
           `http://localhost:3000/api/reset-password/${id}/${token}`,
           {
             method: "POST",
@@ -29,12 +29,15 @@ function ResetPasswordScreen() {
           }
         );
 
-        const resData = await res.json();
+        const data = await response.json();
 
+        if (!response.ok) {
+          throw new Error(data.message);
+        }
+        toast.success(data.message);
         navigate("/login");
-        toast.success("You have successfully changed the password");
       } catch (err) {
-        toast.error(err?.data?.message || err.error);
+        toast.error(err?.message);
       }
     }
   };

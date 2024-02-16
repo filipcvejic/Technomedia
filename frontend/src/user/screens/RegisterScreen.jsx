@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { setCredentials, setLoading } from "../../slices/userAuthSlice";
+import { setLoading } from "../../slices/userAuthSlice";
 
 import "./RegisterScreen.css";
 
@@ -33,7 +33,7 @@ const RegisterScreen = () => {
       try {
         dispatch(setLoading(true));
 
-        const res = await fetch("http://localhost:3000/api/register", {
+        const response = await fetch("http://localhost:3000/api/register", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -42,10 +42,17 @@ const RegisterScreen = () => {
           body: JSON.stringify({ name, surname, email, password }),
         });
 
-        const resData = await res.json();
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message);
+        }
+
+        toast.warn(data.message);
         dispatch(setLoading(false));
+        navigate("/login");
       } catch (err) {
-        toast.error(err?.data?.message || err.error);
+        toast.error(err?.message);
       }
     }
   };
