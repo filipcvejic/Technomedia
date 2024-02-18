@@ -12,11 +12,12 @@ const tokenSchema = new Schema({
     type: String,
     required: true,
   },
-  createdAt: {
+  expiresAt: {
     type: Date,
-    default: Date.now(),
-    expires: 3600,
+    required: true,
   },
 });
 
-module.exports = mongoose.model("token", tokenSchema);
+tokenSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
+
+module.exports = mongoose.model("Token", tokenSchema);

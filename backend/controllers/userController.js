@@ -50,6 +50,7 @@ const registerUser = asyncHandler(async (req, res) => {
   const token = await Token.create({
     userId: user._id,
     token: crypto.randomBytes(16).toString("hex"),
+    expiresAt: new Date(new Date().getTime() + 3600 * 1000),
   });
 
   const link = `http://localhost:3000/users/${user._id}/verify/${token.token}`;
@@ -77,7 +78,7 @@ const confirmUserRegistration = asyncHandler(async (req, res) => {
 
     await User.updateOne({ _id: token.userId }, { verified: true });
 
-    await token.deleteOne({
+    await Token.deleteOne({
       userId: user._id,
       token: req.params.token,
     });
@@ -148,13 +149,15 @@ const forgotPassword = asyncHandler(async (req, res, next) => {
     throw new Error("User does not exist");
   }
 
-  const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-    expiresIn: "1d",
+  const token = await Token.create({
+    userId: user._id,
+    token: crypto.randomBytes(16).toString("hex"),
+    expiresAt: new Date(new Date().getTime() + 3600 * 1000),
   });
 
   const subject = "Reset your password";
 
-  const content = `http://localhost:3000/resetpassword/${user._id}/${token}`;
+  const content = `http://localhost:3000/resetpassword/${user._id}/${token.token}`;
 
   await sendEmail(res, user.email, subject, content);
 
@@ -164,24 +167,57 @@ const forgotPassword = asyncHandler(async (req, res, next) => {
   });
 });
 
-const resetPassword = asyncHandler(async (req, res, next) => {
-  const { id, token } = req.params;
-  const { password } = req.body;
+const checkResetPasswordToken = asyncHandler(async (req, res, next) => {
+  try {
+    const { id, token } = req.params;
 
-  jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
-    if (err) {
-      res.status(404);
-      throw new Error(err.message);
-    } else {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const user = await User.findByIdAndUpdate(
-        { _id: id },
-        { password: hashedPassword }
-      );
-      console.log(user);
-      res.json({ message: "You have successfully changed the password" });
-    }
-  });
+    const foundToken = await Token.findOne({
+      userId: id,
+      token,
+    });
+
+    if (!foundToken)
+      return res
+        .status(400)
+        .send({ message: "Reset password token has expired" });
+
+    res.status(200).json({ message: "Token founded" });
+  } catch (error) {
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+});
+
+const resetPassword = asyncHandler(async (req, res, next) => {
+  try {
+    const { id, token } = req.params;
+    const { password } = req.body;
+
+    const foundToken = await Token.findOne({
+      userId: id,
+      token,
+    });
+
+    if (!foundToken) return res.status(400).send({ message: "Invalid link" });
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await User.findByIdAndUpdate(
+      { _id: id },
+      { password: hashedPassword }
+    );
+
+    if (!user) return res.status(400).send({ message: "Invalid link" });
+
+    await Token.deleteOne({
+      userId: user._id,
+      token: req.params.token,
+    });
+
+    res
+      .status(200)
+      .json({ message: "You have successfully changed the password" });
+  } catch (error) {
+    res.status(500).send({ message: "Internal Server Error" });
+  }
 });
 
 module.exports = {
@@ -193,4 +229,5 @@ module.exports = {
   forgotPassword,
   resetPassword,
   confirmUserRegistration,
+  checkResetPasswordToken,
 };

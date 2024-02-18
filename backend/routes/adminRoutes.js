@@ -7,6 +7,8 @@ const {
   addProduct,
   getProductByCategory,
   getProductByCategoryAndSubcategory,
+  getSubcategories,
+  getCategories,
 } = require("../controllers/adminController");
 const { adminProtect } = require("../middleware/authMiddleware");
 
@@ -27,5 +29,11 @@ router.get(
   "/products/:category/:subcategory",
   getProductByCategoryAndSubcategory
 );
+router.get(
+  "/categories/:category/subcategories",
+  adminProtect,
+  getSubcategories
+);
+router.get("/categories", adminProtect, getCategories);
 
 module.exports = router;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 import "./ResetPasswordScreen.css";
@@ -9,6 +9,26 @@ function ResetPasswordScreen() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const { id, token } = useParams();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkToken = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3000/api/check-token/${id}/${token}`
+        );
+
+        if (!response.ok) {
+          navigate("/login");
+          const data = await response.json();
+          throw new Error(data.message);
+        }
+      } catch (err) {
+        toast.error(err?.message);
+      }
+    };
+
+    checkToken();
+  }, [id, token, navigate]);
 
   const resetPasswordHandler = async (e) => {
     e.preventDefault();
