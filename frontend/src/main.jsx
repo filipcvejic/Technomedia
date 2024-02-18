@@ -18,6 +18,7 @@ import AdminLoginScreen from "./admin/screens/AdminLoginScreen.jsx";
 import AdminHomeScreen from "./admin/screens/AdminHomeScreen.jsx";
 import AdminApp from "./admin/AdminApp.jsx";
 import AdminPrivateRoute from "./admin/components/AdminPrivateRoute.jsx";
+import AddProductScreen from "./admin/screens/AddProductScreen.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
@@ -43,6 +44,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <Route path="/admin/login" element={<AdminLoginScreen />} />
             <Route path="" element={<AdminPrivateRoute />}>
               <Route path="/admin" element={<AdminHomeScreen />} />
+              <Route path="/admin/add-product" element={<AddProductScreen />} />
             </Route>
           </Route>
         </Routes>

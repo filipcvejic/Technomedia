@@ -132,52 +132,78 @@ const getProductByCategory = asyncHandler(async (req, res, next) => {
     }
 
     const products = await Product.find({ category: category._id }).select(
-      "-category -subcategory -createdAt -updatedAt -__v"
+      "name description price"
     );
 
     res.json(products);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Greška prilikom dohvatanja proizvoda" });
+    res.status(500).json({ message: "Greska" });
   }
 });
 
-const getProductByCategoryAndSubcategory = asyncHandler(
-  async (req, res, next) => {
-    try {
-      const categoryName = req.params.category;
-      const subcategoryName = req.params.subcategory;
+const getProductByCategoryAndSubcategory = asyncHandler(async (req, res) => {
+  try {
+    const categoryName = req.params.category;
+    const subcategoryName = req.params.subcategory;
 
-      const category = await Category.findOne({ name: categoryName });
-      if (!category) {
-        return res.status(404).json({ message: "Kategorija nije pronađena" });
-      }
-
-      let filter = { category: category._id };
-
-      if (subcategoryName) {
-        const subcategory = await Subcategory.findOne({
-          name: subcategoryName,
-        });
-        if (!subcategory) {
-          return res
-            .status(404)
-            .json({ message: "Podkategorija nije pronađena" });
-        }
-        filter.subcategory = subcategory._id;
-      }
-
-      const products = await Product.find(filter).select(
-        "-category -subcategory -createdAt -updatedAt -__v"
-      );
-
-      res.json(products);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Greška prilikom dohvatanja proizvoda" });
+    const category = await Category.findOne({ name: categoryName });
+    if (!category) {
+      return res.status(404).json({ message: "Kategorija nije pronađena" });
     }
+
+    let filter = { category: category._id };
+
+    if (subcategoryName) {
+      const subcategory = await Subcategory.findOne({
+        name: subcategoryName,
+      });
+      if (!subcategory) {
+        return res
+          .status(404)
+          .json({ message: "Podkategorija nije pronađena" });
+      }
+      filter.subcategory = subcategory._id;
+    }
+
+    const products = await Product.find(filter).select(
+      "name description price"
+    );
+
+    res.json(products);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Greska" });
   }
-);
+});
+
+const getCategories = asyncHandler(async (req, res) => {
+  try {
+    const categories = await Category.find().select("name");
+
+    res.status(200).json({ categories });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Greška" });
+  }
+});
+
+const getSubcategories = asyncHandler(async (req, res) => {
+  try {
+    const categoryName = req.params.category;
+
+    const category = await Category.findOne({ name: categoryName });
+
+    const subcategories = await Subcategory.find({
+      category: category._id,
+    }).select("name");
+
+    res.status(200).json({ subcategories });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Greska" });
+  }
+});
 
 module.exports = {
   loginAdmin,
@@ -187,4 +213,6 @@ module.exports = {
   addProduct,
   getProductByCategory,
   getProductByCategoryAndSubcategory,
+  getSubcategories,
+  getCategories,
 };
