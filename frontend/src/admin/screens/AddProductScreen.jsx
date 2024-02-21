@@ -2,6 +2,10 @@ import { useEffect, useState } from "react";
 
 import "./AddProductScreen.css";
 import { toast } from "react-toastify";
+import SelectInputWithCreate from "../components/CustomSelectInput";
+import EditableSelect from "../components/CustomSelectInput";
+import SearchBar from "../components/CustomSelectInput";
+import CustomSelectInput from "../components/CustomSelectInput";
 
 function AddProductScreen() {
   const [name, setName] = useState("");
@@ -12,6 +16,10 @@ function AddProductScreen() {
   const [isSubcategoryDisabled, setIsSubcategoryDisabled] = useState(true);
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
+
+  useEffect(() => {
+    getCategories();
+  }, []);
 
   const getCategories = async () => {
     try {
@@ -31,10 +39,6 @@ function AddProductScreen() {
     }
   };
 
-  useEffect(() => {
-    getCategories();
-  }, []);
-
   const getSubcategories = async (categoryId) => {
     try {
       const response = await fetch(
@@ -53,17 +57,47 @@ function AddProductScreen() {
     }
   };
 
-  const onChangeCategoryHandler = (event) => {
-    const categoryId = event.target.value;
-    setCategory(categoryId);
-    setIsSubcategoryDisabled(categoryId.trim() === "");
-    getSubcategories(categoryId);
+  const onSelectCategory = (selectedCategory) => {
+    const categoryId = categories.find(
+      (category) => category.name === selectedCategory
+    )?._id;
+
+    if (categoryId) {
+      getSubcategories(categoryId);
+    }
+  };
+
+  const addProductHandler = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch("http://localhost:3000/api/admin/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          name,
+          description,
+          price,
+          category,
+          subcategory,
+        }),
+      });
+
+      const data = await response.json();
+
+      console.log(data);
+    } catch (err) {
+      toast.error(err?.message);
+    }
   };
 
   return (
     <div className="add-product-container">
       <h1 className="add-product-heading">Add Product</h1>
-      <form className="add-product-form">
+      <form className="add-product-form" onSubmit={addProductHandler}>
         <div className="form-group">
           <label htmlFor="name">Name</label>
           <input
@@ -88,7 +122,7 @@ function AddProductScreen() {
         <div className="form-group">
           <label htmlFor="price">Price</label>
           <input
-            type="email"
+            type="text"
             placeholder="Enter price"
             id="price"
             onChange={(e) => setPrice(e.target.value)}
@@ -97,49 +131,21 @@ function AddProductScreen() {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="category">Category</label>
-          <select
-            id="categorySelect"
-            name="category"
-            value={category}
-            onChange={onChangeCategoryHandler}
-            required
-          >
-            <option value="" disabled>
-              Select a category
-            </option>
-            {categories.map((signleCategory) => {
-              return (
-                <option value={signleCategory.name} key={signleCategory._id}>
-                  {signleCategory.name}
-                </option>
-              );
-            })}
-          </select>
+          <CustomSelectInput
+            data={categories}
+            inputName="Category"
+            setSearchValue={setCategory}
+            searchValue={category}
+            onSelectCategory={onSelectCategory}
+          />
         </div>
         <div className="form-group">
-          <label htmlFor="subcategory">Subcategory</label>
-          <select
-            id="subcategorySelect"
-            name="subcategory"
-            value={subcategory}
-            onChange={(e) => setSubcategory(e.target.value)}
-            disabled={isSubcategoryDisabled}
-          >
-            <option value="" disabled>
-              Select a subcategory
-            </option>
-            {subcategories.map((signleSubcategory) => {
-              return (
-                <option
-                  value={signleSubcategory.name}
-                  key={signleSubcategory._id}
-                >
-                  {signleSubcategory.name}
-                </option>
-              );
-            })}
-          </select>
+          <CustomSelectInput
+            data={subcategories}
+            inputName="Subcategory"
+            setSearchValue={setSubcategory}
+            searchValue={subcategory}
+          />
         </div>
         <button type="submit" className="add-button">
           Add
