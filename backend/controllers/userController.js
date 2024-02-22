@@ -152,7 +152,7 @@ const forgotPassword = asyncHandler(async (req, res, next) => {
   const token = await Token.create({
     userId: user._id,
     token: crypto.randomBytes(16).toString("hex"),
-    expiresAt: new Date(new Date().getTime() + 3600 * 1000),
+    expiresAt: new Date(new Date().getTime() + 60 * 1000),
   });
 
   const subject = "Reset your password";
@@ -181,7 +181,7 @@ const checkResetPasswordToken = asyncHandler(async (req, res, next) => {
         .status(400)
         .send({ message: "Reset password token has expired" });
 
-    res.status(200).json({ message: "Token founded" });
+    res.status(200).json({ message: "Token found" });
   } catch (error) {
     res.status(500).send({ message: "Internal Server Error" });
   }

@@ -9,6 +9,8 @@ const {
   getProductByCategoryAndSubcategory,
   getSubcategories,
   getCategories,
+  addCategory,
+  addSubcategory,
 } = require("../controllers/adminController");
 const { adminProtect } = require("../middleware/authMiddleware");
 
@@ -23,10 +25,13 @@ router
   .get(adminProtect, getAdminProfile)
   .put(adminProtect, updateAdminProfile);
 
-router.post("/add", addProduct);
-router.get("/products/:category", getProductByCategory);
+router.post("/add-product", adminProtect, addProduct);
+router.post("/add-category", adminProtect, addCategory);
+router.post("/add-subcategory", adminProtect, addSubcategory);
+router.get("/products/:category", adminProtect, getProductByCategory);
 router.get(
   "/products/:category/:subcategory",
+  adminProtect,
   getProductByCategoryAndSubcategory
 );
 router.get(

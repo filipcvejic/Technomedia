@@ -2,10 +2,8 @@ import { useEffect, useState } from "react";
 
 import "./AddProductScreen.css";
 import { toast } from "react-toastify";
-import SelectInputWithCreate from "../components/CustomSelectInput";
-import EditableSelect from "../components/CustomSelectInput";
-import SearchBar from "../components/CustomSelectInput";
-import CustomSelectInput from "../components/CustomSelectInput";
+import CategorySelectInput from "../components/CategorySelectInput";
+import SubcategorySelectInput from "../components/SubcategorySelectInput";
 
 function AddProductScreen() {
   const [name, setName] = useState("");
@@ -13,7 +11,6 @@ function AddProductScreen() {
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
   const [subcategory, setSubcategory] = useState("");
-  const [isSubcategoryDisabled, setIsSubcategoryDisabled] = useState(true);
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
 
@@ -39,10 +36,26 @@ function AddProductScreen() {
     }
   };
 
-  const getSubcategories = async (categoryId) => {
+  const addProductHandler = async (e) => {
+    e.preventDefault();
+
     try {
       const response = await fetch(
-        `http://localhost:3000/api/admin/categories/${categoryId}/subcategories`
+        "http://localhost:3000/api/admin/add-product",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            name,
+            description,
+            price,
+            category,
+            subcategory,
+          }),
+        }
       );
 
       const data = await response.json();
@@ -51,44 +64,13 @@ function AddProductScreen() {
         throw new Error(data.message);
       }
 
-      setSubcategories(data.subcategories);
-    } catch (err) {
-      toast.error(err?.message);
-    }
-  };
+      setName("");
+      setDescription("");
+      setPrice("");
+      setCategory("");
+      setSubcategory("");
 
-  const onSelectCategory = (selectedCategory) => {
-    const categoryId = categories.find(
-      (category) => category.name === selectedCategory
-    )?._id;
-
-    if (categoryId) {
-      getSubcategories(categoryId);
-    }
-  };
-
-  const addProductHandler = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch("http://localhost:3000/api/admin/add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          name,
-          description,
-          price,
-          category,
-          subcategory,
-        }),
-      });
-
-      const data = await response.json();
-
-      console.log(data);
+      toast.success(data.message);
     } catch (err) {
       toast.error(err?.message);
     }
@@ -131,20 +113,20 @@ function AddProductScreen() {
           />
         </div>
         <div className="form-group">
-          <CustomSelectInput
-            data={categories}
-            inputName="Category"
-            setSearchValue={setCategory}
-            searchValue={category}
-            onSelectCategory={onSelectCategory}
+          <CategorySelectInput
+            categories={categories}
+            setCategory={setCategory}
+            setSubcategory={setSubcategory}
+            category={category}
+            setSubcategories={setSubcategories}
           />
         </div>
         <div className="form-group">
-          <CustomSelectInput
-            data={subcategories}
-            inputName="Subcategory"
-            setSearchValue={setSubcategory}
-            searchValue={subcategory}
+          <SubcategorySelectInput
+            subcategories={subcategories}
+            subcategory={subcategory}
+            setSubcategory={setSubcategory}
+            category={category}
           />
         </div>
         <button type="submit" className="add-button">

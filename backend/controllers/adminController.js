@@ -84,39 +84,27 @@ const addProduct = asyncHandler(async (req, res, next) => {
   try {
     const { name, description, price, category, subcategory } = req.body;
 
-    let categoryID, subcategoryID;
-
-    let foundCategory = await Category.findOne({ name: category });
+    const foundCategory = await Category.findOne({ name: category });
     if (!foundCategory) {
-      foundCategory = new Category({ name: category });
-      await foundCategory.save();
+      res.status(404);
+      throw new Error("Category not found");
     }
-    categoryID = foundCategory._id;
 
-    let foundSubcategory = await Subcategory.findOne({ name: subcategory });
+    const foundSubcategory = await Subcategory.findOne({ name: subcategory });
     if (!foundSubcategory) {
-      foundSubcategory = new Subcategory({
-        name: subcategory,
-        category: categoryID,
-      });
-      await foundSubcategory.save();
-
-      foundCategory.subcategories.push(foundSubcategory._id);
-      await foundCategory.save();
+      res.status(404);
+      throw new Error("Subcategory not found");
     }
-    subcategoryID = foundSubcategory._id;
 
-    const newProduct = new Product({
+    await Product.create({
       name,
       description,
       price,
-      category: categoryID,
-      subcategory: subcategoryID,
+      category: foundCategory._id,
+      subcategory: foundSubcategory._id,
     });
 
-    const savedProduct = await newProduct.save();
-
-    res.status(200).json(savedProduct);
+    res.status(200).json({ message: "Product has created successfuly" });
   } catch (error) {
     res.status(500).json({ message: "Error adding product" });
   }
@@ -190,9 +178,9 @@ const getCategories = asyncHandler(async (req, res) => {
 
 const getSubcategories = asyncHandler(async (req, res) => {
   try {
-    const categoryName = req.params.category;
+    const categoryId = req.params.category;
 
-    const category = await Category.findOne({ name: categoryName });
+    const category = await Category.findById(categoryId);
 
     const subcategories = await Subcategory.find({
       category: category._id,
@@ -202,6 +190,53 @@ const getSubcategories = asyncHandler(async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Greska" });
+  }
+});
+
+const addCategory = asyncHandler(async (req, res) => {
+  try {
+    const categoryName = req.body.category;
+
+    const category = await Category.findOne({ name: categoryName });
+
+    if (!category) {
+      await Category.create({
+        name: categoryName,
+      });
+
+      res.status(200).json({ message: "Category has created successfuly" });
+    } else {
+      res.status(401);
+      throw new Error("This category already exists");
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+const addSubcategory = asyncHandler(async (req, res) => {
+  try {
+    const categoryName = req.body.category;
+    const subcategoryName = req.body.subcategory;
+
+    const category = await Category.findOne({ name: categoryName });
+
+    if (!category) {
+      res.status(404);
+      throw new Error("Category not found");
+    }
+
+    const subcategory = await Subcategory.create({
+      name: subcategoryName,
+      category: category._id,
+    });
+
+    category.subcategories.push(subcategory._id);
+    await category.save();
+
+    res.status(200).json({ message: "Subcategory has created successfuly" });
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
@@ -215,4 +250,6 @@ module.exports = {
   getProductByCategoryAndSubcategory,
   getSubcategories,
   getCategories,
+  addCategory,
+  addSubcategory,
 };

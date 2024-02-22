@@ -3,6 +3,7 @@ import { setCredentials } from "../../slices/userAuthSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout as adminLogout } from "../../slices/adminAuthSlice";
+import { toast } from "react-toastify";
 
 function GoogleLoginSuccess() {
   const dispatch = useDispatch();
@@ -25,7 +26,7 @@ function GoogleLoginSuccess() {
           throw new Error(data.message);
         }
 
-        const { user } = resData;
+        const { user } = data;
         const userInfo = {
           _id: user._id,
           name: user.name,
