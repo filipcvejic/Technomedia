@@ -9,6 +9,7 @@ function AddProductScreen() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
+  const [image, setImage] = useState("");
   const [category, setCategory] = useState("");
   const [subcategory, setSubcategory] = useState("");
   const [categories, setCategories] = useState([]);
@@ -40,21 +41,21 @@ function AddProductScreen() {
     e.preventDefault();
 
     try {
+      const formData = new FormData();
+
+      formData.append("name", name);
+      formData.append("description", description);
+      formData.append("price", price);
+      formData.append("image", image);
+      formData.append("category", category);
+      formData.append("subcategory", subcategory);
+
       const response = await fetch(
         "http://localhost:3000/api/admin/add-product",
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
           credentials: "include",
-          body: JSON.stringify({
-            name,
-            description,
-            price,
-            category,
-            subcategory,
-          }),
+          body: formData,
         }
       );
 
@@ -109,6 +110,16 @@ function AddProductScreen() {
             id="price"
             onChange={(e) => setPrice(e.target.value)}
             value={price}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="image">Image</label>
+          <input
+            type="file"
+            placeholder="Place product image"
+            id="image"
+            onChange={(e) => setImage(e.target.files[0])}
             required
           />
         </div>

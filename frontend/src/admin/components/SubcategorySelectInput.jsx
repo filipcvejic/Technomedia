@@ -1,8 +1,6 @@
 import Creatable from "react-select/creatable";
 import { toast } from "react-toastify";
 
-import "./SelectInput.css";
-
 function SubcategorySelectInput({
   subcategories,
   subcategory,

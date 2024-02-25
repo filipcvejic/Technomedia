@@ -9,33 +9,42 @@ const sendEmail = require("../utils/sendEmail");
 const Product = require("../models/productModel");
 const Category = require("../models/categoryModel");
 const Subcategory = require("../models/subcategoryModel");
+const User = require("../models/userModel");
 
 const loginAdmin = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  const admin = await Admin.findOne({ email });
+    const admin = await Admin.findOne({ email });
 
-  if (admin && (await admin.matchPassword(password))) {
-    res.clearCookie("jwt");
-    generateToken(res, admin._id);
-    res.status(200).json({
-      _id: admin._id,
-      name: admin.name,
-      email: admin.email,
-    });
-  } else {
-    res.status(400);
-    throw new Error("Invalid email or password");
+    if (admin && (await admin.matchPassword(password))) {
+      res.clearCookie("jwt");
+      generateToken(res, admin._id);
+      res.status(200).json({
+        _id: admin._id,
+        name: admin.name,
+        email: admin.email,
+      });
+    } else {
+      res.status(400);
+      throw new Error("Invalid email or password");
+    }
+  } catch (err) {
+    res.status(500).json({ message: "Error logging in user" });
   }
 });
 
 const logoutAdmin = asyncHandler(async (req, res) => {
-  res.cookie("jwt", "", {
-    httpOnly: true,
-    expires: new Date(0),
-  });
+  try {
+    res.cookie("jwt", "", {
+      httpOnly: true,
+      expires: new Date(0),
+    });
 
-  res.status(200).json({ message: "Admin logged out" });
+    res.status(200).json({ message: "Admin logged out" });
+  } catch (error) {
+    res.status(500).json({ message: "Error logging out user" });
+  }
 });
 
 const getAdminProfile = asyncHandler(async (req, res) => {
@@ -80,9 +89,26 @@ const updateAdminProfile = asyncHandler(async (req, res) => {
   }
 });
 
+const deleteUser = asyncHandler(async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+
+    const deletedUser = await User.findByIdAndDelete(userId);
+
+    if (!deletedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ message: `User has been successfully deleted.` });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting user" });
+  }
+});
+
 const addProduct = asyncHandler(async (req, res, next) => {
   try {
     const { name, description, price, category, subcategory } = req.body;
+    const image = req.file.filename;
 
     const foundCategory = await Category.findOne({ name: category });
     if (!foundCategory) {
@@ -100,6 +126,7 @@ const addProduct = asyncHandler(async (req, res, next) => {
       name,
       description,
       price,
+      image,
       category: foundCategory._id,
       subcategory: foundSubcategory._id,
     });
@@ -107,6 +134,18 @@ const addProduct = asyncHandler(async (req, res, next) => {
     res.status(200).json({ message: "Product has created successfuly" });
   } catch (error) {
     res.status(500).json({ message: "Error adding product" });
+  }
+});
+
+const getAllProducts = asyncHandler(async (req, res, next) => {
+  try {
+    const products = await Product.find().select(
+      "name description price image"
+    );
+
+    res.status(200).json({ products });
+  } catch (error) {
+    res.status(500).json({ message: "Error getting products" });
   }
 });
 
@@ -120,13 +159,12 @@ const getProductByCategory = asyncHandler(async (req, res, next) => {
     }
 
     const products = await Product.find({ category: category._id }).select(
-      "name description price"
+      "name description price image"
     );
 
-    res.json(products);
+    res.status(200).json({ products });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Greska" });
+    res.status(500).json({ message: "Error getting products" });
   }
 });
 
@@ -155,13 +193,12 @@ const getProductByCategoryAndSubcategory = asyncHandler(async (req, res) => {
     }
 
     const products = await Product.find(filter).select(
-      "name description price"
+      "name description price image"
     );
 
-    res.json(products);
+    res.status(200).json({ products });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Greska" });
+    res.status(500).json({ message: "Error getting products" });
   }
 });
 
@@ -171,8 +208,7 @@ const getCategories = asyncHandler(async (req, res) => {
 
     res.status(200).json({ categories });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Greška" });
+    res.status(500).json({ message: "Error getting categories" });
   }
 });
 
@@ -188,8 +224,7 @@ const getSubcategories = asyncHandler(async (req, res) => {
 
     res.status(200).json({ subcategories });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Greska" });
+    res.status(500).json({ message: "Error getting subcategories" });
   }
 });
 
@@ -210,7 +245,7 @@ const addCategory = asyncHandler(async (req, res) => {
       throw new Error("This category already exists");
     }
   } catch (error) {
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "Error adding category" });
   }
 });
 
@@ -236,7 +271,7 @@ const addSubcategory = asyncHandler(async (req, res) => {
 
     res.status(200).json({ message: "Subcategory has created successfuly" });
   } catch (error) {
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "Error adding subcategory" });
   }
 });
 
@@ -245,7 +280,9 @@ module.exports = {
   logoutAdmin,
   getAdminProfile,
   updateAdminProfile,
+  deleteUser,
   addProduct,
+  getAllProducts,
   getProductByCategory,
   getProductByCategoryAndSubcategory,
   getSubcategories,
