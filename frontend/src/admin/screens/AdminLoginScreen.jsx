@@ -27,7 +27,7 @@ function AdminLoginScreen() {
 
     try {
       dispatch(setLoading(true));
-      const res = await fetch("http://localhost:3000/api/admin/login", {
+      const response = await fetch("http://localhost:3000/api/admin/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -36,21 +36,21 @@ function AdminLoginScreen() {
         body: JSON.stringify({ email, password }),
       });
 
-      const resData = await res.json();
+      const data = await response.json();
 
-      // if (resData.message === "Not authorized, no token") {
-      //   dispatch(logout());
-      // }
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
 
       if (userInfo) {
         dispatch(userLogout());
       }
 
-      dispatch(setCredentials({ ...resData }));
+      dispatch(setCredentials({ ...data }));
       dispatch(setLoading(false));
       navigate("/admin");
     } catch (err) {
-      toast.error(err?.data?.message || err.error);
+      toast.error(err?.message);
     }
   };
 

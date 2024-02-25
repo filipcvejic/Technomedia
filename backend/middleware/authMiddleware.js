@@ -8,22 +8,24 @@ const protect = asyncHandler(async (req, res, next) => {
 
   token = req.cookies.jwt;
 
-  if (token) {
-    try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-      const user = await User.findById(decoded.id).select("-password");
-
-      req.user = user;
-      next();
-    } catch (error) {
-      res.status(401);
-      throw new Error("Not authorized, token failed");
-    }
-  } else {
-    res.status(401);
-    throw new Error("Not authorized, no token");
+  if (!token) {
+    return res.status(404).json({ message: "Not authorized" });
   }
+
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+  if (!decoded) {
+    return res.status(400).json({ message: "Token failed" });
+  }
+
+  const user = await User.findById(decoded.id).select("-password");
+
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  req.user = user;
+  next();
 });
 
 const adminProtect = asyncHandler(async (req, res, next) => {
@@ -31,27 +33,24 @@ const adminProtect = asyncHandler(async (req, res, next) => {
 
   token = req.cookies.jwt;
 
-  if (token) {
-    try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-      const admin = await Admin.findById(decoded.id).select("-password");
-
-      if (!admin) {
-        res.statusCode = 401;
-        throw new Error("Not authorized");
-      }
-
-      req.admin = admin;
-      next();
-    } catch (error) {
-      res.status(401);
-      throw new Error("Not authorized, token failed");
-    }
-  } else {
-    res.status(401);
-    throw new Error("Not authorized, no token");
+  if (!token) {
+    return res.status(404).json({ message: "Not authorized" });
   }
+
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+  if (!decoded) {
+    return res.status(400).json({ message: "Token failed" });
+  }
+
+  const admin = await Admin.findById(decoded.id).select("-password");
+
+  if (!admin) {
+    return res.status(404).json({ message: "Admin not found" });
+  }
+
+  req.admin = admin;
+  next();
 });
 
 module.exports = { protect, adminProtect };

@@ -10,15 +10,22 @@ const AdminPrivateRoute = () => {
 
   useEffect(() => {
     const checkUser = async () => {
-      const res = await fetch("http://localhost:3000/api/admin/profile");
+      try {
+        const response = await fetch("http://localhost:3000/api/admin/profile");
 
-      const resData = await res.json();
+        const data = await response.json();
 
-      if (!resData.admin) {
-        dispatch(logout());
-        navigate("/admin/login");
-      } else {
-        dispatch(setCredentials({ ...resData.admin }));
+        if (!response.ok) {
+          dispatch(logout());
+          navigate("/admin/login");
+          throw new Error(data.message);
+        }
+
+        dispatch(setCredentials({ ...data.admin }));
+      } catch (err) {
+        console.log(err);
+
+        toast.error(err?.message);
       }
     };
 

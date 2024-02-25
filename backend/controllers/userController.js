@@ -12,22 +12,22 @@ const loginUser = asyncHandler(async (req, res) => {
 
   const user = await User.findOne({ email });
 
-  if (user && (await user.matchPassword(password))) {
-    if (!user.verified) {
-      res.status(400);
-      throw new Error("You have to verify email, please check your mail");
-    }
-    generateToken(res, user._id);
-    res.status(200).json({
-      _id: user._id,
-      name: user.name,
-      surname: user.surname || "",
-      email: user.email,
-    });
-  } else {
-    res.status(400);
-    throw new Error("Invalid email or password");
+  if (!user || !(await user.matchPassword(password))) {
+    return res.status(404).json({ message: "Invalid email or password" });
   }
+
+  if (!user.verified) {
+    return res
+      .status(400)
+      .json({ message: "You have to verify email, please check your mail" });
+  }
+  generateToken(res, user._id);
+  res.status(200).json({
+    _id: user._id,
+    name: user.name,
+    surname: user.surname || "",
+    email: user.email,
+  });
 });
 
 const registerUser = asyncHandler(async (req, res) => {
@@ -36,8 +36,7 @@ const registerUser = asyncHandler(async (req, res) => {
   const userExists = await User.findOne({ email });
 
   if (userExists) {
-    res.status(400);
-    throw new Error("User already exists");
+    res.status(400).json({ message: "User already exists" });
   }
 
   const user = await User.create({
@@ -65,28 +64,28 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 const confirmUserRegistration = asyncHandler(async (req, res) => {
-  try {
-    const user = await User.findOne({ _id: req.params.id });
+  const user = await User.findOne({ _id: req.params.id });
 
-    if (!user) return res.status(400).send({ message: "Invalid link" });
-
-    const token = await Token.findOne({
-      userId: user._id,
-      token: req.params.token,
-    });
-    if (!token) return res.status(400).send({ message: "Invalid link" });
-
-    await User.updateOne({ _id: token.userId }, { verified: true });
-
-    await Token.deleteOne({
-      userId: user._id,
-      token: req.params.token,
-    });
-
-    res.status(200).send({ message: "Email verified successfully" });
-  } catch (error) {
-    res.status(500).send({ message: "Internal Server Error" });
+  if (!user) {
+    return res.status(400).json({ message: "User not found" });
   }
+
+  const token = await Token.findOne({
+    userId: user._id,
+    token: req.params.token,
+  });
+  if (!token) {
+    return res.status(400).json({ message: "Link has expired" });
+  }
+
+  await User.updateOne({ _id: token.userId }, { verified: true });
+
+  await Token.deleteOne({
+    userId: user._id,
+    token: req.params.token,
+  });
+
+  res.status(200).send({ message: "Email verified successfully" });
 });
 
 const logoutUser = asyncHandler(async (req, res) => {
@@ -112,32 +111,30 @@ const getUserProfile = asyncHandler(async (req, res) => {
 const updateUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
 
-  if (user) {
-    user.name = req.body.name || user.name;
-    user.surname = req.body.surname || user.surname;
-    user.email = req.body.email || user.email;
-
-    const matchPassword = await user.matchPassword(req.body.oldPassword);
-
-    if (!matchPassword) {
-      res.status(400);
-      throw new Error("Your old password is incorrect");
-    }
-
-    user.password = req.body.newPassword;
-
-    const updatedUser = await user.save();
-
-    res.status(200).json({
-      _id: updatedUser._id,
-      name: updatedUser.name,
-      surname: updatedUser.surname,
-      email: updatedUser.email,
-    });
-  } else {
-    res.status(404);
-    throw new Error("User not found");
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
   }
+
+  user.name = req.body.name || user.name;
+  user.surname = req.body.surname || user.surname;
+  user.email = req.body.email || user.email;
+
+  const matchPassword = await user.matchPassword(req.body.oldPassword);
+
+  if (!matchPassword) {
+    return res.status(400).json({ message: "Your old password is incorrect" });
+  }
+
+  user.password = req.body.newPassword;
+
+  const updatedUser = await user.save();
+
+  res.status(200).json({
+    _id: updatedUser._id,
+    name: updatedUser.name,
+    surname: updatedUser.surname,
+    email: updatedUser.email,
+  });
 });
 
 const forgotPassword = asyncHandler(async (req, res, next) => {
@@ -145,8 +142,7 @@ const forgotPassword = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({ email });
 
   if (!user) {
-    res.status(400);
-    throw new Error("User does not exist");
+    return res.status(404).json({ message: "User does not exist" });
   }
 
   const token = await Token.create({
@@ -168,56 +164,52 @@ const forgotPassword = asyncHandler(async (req, res, next) => {
 });
 
 const checkResetPasswordToken = asyncHandler(async (req, res, next) => {
-  try {
-    const { id, token } = req.params;
+  const { id, token } = req.params;
 
-    const foundToken = await Token.findOne({
-      userId: id,
-      token,
-    });
+  const foundToken = await Token.findOne({
+    userId: id,
+    token,
+  });
 
-    if (!foundToken)
-      return res
-        .status(400)
-        .send({ message: "Reset password token has expired" });
+  if (!foundToken)
+    return res
+      .status(404)
+      .send({ message: "Reset password token has expired" });
 
-    res.status(200).json({ message: "Token found" });
-  } catch (error) {
-    res.status(500).send({ message: "Internal Server Error" });
-  }
+  res.status(200).json({ message: "Token found" });
 });
 
 const resetPassword = asyncHandler(async (req, res, next) => {
-  try {
-    const { id, token } = req.params;
-    const { password } = req.body;
+  const { id, token } = req.params;
+  const { password } = req.body;
 
-    const foundToken = await Token.findOne({
-      userId: id,
-      token,
-    });
+  const foundToken = await Token.findOne({
+    userId: id,
+    token,
+  });
 
-    if (!foundToken) return res.status(400).send({ message: "Invalid link" });
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await User.findByIdAndUpdate(
-      { _id: id },
-      { password: hashedPassword }
-    );
-
-    if (!user) return res.status(400).send({ message: "Invalid link" });
-
-    await Token.deleteOne({
-      userId: user._id,
-      token: req.params.token,
-    });
-
-    res
-      .status(200)
-      .json({ message: "You have successfully changed the password" });
-  } catch (error) {
-    res.status(500).send({ message: "Internal Server Error" });
+  if (!foundToken) {
+    return res.status(404).send({ message: "Token has expired" });
   }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const user = await User.findByIdAndUpdate(
+    { _id: id },
+    { password: hashedPassword }
+  );
+
+  if (!user) {
+    return res.status(404).send({ message: "User not found" });
+  }
+
+  await Token.deleteOne({
+    userId: user._id,
+    token: req.params.token,
+  });
+
+  res
+    .status(200)
+    .json({ message: "You have successfully changed the password" });
 });
 
 module.exports = {

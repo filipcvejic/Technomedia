@@ -33,7 +33,7 @@ const ProfileScreen = () => {
     } else {
       try {
         dispatch(setLoading(true));
-        const res = await fetch("http://localhost:3000/api/profile", {
+        const response = await fetch("http://localhost:3000/api/profile", {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -47,12 +47,17 @@ const ProfileScreen = () => {
           }),
         });
 
-        const resData = await res.json();
-        dispatch(setCredentials({ ...resData }));
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message);
+        }
+
+        dispatch(setCredentials({ ...data }));
         dispatch(setLoading(false));
         toast.success("Profile updated successfully");
       } catch (err) {
-        toast.error(err?.data?.message || err.error);
+        toast.error(err?.message);
       }
     }
   };
