@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 const bcrypt = require("bcryptjs");
 
-const userSchema = mongoose.Schema(
+const userSchema = new Schema(
   {
     name: {
       type: String,
@@ -18,6 +19,10 @@ const userSchema = mongoose.Schema(
     password: {
       type: String,
       required: true,
+    },
+    cart: {
+      type: Schema.Types.ObjectId,
+      ref: "Cart",
     },
     verified: {
       type: Boolean,
@@ -38,15 +43,6 @@ userSchema.pre("save", async function (next) {
 
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
-};
-
-userSchema.statics.findOrCreate = async function (condition, doc) {
-  const user = await this.findOne(condition);
-  if (user) {
-    return user;
-  } else {
-    return this.create(doc);
-  }
 };
 
 const User = mongoose.model("User", userSchema);

@@ -1,3 +1,5 @@
+// slices/adminAuthSlice.js
+
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -5,9 +7,10 @@ const initialState = {
     ? JSON.parse(localStorage.getItem("adminInfo"))
     : null,
   isLoading: false,
+  error: null,
 };
 
-const adminAuthSlice = createSlice({
+const userAuthSlice = createSlice({
   name: "adminAuth",
   initialState,
   reducers: {
@@ -18,13 +21,21 @@ const adminAuthSlice = createSlice({
     logout: (state, action) => {
       state.adminInfo = null;
       localStorage.removeItem("adminInfo");
+      localStorage.removeItem('cart');
     },
     setLoading: (state, action) => {
       state.isLoading = action.payload;
     },
+    setError: (state, action) => {
+      state.error = action.payload;
+    },
+    clearError: (state) => {
+      state.error = null;
+    },
   },
 });
 
-export const { setCredentials, logout, setLoading } = adminAuthSlice.actions;
+export const { setCredentials, logout, setLoading, setError, clearError } =
+  userAuthSlice.actions;
 
-export default adminAuthSlice.reducer;
+export default userAuthSlice.reducer;

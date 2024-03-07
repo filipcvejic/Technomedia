@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { setCredentials, setLoading } from "../../slices/adminAuthSlice";
-import { logout as userLogout } from "../../slices/userAuthSlice";
+import { setCredentials, setLoading } from "../features/auth/adminAuthSlice";
+import { logout as userLogout } from "../../user/features/auth/userAuthSlice";
 import { toast } from "react-toastify";
 
 function AdminLoginScreen() {

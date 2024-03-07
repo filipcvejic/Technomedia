@@ -1,8 +1,9 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { logout, setCredentials } from "../../slices/adminAuthSlice";
+import { logout, setCredentials } from "../features/auth/adminAuthSlice";
 import { toast } from "react-toastify";
+import { setCart } from "../features/cart/cartSlice";
 
 const AdminPrivateRoute = () => {
   const dispatch = useDispatch();
@@ -22,9 +23,8 @@ const AdminPrivateRoute = () => {
         }
 
         dispatch(setCredentials({ ...data.admin }));
+        dispatch(setCart(data.cart));
       } catch (err) {
-        console.log(err);
-
         toast.error(err?.message);
       }
     };

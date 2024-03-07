@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
-import store from "./store.js";
+import store from "./app/store.js";
 import { Provider } from "react-redux";
 import App from "./user/App.jsx";
 import "./index.css";
@@ -19,14 +19,17 @@ import AdminHomeScreen from "./admin/screens/AdminHomeScreen.jsx";
 import AdminApp from "./admin/AdminApp.jsx";
 import AdminPrivateRoute from "./admin/components/AdminPrivateRoute.jsx";
 import AddProductScreen from "./admin/screens/AddProductScreen.jsx";
+import UniversalRouteWrapper from "./user/components/UniversalRouteWrapper.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <Provider store={store}>
-    <React.StrictMode>
+  <React.StrictMode>
+    <Provider store={store}>
       <Router>
         <Routes>
           <Route path="/" element={<App />}>
-            <Route index={true} element={<HomeScreen />} />
+            <Route path="" element={<UniversalRouteWrapper />}>
+              <Route path="/" element={<HomeScreen />} />
+            </Route>
             <Route path="/login" element={<LoginScreen />} />
             <Route path="/register" element={<RegisterScreen />} />
             <Route path="/forgotpassword" element={<ForgotPasswordScreen />} />
@@ -49,6 +52,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           </Route>
         </Routes>
       </Router>
-    </React.StrictMode>
-  </Provider>
+    </Provider>
+  </React.StrictMode>
 );

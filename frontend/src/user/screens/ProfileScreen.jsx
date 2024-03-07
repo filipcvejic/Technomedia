@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { setCredentials, setLoading } from "../../slices/userAuthSlice";
+import { setCredentials, setLoading } from "../features/auth/userAuthSlice";
 
 import "./ProfileScreen.css";
 

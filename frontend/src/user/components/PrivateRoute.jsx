@@ -1,8 +1,9 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { logout, setCredentials } from "../../slices/userAuthSlice";
+import { logout, setCredentials } from "../features/auth/userAuthSlice";
 import { toast } from "react-toastify";
+import { setCart } from "../features/cart/cartSlice";
 
 const PrivateRoute = () => {
   const dispatch = useDispatch();
@@ -24,6 +25,7 @@ const PrivateRoute = () => {
         navigate("/login");
       } else {
         dispatch(setCredentials({ ...resData.user }));
+        dispatch(setCart({ ...resData.cart }));
       }
     };
 

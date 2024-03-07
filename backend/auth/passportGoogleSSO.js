@@ -1,6 +1,7 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const User = require("../models/userModel");
+const Cart = require("../models/cartModel");
 const bcrypt = require("bcryptjs");
 
 passport.use(
@@ -17,17 +18,22 @@ passport.use(
       const surname = profile.name.familyName;
       const email = profile.emails[0].value;
 
-      const condition = { email };
-      const doc = {
-        name: profile.name.givenName,
-        surname: surname ? surname : "",
-        email: profile.emails[0].value,
-        password,
-        verified: profile.emails[0].verified,
-      };
-
       try {
-        const user = await User.findOrCreate(condition, doc);
+        let user = await User.findOne({ email });
+
+        if (!user) {
+          user = await User.create({
+            name: profile.name.givenName,
+            surname: surname ? surname : "",
+            email: profile.emails[0].value,
+            password,
+            verified: profile.emails[0].verified,
+          });
+
+          const cart = await Cart.create({ user: user._id, products: [] });
+          user.cart = cart._id;
+          await user.save();
+        }
         return done(null, user);
       } catch (err) {
         return done(err, null);

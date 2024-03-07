@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setCredentials, setLoading } from "../../slices/userAuthSlice";
-import { logout as adminLogout } from "../../slices/adminAuthSlice";
+import { setCredentials, setLoading } from "../features/auth/userAuthSlice";
+import { logout as adminLogout } from "../../admin/features/auth/adminAuthSlice";
 import { toast } from "react-toastify";
 
 import "./LoginScreen.css";

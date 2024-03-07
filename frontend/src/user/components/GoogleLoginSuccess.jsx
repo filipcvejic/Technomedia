@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { setCredentials } from "../../slices/userAuthSlice";
+import { setCredentials } from "../features/auth/userAuthSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { logout as adminLogout } from "../../slices/adminAuthSlice";
+import { logout as adminLogout } from "../../admin/features/auth/adminAuthSlice";
 import { toast } from "react-toastify";
 
 function GoogleLoginSuccess() {

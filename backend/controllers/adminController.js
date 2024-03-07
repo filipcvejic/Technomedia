@@ -7,6 +7,7 @@ const Token = require("../models/tokenModel");
 const crypto = require("crypto");
 const sendEmail = require("../utils/sendEmail");
 const Product = require("../models/productModel");
+const Cart = require("../models/cartModel");
 const Category = require("../models/categoryModel");
 const Subcategory = require("../models/subcategoryModel");
 const User = require("../models/userModel");
@@ -45,7 +46,21 @@ const getAdminProfile = asyncHandler(async (req, res) => {
     email: req.admin.email,
   };
 
-  res.status(200).json({ admin });
+  const cart = await Cart.findOne({ admin: req.admin._id }).populate({
+    path: "products.product",
+    select: "-createdAt -updatedAt -__v ",
+    populate: {
+      path: "category subcategory",
+      select: "name",
+    },
+  });
+
+  const adjustedCartData = cart.products.map((item) => ({
+    product: item.product,
+    quantity: item.quantity,
+  }));
+
+  res.status(200).json({ admin, cart: adjustedCartData });
 });
 
 const updateAdminProfile = asyncHandler(async (req, res) => {
@@ -116,7 +131,16 @@ const addProduct = asyncHandler(async (req, res, next) => {
 });
 
 const getAllProducts = asyncHandler(async (req, res, next) => {
-  const products = await Product.find().select("name description price image");
+  const products = await Product.find()
+    .select("-createdAt -updatedAt -__v")
+    .populate({
+      path: "category",
+      select: "name",
+    })
+    .populate({
+      path: "subcategory",
+      select: "name",
+    });
 
   if (!products) {
     return res.status(404).json({ message: "Products not found" });
@@ -240,6 +264,97 @@ const addSubcategory = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "Subcategory has created successfuly" });
 });
 
+const addProductToCart = asyncHandler(async (req, res, next) => {
+  const { product, quantity } = req.body;
+
+  let cart = await Cart.findOne({ admin: req.admin._id });
+
+  if (!cart) {
+    return res.status(404).json({ message: "Cart not found" });
+  }
+
+  const existingProductIndex = cart.products.findIndex(
+    (item) => item.product.toString() === product
+  );
+
+  if (existingProductIndex !== -1) {
+    cart.products[existingProductIndex].quantity += quantity || 1;
+  } else {
+    cart.products.push({ product, quantity: 1 });
+  }
+
+  await cart.save();
+
+  const addedProduct = await Product.findById(product)
+    .select("-createdAt -updatedAt -__v")
+    .populate({
+      path: "category",
+      select: "name",
+    })
+    .populate({
+      path: "subcategory",
+      select: "name",
+    });
+
+  const adjustedProduct = {
+    product: {
+      _id: addedProduct._id,
+      name: addedProduct.name,
+      description: addedProduct.description,
+      price: addedProduct.price,
+      image: addedProduct.image,
+      category: addedProduct.category,
+      subcategory: addedProduct.subcategory,
+    },
+    quantity: quantity || 1,
+  };
+
+  res.status(200).json({ addedProduct: adjustedProduct });
+});
+
+const removeProductFromCart = asyncHandler(async (req, res, next) => {
+  const productId = req.params.productId;
+
+  const cart = await Cart.findOne({ admin: req.admin._id });
+
+  if (!cart) {
+    return res.status(404).json({ message: "Cart not found" });
+  }
+
+  cart.products = cart.products.filter((item) => {
+    console.log(item.product.toString(), productId);
+    return item.product.toString() !== productId;
+  });
+
+  const updatedCart = await cart.save();
+
+  console.log(updatedCart);
+
+  res.status(200).json({ message: "Product removed from cart successfully" });
+});
+
+// const increaseProductQuantity = asyncHandler(async (req, res, next) => {
+//   const { productId, quantity } = req.body;
+
+//   const cart = await Cart.findOne({ admin: req.admin._id });
+
+//   if (!cart) {
+//     return res.status(404).json({ message: "Cart not found" });
+//   }
+
+//   const existingProductIndex = cart.products.findIndex(
+//     (product) => product._id === productId
+//   );
+
+//   if (existingProductIndex !== -1) {
+//     cart.products[existingProductIndex].quantity += quantity;
+//   } else {
+//     cart.products.push({ productId, quantity });
+//   }
+
+//   await cart.save();
+// });
+
 module.exports = {
   loginAdmin,
   logoutAdmin,
@@ -254,4 +369,6 @@ module.exports = {
   getCategories,
   addCategory,
   addSubcategory,
+  addProductToCart,
+  removeProductFromCart,
 };

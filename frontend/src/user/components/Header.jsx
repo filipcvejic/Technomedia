@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import "./Header.css";
 import { toast } from "react-toastify";
-import { logout } from "../../slices/userAuthSlice";
+import { logout } from "../features/auth/userAuthSlice";
 import { useState } from "react";
 
 const Header = () => {

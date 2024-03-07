@@ -4,6 +4,7 @@ const generateToken = require("../utils/generateToken");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const Token = require("../models/tokenModel");
+const Cart = require("../models/cartModel");
 const crypto = require("crypto");
 const sendEmail = require("../utils/sendEmail");
 
@@ -45,6 +46,15 @@ const registerUser = asyncHandler(async (req, res) => {
     email,
     password,
   });
+
+  const cart = await Cart.create({
+    user: user._id,
+    products: [],
+  });
+
+  user.cart = cart._id;
+
+  await user.save();
 
   const token = await Token.create({
     userId: user._id,
@@ -105,7 +115,18 @@ const getUserProfile = asyncHandler(async (req, res) => {
     email: req.user.email,
   };
 
-  res.status(200).json({ user, isVerified: req.user.verified });
+  const cart = await Cart.findOne({ user: req.user._id }).populate({
+    path: "products",
+    select: "-createdAt -updatedAt -__v",
+    populate: {
+      path: "category subcategory",
+      select: "name",
+    },
+  });
+
+  res
+    .status(200)
+    .json({ user, cart: cart.products, isVerified: req.user.verified });
 });
 
 const updateUserProfile = asyncHandler(async (req, res) => {

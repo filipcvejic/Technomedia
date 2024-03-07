@@ -3,9 +3,15 @@ import { toast } from "react-toastify";
 import ProductItem from "../components/ProductItem";
 
 import "./AdminHomeScreen.css";
+import { addToCart } from "../features/cart/cartApi";
+import { useDispatch, useSelector } from "react-redux";
 
 function AdminHomeScreen() {
   const [products, setProducts] = useState([]);
+  const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart);
+
+  console.log(cart);
 
   useEffect(() => {
     try {
@@ -15,8 +21,6 @@ function AdminHomeScreen() {
         );
 
         const data = await response.json();
-
-        console.log(data);
 
         if (!response.ok) {
           throw new Error(data.message);
@@ -31,17 +35,30 @@ function AdminHomeScreen() {
     }
   }, []);
 
+  const deleteHandler = async (e) => {
+    e.preventDefault();
+
+    await fetch(
+      "http://localhost:3000/api/admin/cart/remove-product/65db371e8a0bc30bf331f9a1",
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    );
+  };
+
   return (
-    <div className="products">
-      {products.map((product) => (
-        <ProductItem
-          key={product._id}
-          id={product._id}
-          name={product.name}
-          image={product.image}
-        />
-      ))}
-    </div>
+    <>
+      <button onClick={deleteHandler}>Klik</button>
+      <div className="products">
+        {products.map((product) => (
+          <ProductItem key={product._id} data={product} />
+        ))}
+      </div>
+    </>
   );
 }
 
