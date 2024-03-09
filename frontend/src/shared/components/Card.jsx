@@ -2,8 +2,12 @@ import React from "react";
 
 import "./Card.css";
 
-function Card({ className, children }) {
-  return <div className={`card ${className}`}>{children}</div>;
+function Card({ children }) {
+  return (
+    <div className="product-item">
+      <div className="product-item-info">{children}</div>
+    </div>
+  );
 }
 
 export default Card;

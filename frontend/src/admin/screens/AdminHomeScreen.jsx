@@ -51,14 +51,13 @@ function AdminHomeScreen() {
   };
 
   return (
-    <>
-      <button onClick={deleteHandler}>Klik</button>
+    <div className="homepage">
       <div className="products">
         {products.map((product) => (
           <ProductItem key={product._id} data={product} />
         ))}
       </div>
-    </>
+    </div>
   );
 }
 

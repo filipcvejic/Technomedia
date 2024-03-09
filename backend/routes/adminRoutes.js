@@ -15,6 +15,7 @@ const {
   deleteUser,
   addProductToCart,
   removeProductFromCart,
+  decreaseProductQuantity,
 } = require("../controllers/adminController");
 const { adminProtect } = require("../middleware/authMiddleware");
 
@@ -32,11 +33,16 @@ router
   .put(adminProtect, updateAdminProfile);
 
 router.post("/add-product", adminProtect, upload.single("image"), addProduct);
-router.post("/add-cart", adminProtect, addProductToCart);
+router.post("/cart/add-product", adminProtect, addProductToCart);
 router.delete(
   "/cart/remove-product/:productId",
   adminProtect,
   removeProductFromCart
+);
+router.put(
+  "/cart/decrease-quantity/:productId",
+  adminProtect,
+  decreaseProductQuantity
 );
 router.post("/add-category", adminProtect, addCategory);
 router.delete("/:userId", adminProtect, deleteUser);

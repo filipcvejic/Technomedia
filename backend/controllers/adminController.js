@@ -333,6 +333,35 @@ const removeProductFromCart = asyncHandler(async (req, res, next) => {
   res.status(200).json({ message: "Product removed from cart successfully" });
 });
 
+const decreaseProductQuantity = asyncHandler(async (req, res, next) => {
+  const { productId } = req.params;
+  const { quantity } = req.body;
+
+  const cart = await Cart.findOne({ admin: req.admin._id });
+
+  if (!cart) {
+    return res.status(404).json({ message: "Cart not found" });
+  }
+
+  const productIndex = cart.products.findIndex(
+    (item) => item.product.toString() === productId
+  );
+
+  if (productIndex === -1) {
+    return res.status(404).json({ message: "Product not found in cart" });
+  }
+
+  cart.products[productIndex].quantity -= +quantity || 1;
+
+  if (cart.products[productIndex].quantity <= 0) {
+    cart.products.splice(productIndex, 1);
+  }
+
+  await cart.save();
+
+  res.status(200).json({ message: "Product quantity decreased successfully" });
+});
+
 // const increaseProductQuantity = asyncHandler(async (req, res, next) => {
 //   const { productId, quantity } = req.body;
 
@@ -371,4 +400,5 @@ module.exports = {
   addSubcategory,
   addProductToCart,
   removeProductFromCart,
+  decreaseProductQuantity,
 };
