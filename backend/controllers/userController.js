@@ -7,6 +7,7 @@ const Token = require("../models/tokenModel");
 const Cart = require("../models/cartModel");
 const crypto = require("crypto");
 const sendEmail = require("../utils/sendEmail");
+const Product = require("../models/productModel");
 
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -233,6 +234,154 @@ const resetPassword = asyncHandler(async (req, res, next) => {
     .json({ message: "You have successfully changed the password" });
 });
 
+const getAllProducts = asyncHandler(async (req, res, next) => {
+  const products = await Product.find()
+    .select("-createdAt -updatedAt -__v")
+    .populate({
+      path: "category",
+      select: "name",
+    })
+    .populate({
+      path: "subcategory",
+      select: "name",
+    });
+
+  if (!products) {
+    return res.status(404).json({ message: "Products not found" });
+  }
+
+  res.status(200).json({ products });
+});
+
+const addProductToCart = asyncHandler(async (req, res, next) => {
+  const { product, quantity } = req.body;
+
+  let cart = await Cart.findOne({ user: req.user._id });
+
+  if (!cart) {
+    return res.status(404).json({ message: "Cart not found" });
+  }
+
+  const existingProductIndex = cart.products.findIndex(
+    (item) => item.product.toString() === product
+  );
+
+  if (existingProductIndex !== -1) {
+    cart.products[existingProductIndex].quantity += quantity || 1;
+  } else {
+    cart.products.push({ product, quantity: 1 });
+  }
+
+  await cart.save();
+
+  const addedProduct = await Product.findById(product)
+    .select("-createdAt -updatedAt -__v")
+    .populate({
+      path: "category",
+      select: "name",
+    })
+    .populate({
+      path: "subcategory",
+      select: "name",
+    });
+
+  const adjustedProduct = {
+    product: {
+      _id: addedProduct._id,
+      name: addedProduct.name,
+      description: addedProduct.description,
+      price: addedProduct.price,
+      image: addedProduct.image,
+      category: addedProduct.category,
+      subcategory: addedProduct.subcategory,
+    },
+    quantity: quantity || 1,
+  };
+
+  res.status(200).json({ addedProduct: adjustedProduct });
+});
+
+const syncCartProducts = asyncHandler(async (req, res, next) => {
+  const { cartProducts } = req.body;
+
+  const cart = await Cart.findOne({ user: req.user._id });
+
+  if (!cart) {
+    return res.status(404).json({ message: "Cart not found" });
+  }
+
+  cartProducts.forEach((cartProduct) => {
+    const existingProductIndex = cart.findIndex(
+      (cp) => cp.product.toString() === cartProduct.product
+    );
+
+    if (existingProductIndex !== -1) {
+      cart.products[existingProductIndex].quantity += cartProduct.quantity;
+    } else {
+      cart.products.push({
+        product: cartProduct.product,
+        quantity: cartProduct.quantity,
+      });
+    }
+  });
+
+  await cart.save();
+
+  const updatedCart = await cart.populate("products.product").execPopulate();
+
+  res.status(200).json({ updatedCart });
+});
+
+const removeProductFromCart = asyncHandler(async (req, res, next) => {
+  const productId = req.params.productId;
+
+  const cart = await Cart.findOne({ admin: req.admin._id });
+
+  if (!cart) {
+    return res.status(404).json({ message: "Cart not found" });
+  }
+
+  cart.products = cart.products.filter((item) => {
+    console.log(item.product.toString(), productId);
+    return item.product.toString() !== productId;
+  });
+
+  const updatedCart = await cart.save();
+
+  console.log(updatedCart);
+
+  res.status(200).json({ message: "Product removed from cart successfully" });
+});
+
+const decreaseProductQuantity = asyncHandler(async (req, res, next) => {
+  const { productId } = req.params;
+  const { quantity } = req.body;
+
+  const cart = await Cart.findOne({ admin: req.admin._id });
+
+  if (!cart) {
+    return res.status(404).json({ message: "Cart not found" });
+  }
+
+  const productIndex = cart.products.findIndex(
+    (item) => item.product.toString() === productId
+  );
+
+  if (productIndex === -1) {
+    return res.status(404).json({ message: "Product not found in cart" });
+  }
+
+  cart.products[productIndex].quantity -= +quantity || 1;
+
+  if (cart.products[productIndex].quantity <= 0) {
+    cart.products.splice(productIndex, 1);
+  }
+
+  await cart.save();
+
+  res.status(200).json({ message: "Product quantity decreased successfully" });
+});
+
 module.exports = {
   loginUser,
   registerUser,
@@ -243,4 +392,9 @@ module.exports = {
   resetPassword,
   confirmUserRegistration,
   checkResetPasswordToken,
+  getAllProducts,
+  addProductToCart,
+  removeProductFromCart,
+  decreaseProductQuantity,
+  syncCartProducts,
 };

@@ -35,8 +35,6 @@ const AdminHeader = () => {
     }
   };
 
-  console.log(cart);
-
   return (
     <>
       <header className="header">

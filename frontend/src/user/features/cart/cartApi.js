@@ -18,8 +18,6 @@ export const addToCart = createAsyncThunk(
 
       const data = await response.json();
 
-      console.log(data.addedProduct);
-
       return data.addedProduct;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -74,6 +72,31 @@ export const decreaseProductQuantity = createAsyncThunk(
       }
 
       return { productId, quantity: quantity || 1 };
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const syncCartProducts = createAsyncThunk(
+  "cart/syncCartProducts",
+  async ({ cartItems }, { rejectWithValue }) => {
+    try {
+      const response = await fetch(
+        "http://localhost:3000/api/cart/sync-products",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(cartItems),
+        }
+      );
+
+      const data = await response.json();
+
+      return data.updatedCart;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }

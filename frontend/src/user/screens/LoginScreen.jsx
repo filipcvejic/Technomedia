@@ -6,6 +6,7 @@ import { logout as adminLogout } from "../../admin/features/auth/adminAuthSlice"
 import { toast } from "react-toastify";
 
 import "./LoginScreen.css";
+import { syncCartProducts } from "../features/cart/cartApi";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
@@ -15,8 +16,8 @@ const LoginScreen = () => {
   const dispatch = useDispatch();
 
   const { userInfo } = useSelector((state) => state.userAuth);
+  const { cart } = useSelector((state) => state.userCart);
   const { adminInfo } = useSelector((state) => state.adminAuth);
-  const { isLoading } = useSelector((state) => state.userAuth);
 
   useEffect(() => {
     if (userInfo) {
@@ -47,6 +48,10 @@ const LoginScreen = () => {
 
       if (!response.ok) {
         throw new Error(data.message);
+      }
+
+      if (cart && Object.keys(cart).length > 0) {
+        dispatch(syncCartProducts(cart));
       }
 
       if (adminInfo) {

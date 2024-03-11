@@ -15,7 +15,7 @@ function UniversalRouteWrapper() {
 
       if (resData.user) {
         dispatch(setCredentials({ ...resData.user }));
-        dispatch(setCart({ ...resData.cart }));
+        dispatch(setCart(resData.cart));
       } else {
         dispatch(logout());
       }

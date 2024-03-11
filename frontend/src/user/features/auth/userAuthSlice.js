@@ -19,7 +19,6 @@ const userAuthSlice = createSlice({
     logout: (state, action) => {
       state.userInfo = null;
       localStorage.removeItem("userInfo");
-      localStorage.removeItem("cart");
     },
     setLoading: (state, action) => {
       state.isLoading = action.payload;
