@@ -117,17 +117,22 @@ const getUserProfile = asyncHandler(async (req, res) => {
   };
 
   const cart = await Cart.findOne({ user: req.user._id }).populate({
-    path: "products",
-    select: "-createdAt -updatedAt -__v",
+    path: "products.product",
+    select: "-createdAt -updatedAt -__v ",
     populate: {
       path: "category subcategory",
       select: "name",
     },
   });
 
+  const adjustedCartData = cart.products.map((item) => ({
+    product: item.product,
+    quantity: item.quantity,
+  }));
+
   res
     .status(200)
-    .json({ user, cart: cart.products, isVerified: req.user.verified });
+    .json({ user, cart: adjustedCartData, isVerified: req.user.verified });
 });
 
 const updateUserProfile = asyncHandler(async (req, res) => {
@@ -304,19 +309,21 @@ const addProductToCart = asyncHandler(async (req, res, next) => {
 const syncCartProducts = asyncHandler(async (req, res, next) => {
   const { cartProducts } = req.body;
 
+  console.log(cartProducts);
+
   const cart = await Cart.findOne({ user: req.user._id });
 
   if (!cart) {
     return res.status(404).json({ message: "Cart not found" });
   }
 
-  cartProducts.forEach((cartProduct) => {
-    const existingProductIndex = cart.findIndex(
+  cartProducts.forEach(async (cartProduct) => {
+    const existingProduct = cart.products.find(
       (cp) => cp.product.toString() === cartProduct.product
     );
 
-    if (existingProductIndex !== -1) {
-      cart.products[existingProductIndex].quantity += cartProduct.quantity;
+    if (existingProduct) {
+      existingProduct.quantity += cartProduct.quantity;
     } else {
       cart.products.push({
         product: cartProduct.product,
@@ -327,7 +334,7 @@ const syncCartProducts = asyncHandler(async (req, res, next) => {
 
   await cart.save();
 
-  const updatedCart = await cart.populate("products.product").execPopulate();
+  const updatedCart = await cart.populate("products.product");
 
   res.status(200).json({ updatedCart });
 });
@@ -342,7 +349,6 @@ const removeProductFromCart = asyncHandler(async (req, res, next) => {
   }
 
   cart.products = cart.products.filter((item) => {
-    console.log(item.product.toString(), productId);
     return item.product.toString() !== productId;
   });
 

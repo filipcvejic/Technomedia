@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setCredentials, setLoading } from "../features/auth/userAuthSlice";
+import { syncCartProducts } from "../features/cart/cartApi";
 import { logout as adminLogout } from "../../admin/features/auth/adminAuthSlice";
 import { toast } from "react-toastify";
 
 import "./LoginScreen.css";
-import { syncCartProducts } from "../features/cart/cartApi";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
@@ -50,8 +50,10 @@ const LoginScreen = () => {
         throw new Error(data.message);
       }
 
+      console.log(cart);
+
       if (cart && Object.keys(cart).length > 0) {
-        dispatch(syncCartProducts(cart));
+        dispatch(syncCartProducts({ cartProducts: cart }));
       }
 
       if (adminInfo) {

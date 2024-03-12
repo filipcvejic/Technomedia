@@ -3,6 +3,7 @@ import "./Header.css";
 import { toast } from "react-toastify";
 import { logout } from "../features/auth/userAuthSlice";
 import { useState } from "react";
+import { clearGuestCart } from "../features/cart/cartSlice";
 
 const Header = () => {
   const { userInfo } = useSelector((state) => state.userAuth);
@@ -31,6 +32,7 @@ const Header = () => {
       }
 
       dispatch(logout());
+      dispatch(clearGuestCart());
     } catch (err) {
       toast.error(err?.message);
     }

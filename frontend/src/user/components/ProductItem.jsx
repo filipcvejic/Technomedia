@@ -33,13 +33,15 @@ function ProductItem({ data }) {
     } else {
       dispatch(
         addToCartForGuest({
-          product: data._id,
-          name: data.name,
-          description: data.description,
-          price: data.price,
-          image: data.image,
-          category: data.category._id,
-          subcategory: data.subcategory._id,
+          product: {
+            _id: data._id,
+            name: data.name,
+            description: data.description,
+            price: data.price,
+            image: data.image,
+            category: data.category,
+            subcategory: data.subcategory,
+          },
         })
       );
     }

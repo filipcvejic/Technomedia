@@ -43,6 +43,6 @@ router.put(
   decreaseProductQuantity
 );
 
-router.post("/cart/sync-products", syncCartProducts);
+router.post("/cart/sync-products", protect, syncCartProducts);
 
 module.exports = router;

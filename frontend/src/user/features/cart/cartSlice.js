@@ -1,10 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {
-  addToCart,
-  removeFromCart,
-  decreaseProductQuantity,
-  syncCartProducts,
-} from "./cartApi";
+import { addToCart, removeFromCart, decreaseProductQuantity } from "./cartApi";
 
 const initialState = {
   cart: localStorage.getItem("cart")
@@ -23,51 +18,85 @@ const cartSlice = createSlice({
       localStorage.setItem("cart", JSON.stringify(action.payload));
     },
     addToCartForGuest: (state, action) => {
-      state.cart.push(action.payload);
+      const { product } = action.payload;
+
+      const productIndex = state.cart.findIndex(
+        (item) => item.product._id === product._id
+      );
+
+      if (productIndex !== -1) {
+        state.cart[productIndex].quantity += 1;
+      } else {
+        state.cart.push({ product: { ...product }, quantity: 1 });
+      }
       localStorage.setItem("cart", JSON.stringify(state.cart));
+    },
+    clearGuestCart: (state, action) => {
+      state.cart = [];
+      localStorage.removeItem("cart");
     },
   },
   extraReducers: (builder) => {
     builder
+      .addCase(addToCart.pending, (state) => {
+        state.status = "loading";
+      })
       .addCase(addToCart.fulfilled, (state, action) => {
-        state.cart.push(action.payload);
-        localStorage.setItem("cart", JSON.stringify(state.cart));
-      })
-      .addCase(removeFromCart.fulfilled, (state, action) => {
-        state.cart = state.cart.filter(
-          (item) => item._id !== action.payload.productId
-        );
-        localStorage.setItem("cart", JSON.stringify(state.cart));
-      })
-      .addCase(decreaseProductQuantity.fulfilled, (state, action) => {
-        const index = state.cart.findIndex(
-          (item) => item._id === action.payload.productId
-        );
-        if (index !== -1) {
-          state.cart[index].quantity -= action.payload.quantity;
-          if (state.cart[index].quantity <= 0) {
-            state.cart.splice(index, 1);
-          }
-        }
+        state.status = "idle";
+        const { product, quantity } = action.payload;
 
-        localStorage.setItem("cart", JSON.stringify(state.cart));
-      })
-      .addCase(syncCartProducts.fulfilled, (state, action) => {
-        state.cart = action.payload;
+        const productIndex = state.cart.findIndex(
+          (item) => item.product._id === product._id
+        );
+
+        if (productIndex !== -1) {
+          state.cart[productIndex].quantity += quantity || 1;
+        } else {
+          state.cart.push({ product, quantity });
+        }
         localStorage.setItem("cart", JSON.stringify(state.cart));
       })
       .addCase(addToCart.rejected, (state, action) => {
+        state.status = "idle";
         state.error = action.payload;
+      })
+      .addCase(removeFromCart.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(removeFromCart.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.cart = state.cart.filter(
+          (item) => item.product._id !== action.payload
+        );
+        localStorage.setItem("cart", JSON.stringify(state.cart));
       })
       .addCase(removeFromCart.rejected, (state, action) => {
+        state.status = "idle";
         state.error = action.payload;
       })
-      .addCase(decreaseProductQuantity.rejected, (state, action) => {
-        state.error = action.payload;
+      .addCase(decreaseProductQuantity.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(decreaseProductQuantity.fulfilled, (state, action) => {
+        state.status = "idle";
+        const { productId, quantity } = action.payload;
+        const productIndex = state.cart.findIndex(
+          (item) => item.product._id === productId
+        );
+        if (productIndex !== -1) {
+          state.cart[productIndex].quantity -= +quantity || 1;
+          if (state.cart[productIndex].quantity <= 0) {
+            state.cart.splice(productIndex, 1);
+          }
+          localStorage.setItem("cart", JSON.stringify(state.cart));
+        }
+      })
+      .addCase(decreaseProductQuantity.rejected, (state) => {
+        state.status = "idle";
       });
   },
 });
 
-export const { setCart, addToCartForGuest } = cartSlice.actions;
+export const { setCart, addToCartForGuest, clearGuestCart } = cartSlice.actions;
 
 export default cartSlice.reducer;

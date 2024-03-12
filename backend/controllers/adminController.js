@@ -326,9 +326,7 @@ const removeProductFromCart = asyncHandler(async (req, res, next) => {
     return item.product.toString() !== productId;
   });
 
-  const updatedCart = await cart.save();
-
-  console.log(updatedCart);
+  await cart.save();
 
   res.status(200).json({ message: "Product removed from cart successfully" });
 });
