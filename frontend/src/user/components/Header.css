@@ -1,27 +1,43 @@
+.header {
+  background-color: #3498db;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  z-index: 10;
+  top: 0;
+}
+
+.main-header {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .home-link {
   text-decoration: none;
   color: white;
   font-size: 24px;
 }
 
-.header {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  background-color: #3498db;
-  color: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.main-link {
+.logo {
   text-decoration: none;
   color: white;
   font-size: 24px;
 }
 
-.search-container {
+.category-menu {
   display: flex;
-  width: 500px;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.search-form {
+  display: flex;
+  width: 35rem;
   margin: 20px 30px;
 }
 
@@ -45,8 +61,20 @@
 
 .header-links {
   display: flex;
+  align-items: center;
+  justify-content: center;
   gap: 25px;
   margin-left: 50px;
+}
+
+.header-links div {
+  height: 40px;
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .user-menu,
@@ -55,7 +83,6 @@
   border-radius: 20px;
   position: relative;
   font-size: 18px;
-  color: #333;
 }
 
 .user-menu:hover .bi-person-icon,

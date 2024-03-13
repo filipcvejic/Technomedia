@@ -198,7 +198,10 @@ const getProductByCategoryAndSubcategory = asyncHandler(async (req, res) => {
 });
 
 const getCategories = asyncHandler(async (req, res) => {
-  const categories = await Category.find().select("name");
+  const categories = await Category.find().select("name").populate({
+    path: "subcategories",
+    select: "name",
+  });
 
   if (!categories) {
     return res.status(404).json({ message: "Categories not found" });

@@ -258,6 +258,19 @@ const getAllProducts = asyncHandler(async (req, res, next) => {
   res.status(200).json({ products });
 });
 
+const getCategories = asyncHandler(async (req, res) => {
+  const categories = await Category.find().select("name").populate({
+    path: "subcategories",
+    select: "name",
+  });
+
+  if (!categories) {
+    return res.status(404).json({ message: "Categories not found" });
+  }
+
+  res.status(200).json({ categories });
+});
+
 const addProductToCart = asyncHandler(async (req, res, next) => {
   const { product, quantity } = req.body;
 
@@ -403,4 +416,5 @@ module.exports = {
   removeProductFromCart,
   decreaseProductQuantity,
   syncCartProducts,
+  getCategories,
 };
