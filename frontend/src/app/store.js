@@ -11,6 +11,7 @@ const store = configureStore({
     userAuth: userAuthReducer,
     userCart: userCartReducer,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
   devTools: true,
 });
 
