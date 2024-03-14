@@ -32,45 +32,45 @@ const LoginScreen = () => {
   const loginHandler = async (e) => {
     e.preventDefault();
 
-    try {
-      dispatch(setLoading(true));
+    if (email !== "" && password !== "") {
+      try {
+        dispatch(setLoading(true));
 
-      const response = await fetch("http://localhost:3000/api/auth", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ email, password }),
-      });
+        const response = await fetch("http://localhost:3000/api/auth", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ email, password }),
+        });
 
-      const data = await response.json();
+        const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.message);
+        if (!response.ok) {
+          throw new Error(data.message);
+        }
+
+        if (cart && Object.keys(cart).length > 0) {
+          dispatch(syncCartProducts({ cartProducts: cart }));
+        }
+
+        if (adminInfo) {
+          dispatch(adminLogout());
+        }
+
+        dispatch(setCredentials({ ...data }));
+        dispatch(setLoading(false));
+        navigate("/");
+      } catch (err) {
+        toast.error(err?.message);
       }
-
-      console.log(cart);
-
-      if (cart && Object.keys(cart).length > 0) {
-        dispatch(syncCartProducts({ cartProducts: cart }));
-      }
-
-      if (adminInfo) {
-        dispatch(adminLogout());
-      }
-
-      dispatch(setCredentials({ ...data }));
-      dispatch(setLoading(false));
-      navigate("/");
-    } catch (err) {
-      toast.error(err?.message);
     }
   };
 
   return (
     <div className="login-container">
-      <div className="login-section">
+      <section className="login-section">
         <h1 className="login-heading">Login</h1>
         <form className="login-form" onSubmit={loginHandler}>
           <div className="form-group">
@@ -151,7 +151,7 @@ const LoginScreen = () => {
             </p>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 };
