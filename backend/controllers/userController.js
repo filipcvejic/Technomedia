@@ -146,13 +146,17 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   user.surname = req.body.surname || user.surname;
   user.email = req.body.email || user.email;
 
-  const matchPassword = await user.matchPassword(req.body.oldPassword);
+  if (req.body.oldPassword && req.body.newPassword) {
+    const matchPassword = await user.matchPassword(req.body.oldPassword);
 
-  if (!matchPassword) {
-    return res.status(400).json({ message: "Your old password is incorrect" });
+    if (!matchPassword) {
+      return res
+        .status(400)
+        .json({ message: "Your old password is incorrect" });
+    }
+
+    user.password = req.body.newPassword;
   }
-
-  user.password = req.body.newPassword;
 
   const updatedUser = await user.save();
 

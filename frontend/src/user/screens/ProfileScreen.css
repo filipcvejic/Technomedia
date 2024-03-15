@@ -1,38 +1,59 @@
 .update-container {
   max-width: 500px;
-  margin: 100px auto;
-  padding: 20px;
+  margin: 50px auto;
   background-color: #fff;
-  border-radius: 8px;
+  border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.update-form .form-group {
-  margin-bottom: 20px;
+.update-section {
+  margin-inline: 15px;
+  padding: 40px;
+}
+
+.update-description {
+  margin-top: 5px;
+  font-style: italic;
+  font-weight: 300;
+}
+
+.update-section .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
 }
 
 .update-form .form-group label {
-  font-weight: bold;
-  display: block;
   margin-bottom: 10px;
 }
 
 .update-form .form-group input {
-  height: 25px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  background-color: rgb(250, 250, 250);
+  height: 30px;
+  border: 1px solid rgb(131, 130, 130);
+  border-radius: 8px;
+  padding-left: 10px;
 }
 
-.update-form .update-button {
+.update-form .form-group:nth-child(1) label::after,
+.update-form .form-group:nth-child(3) label::after {
+  color: #b50938;
+  content: "*";
+  font-size: 13px;
+  margin: 0 0 0 3px;
+}
+
+.update-form .submit-button {
   display: block;
+  background-color: #007bff;
   width: 100%;
   padding: 10px;
-  margin-bottom: 10px;
+  margin-top: 25px;
   color: #fff;
-  background-color: #007bff;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
+  font-size: 18px;
 }
 
 .update-form .update-button:hover {

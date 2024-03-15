@@ -28,36 +28,39 @@ const ProfileScreen = () => {
 
   const updateProfileHandler = async (e) => {
     e.preventDefault();
-    if (newPassword !== confirmPassword) {
-      toast.error("Passwords do not match");
-    } else {
-      try {
-        dispatch(setLoading(true));
-        const response = await fetch("http://localhost:3000/api/profile", {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({
-            name,
-            email,
-            oldPassword,
-            newPassword,
-          }),
-        });
 
-        const data = await response.json();
+    if (email !== "" && name !== "") {
+      if (newPassword !== confirmPassword) {
+        toast.error("Passwords do not match");
+      } else {
+        try {
+          dispatch(setLoading(true));
+          const response = await fetch("http://localhost:3000/api/profile", {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify({
+              name,
+              email,
+              oldPassword,
+              newPassword,
+            }),
+          });
 
-        if (!response.ok) {
-          throw new Error(data.message);
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.message);
+          }
+
+          dispatch(setCredentials({ ...data }));
+          dispatch(setLoading(false));
+          toast.success("Profile updated successfully");
+        } catch (err) {
+          toast.error(err?.message);
         }
-
-        dispatch(setCredentials({ ...data }));
-        dispatch(setLoading(false));
-        toast.success("Profile updated successfully");
-      } catch (err) {
-        toast.error(err?.message);
       }
     }
   };
@@ -67,84 +70,83 @@ const ProfileScreen = () => {
       {userInfo && (
         <>
           <div className="update-container">
-            <h1 className="update-heading">Update Profile</h1>
-            <form className="update-form" onSubmit={updateProfileHandler}>
-              <div className="form-group">
-                <label htmlFor="name">Name</label>
-                <input
-                  type="text"
-                  placeholder="Enter name"
-                  id="name"
-                  onChange={(e) => setName(e.target.value)}
-                  value={name}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="surname">Surname</label>
-                <input
-                  type="text"
-                  placeholder="Enter surname"
-                  id="surname"
-                  onChange={(e) => setSurname(e.target.value)}
-                  value={surname}
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="email">Email Address</label>
-                <input
-                  type="email"
-                  placeholder="Enter email"
-                  id="email"
-                  onChange={(e) => setEmail(e.target.value)}
-                  value={email}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="password">Old Password</label>
-                <input
-                  type="password"
-                  placeholder="Enter old password"
-                  id="new password"
-                  onChange={(e) => setOldPassword(e.target.value)}
-                  value={oldPassword}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <input
-                  type="password"
-                  placeholder="Enter new password"
-                  id="password"
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  value={newPassword}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="confirmPassword">Confirm Password</label>
-                <input
-                  type="password"
-                  placeholder="Confirm new password"
-                  id="confirmPassword"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
-                />
-              </div>
+            <section className="update-section">
+              <h1 className="update-heading">Update Profile</h1>
+              <form className="update-form" onSubmit={updateProfileHandler}>
+                <div className="form-group">
+                  <label htmlFor="name">Name</label>
+                  <input
+                    type="text"
+                    placeholder="Enter name"
+                    id="name"
+                    onChange={(e) => setName(e.target.value)}
+                    value={name}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="surname">Surname</label>
+                  <input
+                    type="text"
+                    placeholder="Enter surname"
+                    id="surname"
+                    onChange={(e) => setSurname(e.target.value)}
+                    value={surname}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="email">Email Address</label>
+                  <input
+                    type="email"
+                    placeholder="Enter email"
+                    id="email"
+                    onChange={(e) => setEmail(e.target.value)}
+                    value={email}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="password">Old Password</label>
+                  <input
+                    type="password"
+                    placeholder="Enter old password"
+                    id="new password"
+                    onChange={(e) => setOldPassword(e.target.value)}
+                    value={oldPassword}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="password">Password</label>
+                  <input
+                    type="password"
+                    placeholder="Enter new password"
+                    id="password"
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    value={newPassword}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="confirmPassword">Confirm Password</label>
+                  <input
+                    type="password"
+                    placeholder="Confirm new password"
+                    id="confirmPassword"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                  />
+                </div>
 
-              <button type="submit" className="update-button">
-                Update
-              </button>
-            </form>
+                <button type="submit" className="submit-button">
+                  Update
+                </button>
+              </form>
 
-            {isLoading && (
-              <div className="loader-wrapper">
-                <span className="spinner"></span>
-              </div>
-            )}
+              {isLoading && (
+                <div className="loader-wrapper">
+                  <span className="spinner"></span>
+                </div>
+              )}
+            </section>
           </div>
         </>
       )}
