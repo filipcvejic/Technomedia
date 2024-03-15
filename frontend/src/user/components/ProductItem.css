@@ -45,12 +45,16 @@
 
 .product-item-actions .cart-action .cart-button {
   cursor: pointer;
-  background-color: #ffcb05;
+  background-color: #f39c12;
   border-radius: 8px;
-  border: 1px solid #ffcb05;
+  border: 1px solid #f39c12;
   width: 45px;
   height: 45px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.cart-action .cart-button:hover {
+  background-color: #e68a00;
 }

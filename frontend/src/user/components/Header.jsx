@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { logout } from "../features/auth/userAuthSlice";
 import { useState } from "react";
 import { clearGuestCart } from "../features/cart/cartSlice";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const { userInfo } = useSelector((state) => state.userAuth);
@@ -84,7 +85,7 @@ const Header = () => {
           </div>
           <div className="header-links">
             <div
-              className="user-menu"
+              className="user-actions"
               onMouseEnter={() => setIsExpanded(true)}
               onMouseLeave={() => setIsExpanded(false)}
             >
@@ -102,38 +103,9 @@ const Header = () => {
                   d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"
                 />
               </svg>
-              <span>Sign in</span>
-              {isExpanded && (
-                <div className="user-dropdown-menu">
-                  <ul>
-                    <li>
-                      <a href="/profile">My user account</a>
-                    </li>
-                    <li>
-                      <a href="/cart">My cart</a>
-                    </li>
-                    {userInfo ? (
-                      <li>
-                        <button
-                          className="logout-button"
-                          onClick={logoutHandler}
-                        >
-                          <span>Logout</span>
-                        </button>
-                      </li>
-                    ) : (
-                      <>
-                        <li>
-                          <a href="/register">Create a user account</a>
-                        </li>
-                        <li>
-                          <a href="/login">Login</a>
-                        </li>
-                      </>
-                    )}
-                  </ul>
-                </div>
-              )}
+              <span>
+                <Link to="/login">Sign in</Link>
+              </span>
             </div>
             <div className="favourite-items">
               <svg

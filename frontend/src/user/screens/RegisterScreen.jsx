@@ -167,7 +167,7 @@ const RegisterScreen = () => {
         </form>
         <div className="actions-toolbar">
           <div className="addition-actions">
-            <p className="register-suggest">
+            <p className="login-suggest">
               Already have an account? <Link to="/login">Sign in</Link>
             </p>
             <span className="or-option">or</span>

@@ -8,14 +8,14 @@ import Footer from "./components/Footer";
 
 function App() {
   return (
-    <>
+    <div>
       <Header />
       <ToastContainer />
       <div>
         <Outlet />
       </div>
       <Footer />
-    </>
+    </div>
   );
 }
 
