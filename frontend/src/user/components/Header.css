@@ -83,7 +83,8 @@
 }
 
 .user-actions,
-.shopping-cart {
+.shopping-cart,
+.favourite-items {
   cursor: pointer;
   border-radius: 20px;
   position: relative;
@@ -91,8 +92,13 @@
 }
 
 .user-actions:hover .bi-person-icon,
-.shopping-cart:hover .bi-cart-icon {
-  fill: red;
+.shopping-cart:hover .bi-cart-icon,
+.favourite-items:hover .bi-favourite-icon {
+  fill: #f39c12;
+}
+
+.user-actions:hover a {
+  color: #f39c12;
 }
 
 .cart-counter {

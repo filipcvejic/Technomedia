@@ -113,15 +113,11 @@ const Header = () => {
                 width="35"
                 viewBox="0 0 24 21"
                 xmlns="http://www.w3.org/2000/svg"
-                className="secondary_wishListIcon__3C6V1"
-                focusable="false"
-                role="img"
-                aria-labelledby="icon_:Rnnbal6:"
-                aria-hidden="false"
+                className="bi bi-favourite-icon"
+                fill="white"
               >
                 <path
                   d="M12 20.75a.72.72 0 0 1-.42-.13c-.32-.21-7.79-5.27-10.24-9.76C-.12 8.18-.45 4.4 2.09 2a6.48 6.48 0 0 1 8.82 0L12 3l1.08-1a6.48 6.48 0 0 1 8.82 0c2.54 2.41 2.21 6.19.75 8.87-2.45 4.49-9.9 9.55-10.22 9.76a.72.72 0 0 1-.43.12zm-5.5-19a4.89 4.89 0 0 0-3.37 1.32c-2 1.87-1.66 4.9-.47 7.07 2 3.59 7.73 7.82 9.34 9 1.6-1.14 7.36-5.36 9.32-8.95 1.28-2.34 1.54-5.68-1-7.49a5.07 5.07 0 0 0-6.32.52l-.88.84 1.45 1.4-.35.36a1 1 0 0 1-1.41 0L9.87 3.07A4.89 4.89 0 0 0 6.5 1.75z"
-                  fill="currentColor"
                   fillRule="evenodd"
                 ></path>
               </svg>
