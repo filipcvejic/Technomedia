@@ -18,8 +18,6 @@ export const addToCart = createAsyncThunk(
 
       const data = await response.json();
 
-      console.log(data.addedProduct);
-
       return data.addedProduct;
     } catch (error) {
       return rejectWithValue(error.response.data);
