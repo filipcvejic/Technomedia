@@ -8,7 +8,7 @@
 }
 
 .main-header {
-  max-width: 1400px;
+  max-width: 1380px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
@@ -37,7 +37,7 @@
 
 .search-form {
   display: flex;
-  width: 35rem;
+  width: 41.875rem;
   margin: 20px 30px;
 }
 
@@ -45,9 +45,10 @@
   background-color: #fff;
   flex: 1;
   padding: 10px;
+  height: 45px;
   border: none;
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
+  border-top-left-radius: 25px;
+  border-bottom-left-radius: 25px;
   box-sizing: border-box;
 }
 
@@ -56,8 +57,8 @@
   align-items: center;
   background-color: #fff;
   border: none;
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
+  border-top-right-radius: 25px;
+  border-bottom-right-radius: 25px;
   color: #fff;
   cursor: pointer;
   padding: 0 15px;
@@ -69,10 +70,6 @@
   justify-content: center;
   gap: 25px;
   margin-left: 50px;
-}
-
-.header-links div {
-  height: 40px;
 }
 
 .user-actions {
