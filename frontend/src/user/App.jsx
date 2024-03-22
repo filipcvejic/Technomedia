@@ -4,11 +4,16 @@ import "react-toastify/dist/ReactToastify.css";
 import { Outlet } from "react-router-dom";
 
 import Footer from "./components/Footer";
+import Subheader from "./components/Subheader";
+import "./App.css";
 
 function App() {
   return (
     <div>
-      <Header />
+      <div className="headers">
+        <Header />
+        <Subheader />
+      </div>
       <ToastContainer />
       <div>
         <Outlet />

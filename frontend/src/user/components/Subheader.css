@@ -1,0 +1,38 @@
+.subheader {
+  background-color: #fff1e7;
+  width: 100%;
+}
+
+.wrapperr {
+  max-width: 1380px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.productss button {
+  background-color: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.nav-menu {
+  display: flex;
+  flex-direction: row;
+  gap: 35px;
+}
+
+.nav-menu li {
+  list-style: none;
+}
+
+.nav-menu li a {
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 18px;
+}
