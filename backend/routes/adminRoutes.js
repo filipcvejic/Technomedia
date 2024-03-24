@@ -16,6 +16,8 @@ const {
   addProductToCart,
   removeProductFromCart,
   decreaseProductQuantity,
+  addBrand,
+  getBrands,
 } = require("../controllers/adminController");
 const { adminProtect } = require("../middleware/authMiddleware");
 
@@ -25,8 +27,6 @@ const upload = require("../middleware/uploadMiddleware");
 
 router.post("/login", loginAdmin);
 router.post("/logout", logoutAdmin);
-// router.post("/forgot-password", forgotPassword);
-// router.post("/reset-password/:id/:token", resetPassword);
 router
   .route("/profile")
   .get(adminProtect, getAdminProfile)
@@ -44,6 +44,7 @@ router.put(
   adminProtect,
   decreaseProductQuantity
 );
+router.post("/add-brand", adminProtect, addBrand);
 router.post("/add-category", adminProtect, addCategory);
 router.delete("/:userId", adminProtect, deleteUser);
 router.post("/add-subcategory", adminProtect, addSubcategory);
@@ -54,11 +55,13 @@ router.get(
   adminProtect,
   getProductByCategoryAndSubcategory
 );
+router.get("/brands/:brand/categories", adminProtect, getCategories);
 router.get(
   "/categories/:category/subcategories",
   adminProtect,
   getSubcategories
 );
-router.get("/categories", adminProtect, getCategories);
+// router.get("/categories", adminProtect, getCategories);
+router.get("/brands", adminProtect, getBrands);
 
 module.exports = router;

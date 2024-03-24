@@ -11,6 +11,7 @@ const Cart = require("../models/cartModel");
 const Category = require("../models/categoryModel");
 const Subcategory = require("../models/subcategoryModel");
 const User = require("../models/userModel");
+const Brand = require("../models/brandModel");
 
 const loginAdmin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -105,8 +106,13 @@ const deleteUser = asyncHandler(async (req, res, next) => {
 });
 
 const addProduct = asyncHandler(async (req, res, next) => {
-  const { name, description, price, category, subcategory } = req.body;
+  const { name, description, price, brand, category, subcategory } = req.body;
   const image = req.file.filename;
+
+  const foundBrand = await Brand.findOne({ name: brand });
+  if (!foundBrand) {
+    return res.status(404).json({ message: "Brand not found" });
+  }
 
   const foundCategory = await Category.findOne({ name: category });
   if (!foundCategory) {
@@ -114,17 +120,18 @@ const addProduct = asyncHandler(async (req, res, next) => {
   }
 
   const foundSubcategory = await Subcategory.findOne({ name: subcategory });
-  if (!foundSubcategory) {
-    return res.status(404).json({ message: "Subcategory not found" });
-  }
+  // if (!foundSubcategory) {
+  //   return res.status(404).json({ message: "Subcategory not found" });
+  // }
 
   await Product.create({
     name,
     description,
     price,
     image,
+    brand: foundBrand._id,
     category: foundCategory._id,
-    subcategory: foundSubcategory._id,
+    subcategory: foundCategory || foundSubcategory._id,
   });
 
   res.status(200).json({ message: "Product has created successfuly" });
@@ -197,11 +204,31 @@ const getProductByCategoryAndSubcategory = asyncHandler(async (req, res) => {
   res.status(200).json({ products });
 });
 
-const getCategories = asyncHandler(async (req, res) => {
-  const categories = await Category.find().select("name").populate({
-    path: "subcategories",
+const getBrands = asyncHandler(async (req, res) => {
+  const brands = await Brand.find().select("name").populate({
+    path: "categories",
     select: "name",
   });
+  // .populate({
+  //   path: "subcategories",
+  //   select: "name",
+  // });
+
+  res.status(200).json({ brands });
+});
+
+const getCategories = asyncHandler(async (req, res) => {
+  const brandId = req.params.brand;
+
+  const brand = await Brand.findById(brandId);
+
+  if (!brand) {
+    return res.status(404).json({ message: "Brand not found" });
+  }
+
+  const categories = await Category.find({
+    brand: brand._id,
+  }).select("name");
 
   if (!categories) {
     return res.status(404).json({ message: "Categories not found" });
@@ -230,20 +257,55 @@ const getSubcategories = asyncHandler(async (req, res) => {
   res.status(200).json({ subcategories });
 });
 
-const addCategory = asyncHandler(async (req, res) => {
-  const categoryName = req.body.category;
+const addBrand = asyncHandler(async (req, res) => {
+  const brandName = req.body.brand;
 
-  const category = await Category.findOne({ name: categoryName });
+  const brand = await Brand.findOne({ name: brandName });
 
-  if (category) {
-    return res.status(401).json({ message: "This category already exists" });
+  if (brand) {
+    return res.status(401).json({ message: "This brand already exists" });
   }
 
-  await Category.create({
-    name: categoryName,
+  await Brand.create({
+    name: brandName,
   });
 
-  res.status(200).json({ message: "Category has created successfuly" });
+  const updatedBrands = await Brand.find().select("name").populate({
+    path: "categories",
+    select: "name",
+  });
+
+  res
+    .status(200)
+    .json({ brands: updatedBrands, message: "Brand has created successfuly" });
+});
+
+const addCategory = asyncHandler(async (req, res) => {
+  const brandName = req.body.brand;
+  const categoryName = req.body.category;
+
+  const brand = await Brand.findOne({ name: brandName });
+  if (!brand) {
+    return res.status(404).json({ message: "Brand not found" });
+  }
+
+  const category = await Category.create({
+    name: categoryName,
+    brand: brand._id,
+  });
+
+  brand.categories.push(category._id);
+  await brand.save();
+
+  const updatedCategories = await Brand.find().select("name").populate({
+    path: "subcategories",
+    select: "name",
+  });
+
+  res.status(200).json({
+    categories: updatedCategories,
+    message: "Category has created successfuly",
+  });
 });
 
 const addSubcategory = asyncHandler(async (req, res) => {
@@ -264,7 +326,17 @@ const addSubcategory = asyncHandler(async (req, res) => {
   category.subcategories.push(subcategory._id);
   await category.save();
 
-  res.status(200).json({ message: "Subcategory has created successfuly" });
+  const updatedSubcategories = await Brand.find().select("name").populate({
+    path: "category",
+    select: "name",
+  });
+
+  res
+    .status(200)
+    .json({
+      subcategories: updatedSubcategories,
+      message: "Subcategory has created successfuly",
+    });
 });
 
 const addProductToCart = asyncHandler(async (req, res, next) => {
@@ -395,8 +467,10 @@ module.exports = {
   getAllProducts,
   getProductByCategory,
   getProductByCategoryAndSubcategory,
+  getBrands,
   getSubcategories,
   getCategories,
+  addBrand,
   addCategory,
   addSubcategory,
   addProductToCart,
