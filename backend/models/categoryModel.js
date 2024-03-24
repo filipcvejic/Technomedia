@@ -12,6 +12,11 @@ const categorySchema = new Schema({
       ref: "Subcategory",
     },
   ],
+  brand: {
+    type: Schema.Types.ObjectId,
+    ref: "Brand",
+    required: true,
+  },
 });
 
 const Category = mongoose.model("Category", categorySchema);
