@@ -2,6 +2,7 @@ import Creatable from "react-select/creatable";
 import { toast } from "react-toastify";
 
 function SubcategorySelectInput({
+  setSubcategories,
   subcategories,
   subcategory,
   setSubcategory,
@@ -38,6 +39,7 @@ function SubcategorySelectInput({
         throw new Error(data.message);
       }
 
+      setSubcategories(data.subcategories);
       setSubcategory(inputValue);
       toast.success(data.message);
       return newOption;

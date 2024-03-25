@@ -4,26 +4,27 @@ import "./AddProductScreen.css";
 import { toast } from "react-toastify";
 import CategorySelectInput from "../components/CategorySelectInput";
 import SubcategorySelectInput from "../components/SubcategorySelectInput";
+import BrandSelectInput from "../components/BrandSelectInput";
 
 function AddProductScreen() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState("");
+  const [brand, setBrand] = useState("");
   const [category, setCategory] = useState("");
   const [subcategory, setSubcategory] = useState("");
+  const [brands, setBrands] = useState([]);
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
 
   useEffect(() => {
-    getCategories();
+    getBrands();
   }, []);
 
-  const getCategories = async () => {
+  const getBrands = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:3000/api/admin/categories"
-      );
+      const response = await fetch("http://localhost:3000/api/admin/brands");
 
       const data = await response.json();
 
@@ -31,7 +32,7 @@ function AddProductScreen() {
         throw new Error(data.message);
       }
 
-      setCategories(data.categories);
+      setBrands(data.brands);
     } catch (err) {
       toast.error(err?.message);
     }
@@ -47,6 +48,7 @@ function AddProductScreen() {
       formData.append("description", description);
       formData.append("price", price);
       formData.append("image", image);
+      formData.append("brand", brand);
       formData.append("category", category);
       formData.append("subcategory", subcategory);
 
@@ -68,6 +70,8 @@ function AddProductScreen() {
       setName("");
       setDescription("");
       setPrice("");
+      setImage("");
+      setBrand("");
       setCategory("");
       setSubcategory("");
 
@@ -124,7 +128,19 @@ function AddProductScreen() {
           />
         </div>
         <div className="form-group">
+          <BrandSelectInput
+            setBrands={setBrands}
+            brands={brands}
+            setBrand={setBrand}
+            setCategory={setCategory}
+            brand={brand}
+            setCategories={setCategories}
+          />
+        </div>
+        <div className="form-group">
           <CategorySelectInput
+            brand={brand}
+            setCategories={setCategories}
             categories={categories}
             setCategory={setCategory}
             setSubcategory={setSubcategory}
@@ -134,6 +150,7 @@ function AddProductScreen() {
         </div>
         <div className="form-group">
           <SubcategorySelectInput
+            setSubcategories={setSubcategories}
             subcategories={subcategories}
             subcategory={subcategory}
             setSubcategory={setSubcategory}

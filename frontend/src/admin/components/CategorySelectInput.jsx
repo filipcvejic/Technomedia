@@ -2,6 +2,8 @@ import Creatable from "react-select/creatable";
 import { toast } from "react-toastify";
 
 function CategorySelectInput({
+  setCategories,
+  brand,
   categories,
   setCategory,
   setSubcategory,
@@ -59,7 +61,7 @@ function CategorySelectInput({
             "Content-Type": "application/json",
           },
           credentials: "include",
-          body: JSON.stringify({ category: inputValue }),
+          body: JSON.stringify({ brand, category: inputValue }),
         }
       );
 
@@ -69,6 +71,7 @@ function CategorySelectInput({
         throw new Error(data.message);
       }
 
+      setCategories(data.categories);
       setCategory(inputValue);
       onSelectCategoryHandler(inputValue);
       toast.success(data.message);
