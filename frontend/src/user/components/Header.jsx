@@ -141,7 +141,9 @@ const Header = () => {
                 />
                 <path d="" stroke="none" fill="#fcfcfc" fillRule="evenodd" />
               </svg>
-              <span className="cart-counter">{Object.keys(cart).length}</span>
+              <span className="cart-counter">
+                <span>{Object.keys(cart).length}</span>
+              </span>
             </div>
           </div>
         </div>
