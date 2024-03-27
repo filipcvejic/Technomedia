@@ -1,20 +1,21 @@
 .product-item-details {
   position: relative;
-  height: 140px;
+  height: 160px;
   text-align: left;
 }
 
 .product-image-container .product-image-photo {
   display: inline-block;
-  /* box-sizing: border-box; */
-  width: 250px;
-  height: 180px;
+  width: 100%;
+  height: 190px;
   object-fit: contain;
 }
 
 .product-item-details .product-item-name {
   display: block;
-  margin: 5px 0;
+  padding-top: 20px;
+  font-size: 18px;
+  font-weight: normal;
 }
 
 .product-item-details .product-item-name a {
@@ -23,9 +24,21 @@
   line-height: 20px;
 }
 
+.product-item-details .product-item-ratings {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  padding-block: 5px;
+  margin-bottom: 10px;
+}
+
+.product-item-details .product-item-ratings svg {
+  margin-right: 5px;
+}
+
 .product-item-details .price-container {
   position: absolute;
-  bottom: 10px;
+  bottom: 0px;
   left: 0px;
   display: flex;
   align-items: center;
@@ -33,7 +46,7 @@
 
 .product-item-details .price-container .price {
   color: #333;
-  font-size: 18px;
+  font-size: 30px;
   font-weight: 700;
 }
 
@@ -43,18 +56,44 @@
   right: 0px;
 }
 
+.wish-list-action {
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: end;
+  margin-bottom: 5px;
+}
+
+.wish-list-action .wish-list-button {
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+}
+
 .product-item-actions .cart-action .cart-button {
   cursor: pointer;
-  background-color: #f39c12;
-  border-radius: 8px;
-  border: 1px solid #f39c12;
-  width: 45px;
-  height: 45px;
+  background-color: #ff7c32;
+  border-radius: 50%;
+  border: none;
+  width: 50px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.cart-action .cart-button:hover {
-  background-color: #e68a00;
+.product-item-actions .cart-action .cart-button svg {
+  margin-right: 2px;
+}
+
+.product-item-actions .cart-action .cart-button.active {
+  background-color: #17a200;
+}
+
+.single-category {
+  background-image: url("/frontend/public/images/category-background-varient1.png");
 }

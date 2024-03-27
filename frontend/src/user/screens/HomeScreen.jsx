@@ -38,27 +38,6 @@ const HomeScreen = () => {
     "/images/appliances-promotion-mockup.png",
   ];
 
-  // return (
-  //   <div className="wrape">
-  //     <div className="containerr">
-  //       <div className="left-container">
-  //         <Slider slides={leftImages} />
-  //         {/* <div>
-  //           <img src="/images/laptop-mockup.png" />
-  //         </div>
-  //          */}
-  //       </div>
-  //       <div className="right-container">
-  //         <Slider slides={rightImages} />
-
-  //         {/* <div>
-  //           <img src="/images/macbook-special-offer.png" />
-  //         </div> */}
-  //       </div>
-  //     </div>
-  //   </div>
-  // );
-
   const sliderSettings = {
     dots: true,
     infinite: true,
@@ -181,15 +160,15 @@ const HomeScreen = () => {
           />
           <ProductItem
             data={{
-              _id: "6600a7ebe0336efb4b41b911",
-              name: "PANASONIC TV TX55LX940E SMART",
-              description: "Best smart tv",
-              price: 449.99,
-              image: "82d806b0-1ea0-4722-b00e-a9e02da9bb3f_.png",
-              brand: "6600a7d8e0336efb4b41b901",
+              _id: "6600b4100cd179e15253fc70",
+              name: "GENIUS Wired gaming keyboard KM170USF10",
+              description: "Best gaming keyboard",
+              price: 150,
+              image: "eb09f370-0d00-4be7-a2f0-dfd2045fcc4c_.png",
+              brand: "6600b30c0cd179e15253fc5c",
               category: {
-                _id: "6600a7e4e0336efb4b41b905",
-                name: "TV",
+                _id: "6600b3f40cd179e15253fc62",
+                name: "Keyboard",
               },
               subcategory: null,
             }}
