@@ -20,6 +20,7 @@ import AdminApp from "./admin/AdminApp.jsx";
 import AdminPrivateRoute from "./admin/components/AdminPrivateRoute.jsx";
 import AddProductScreen from "./admin/screens/AddProductScreen.jsx";
 import UniversalRouteWrapper from "./user/components/UniversalRouteWrapper.jsx";
+import CartScreen from "./user/screens/CartScreen.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -29,6 +30,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="/" element={<App />}>
             <Route path="" element={<UniversalRouteWrapper />}>
               <Route path="/" element={<HomeScreen />} />
+              <Route path="/cart" element={<CartScreen />} />
             </Route>
             <Route path="/login" element={<LoginScreen />} />
             <Route path="/register" element={<RegisterScreen />} />

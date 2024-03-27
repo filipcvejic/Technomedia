@@ -27,7 +27,7 @@ export const addToCart = createAsyncThunk(
 
 export const removeFromCart = createAsyncThunk(
   "cart/removeFromCart",
-  async (productId, { rejectWithValue }) => {
+  async ({ productId }, { rejectWithValue }) => {
     try {
       const response = await fetch(
         `http://localhost:3000/api/cart/remove-product/${productId}`,
@@ -53,7 +53,7 @@ export const removeFromCart = createAsyncThunk(
 
 export const decreaseProductQuantity = createAsyncThunk(
   "cart/decreaseProductQuantity",
-  async ({ productId, quantity }, { rejectWithValue }) => {
+  async ({ productId }, { rejectWithValue }) => {
     try {
       const response = await fetch(
         `http://localhost:3000/api/cart/decrease-quantity/${productId}`,
@@ -63,7 +63,6 @@ export const decreaseProductQuantity = createAsyncThunk(
             "Content-Type": "application/json",
           },
           credentials: "include",
-          body: JSON.stringify({ quantity }),
         }
       );
 
@@ -71,7 +70,7 @@ export const decreaseProductQuantity = createAsyncThunk(
         throw new Error("Failed to decrease product quantity in cart");
       }
 
-      return { productId, quantity: quantity || 1 };
+      return { productId };
     } catch (error) {
       return rejectWithValue(error.response.data);
     }

@@ -1,0 +1,148 @@
+.cart-container {
+  max-width: 1340px;
+  margin: 50px auto;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.cart-content,
+.order-review {
+  background-color: #ffede1;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.cart-content {
+  width: 100%;
+  height: 100%;
+  max-height: 565px;
+  overflow-y: scroll;
+}
+
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.cart-item-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+}
+
+.cart-item-details span {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.cart-item img {
+  width: 150px;
+  height: 150px;
+}
+
+.order-informations {
+  height: 605px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.orded-price-details {
+  border-bottom: 2px solid #00000050;
+}
+
+.online-price,
+.online-discount,
+.purchase-amount {
+  height: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
+}
+
+.online-price span,
+.online-discount span {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.online-discount {
+  margin-bottom: 20px;
+}
+
+.purchase-amount {
+  padding-block: 50px;
+}
+
+.purchase-amount span {
+  font-size: 36px;
+  font-weight: bold;
+}
+
+.order-button {
+  background-color: #ff7c32;
+  width: 500px;
+  height: 50px;
+  color: white;
+  font-size: 30px;
+  border-radius: 50px;
+  font-weight: bold;
+  border: none;
+}
+
+.promo-code-container {
+  height: 100%;
+  background-color: #ffede1;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.promo-code-form {
+  position: relative;
+  margin-top: 40px;
+}
+
+.promo-code-form input {
+  background-color: #fff;
+  border: none;
+  border-radius: 50px;
+  width: 100%;
+  height: 50px;
+  text-indent: 25px;
+  font-size: 18px;
+}
+
+.promo-code-form button {
+  background-color: #ff7c32;
+  border-radius: 20px;
+  height: 40px;
+  position: absolute;
+  right: 6px;
+  top: 6px;
+  width: 160px;
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.promo-code-form input:focus {
+  outline: none;
+}
+
+@media screen and (max-width: 600px) {
+  .cart-container {
+    flex-direction: column;
+  } 
+}

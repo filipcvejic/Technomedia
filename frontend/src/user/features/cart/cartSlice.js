@@ -43,16 +43,16 @@ const cartSlice = createSlice({
       })
       .addCase(addToCart.fulfilled, (state, action) => {
         state.status = "idle";
-        const { product, quantity } = action.payload;
+        const { product } = action.payload;
 
         const productIndex = state.cart.findIndex(
           (item) => item.product._id === product._id
         );
 
         if (productIndex !== -1) {
-          state.cart[productIndex].quantity += quantity || 1;
+          state.cart[productIndex].quantity += 1;
         } else {
-          state.cart.push({ product, quantity });
+          state.cart.push({ product: { ...product }, quantity: 1 });
         }
         localStorage.setItem("cart", JSON.stringify(state.cart));
       })
@@ -79,20 +79,23 @@ const cartSlice = createSlice({
       })
       .addCase(decreaseProductQuantity.fulfilled, (state, action) => {
         state.status = "idle";
-        const { productId, quantity } = action.payload;
+        const { productId } = action.payload;
+
         const productIndex = state.cart.findIndex(
           (item) => item.product._id === productId
         );
+
         if (productIndex !== -1) {
-          state.cart[productIndex].quantity -= +quantity || 1;
+          state.cart[productIndex].quantity -= 1;
           if (state.cart[productIndex].quantity <= 0) {
             state.cart.splice(productIndex, 1);
           }
           localStorage.setItem("cart", JSON.stringify(state.cart));
         }
       })
-      .addCase(decreaseProductQuantity.rejected, (state) => {
+      .addCase(decreaseProductQuantity.rejected, (state, action) => {
         state.status = "idle";
+        state.error = action.payload;
       });
   },
 });
