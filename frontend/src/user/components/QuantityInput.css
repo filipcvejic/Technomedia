@@ -1,16 +1,22 @@
 .quantity-input {
   color: black;
-  background-color: transparent;
+  background-color: #ffede1;
   display: flex;
+  justify-content: space-around;
   align-items: center;
   width: 180px;
+  height: 45px;
   overflow: hidden;
+  padding: 0;
+  margin: 0;
+  border-radius: 25px;
+  border: 1px solid black;
 }
 
 .quantity-input button {
   cursor: pointer;
   background-color: transparent;
-  font-size: 18px;
+  font-size: 24px;
 }
 
 .item-quantity::-webkit-inner-spin-button,
@@ -20,28 +26,26 @@
 }
 
 .quantity-count-minus {
-  padding: 15px 5px 15px 25px;
-  border-radius: 45px 0 0 45px;
-  border-block: 1px solid black;
-  border-left: 1px solid black;
-  border-right: none;
+  border: none;
 }
 
 .quantity-count-plus {
-  padding: 15px 25px 15px 5px;
-  border-radius: 0 45px 45px 0;
-  border-block: 1px solid black;
-  border-right: 1px solid black;
-  border-left: none;
+  border: none;
 }
 
 .item-quantity {
-  flex: 1;
-  text-align: center;
-  padding: 15px 0;
-  border-block: 1px solid black;
-  border-inline: none;
+  border: none;
   background-color: transparent;
+  text-align: center;
+  font-size: 24px;
+}
+
+.item-quantity:focus {
   outline: none;
-  font-size: 18px;
+}
+
+.remove-cart-item-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
 }
