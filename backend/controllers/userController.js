@@ -278,6 +278,8 @@ const getCategories = asyncHandler(async (req, res) => {
 const addProductToCart = asyncHandler(async (req, res, next) => {
   const { product, quantity } = req.body;
 
+  console.log(product);
+
   let cart = await Cart.findOne({ user: req.user._id });
 
   if (!cart) {
@@ -315,7 +317,7 @@ const addProductToCart = asyncHandler(async (req, res, next) => {
       price: addedProduct.price,
       image: addedProduct.image,
       category: addedProduct.category,
-      subcategory: addedProduct.subcategory,
+      subcategory: addedProduct.subcategory || null,
     },
     quantity: quantity || 1,
   };
@@ -359,7 +361,7 @@ const syncCartProducts = asyncHandler(async (req, res, next) => {
 const removeProductFromCart = asyncHandler(async (req, res, next) => {
   const productId = req.params.productId;
 
-  const cart = await Cart.findOne({ admin: req.admin._id });
+  const cart = await Cart.findOne({ user: req.user._id });
 
   if (!cart) {
     return res.status(404).json({ message: "Cart not found" });
@@ -378,9 +380,10 @@ const removeProductFromCart = asyncHandler(async (req, res, next) => {
 
 const decreaseProductQuantity = asyncHandler(async (req, res, next) => {
   const { productId } = req.params;
-  const { quantity } = req.body;
 
-  const cart = await Cart.findOne({ admin: req.admin._id });
+  console.log(productId);
+
+  const cart = await Cart.findOne({ user: req.user._id });
 
   if (!cart) {
     return res.status(404).json({ message: "Cart not found" });
@@ -394,7 +397,7 @@ const decreaseProductQuantity = asyncHandler(async (req, res, next) => {
     return res.status(404).json({ message: "Product not found in cart" });
   }
 
-  cart.products[productIndex].quantity -= +quantity || 1;
+  cart.products[productIndex].quantity -= 1;
 
   if (cart.products[productIndex].quantity <= 0) {
     cart.products.splice(productIndex, 1);
