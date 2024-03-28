@@ -80,7 +80,7 @@ function BrandSelectInput({
   };
 
   return (
-    <>
+    <div className="brand-select-input">
       <label>Brand</label>
       <Creatable
         className="react-select-container"
@@ -89,8 +89,11 @@ function BrandSelectInput({
           control: (provided) => ({
             ...provided,
             minHeight: "20px",
-            height: "auto",
+            height: "42px",
             fontSize: "14px",
+            backgroundColor: "#E6E6E6",
+            borderRadius: "10px",
+            border: "none",
           }),
         }}
         options={options}
@@ -100,7 +103,7 @@ function BrandSelectInput({
         placeholder="Select or type a new brand..."
         isSearchable
       />
-    </>
+    </div>
   );
 }
 

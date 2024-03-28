@@ -82,7 +82,7 @@ function CategorySelectInput({
   };
 
   return (
-    <>
+    <div className="category-select-input">
       <label>Category</label>
       <Creatable
         className="react-select-container"
@@ -91,8 +91,11 @@ function CategorySelectInput({
           control: (provided) => ({
             ...provided,
             minHeight: "20px",
-            height: "auto",
+            height: "42px",
             fontSize: "14px",
+            backgroundColor: "#E6E6E6",
+            borderRadius: "10px",
+            border: "none",
           }),
         }}
         options={options}
@@ -102,7 +105,7 @@ function CategorySelectInput({
         placeholder="Select or type a new category..."
         isSearchable
       />
-    </>
+    </div>
   );
 }
 
