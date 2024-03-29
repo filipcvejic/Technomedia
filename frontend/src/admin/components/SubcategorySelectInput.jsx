@@ -49,7 +49,7 @@ function SubcategorySelectInput({
   };
 
   return (
-    <>
+    <div className="subcategory-select-input">
       <label>Subcategory</label>
       <Creatable
         className="react-select-container"
@@ -58,8 +58,11 @@ function SubcategorySelectInput({
           control: (provided) => ({
             ...provided,
             minHeight: "20px",
-            height: "auto",
+            height: "42px",
             fontSize: "14px",
+            backgroundColor: "#E6E6E6",
+            borderRadius: "10px",
+            border: "none",
           }),
         }}
         options={options}
@@ -69,7 +72,7 @@ function SubcategorySelectInput({
         placeholder="Select or type a new subcategory..."
         isSearchable
       />
-    </>
+    </div>
   );
 }
 

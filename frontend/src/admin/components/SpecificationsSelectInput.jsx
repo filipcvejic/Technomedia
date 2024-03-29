@@ -10,6 +10,7 @@ function ProductSpecContainer({ onSpecSelect }) {
     const updatedSpecs = [...specs];
     updatedSpecs[index][key] = value;
     setSpecs(updatedSpecs);
+    onSpecSelect(updatedSpecs);
   };
 
   const addSpec = () => {
@@ -31,7 +32,7 @@ function ProductSpecContainer({ onSpecSelect }) {
     const updatedSpecs = [...specs];
     updatedSpecs.splice(index, 1);
     setSpecs(updatedSpecs);
-    onSpecsChange(updatedSpecs);
+    onSpecSelect(updatedSpecs);
   };
 
   return (
@@ -87,12 +88,16 @@ function ProductSpecContainer({ onSpecSelect }) {
         </div>
         <div className="remove-specification-container">
           {specs.map((spec, index) => (
-            <button key={index} onClick={() => removeSpec(index)}>
+            <button
+              className="remove-specification-button"
+              key={index}
+              onClick={() => removeSpec(index)}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 version="1.0"
-                width="512.000000pt"
-                height="512.000000pt"
+                width="19"
+                height="18"
                 viewBox="0 0 512.000000 512.000000"
                 preserveAspectRatio="xMidYMid meet"
               >

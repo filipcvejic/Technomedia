@@ -1,0 +1,91 @@
+.specifications-form {
+  width: 100%;
+}
+
+.specifications-form-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.specifications-form-details .add-specification-button {
+  background-color: transparent;
+  border: none;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.specifications-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 12px;
+  max-height: 195px;
+  width: 100%;
+  overflow-y: scroll;
+}
+
+.specification-type-container,
+.specification-value-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.specifications-container .specification-type-container,
+.specifications-container .specification-value-container {
+  background-color: #e6e6e6;
+  height: 100%;
+  width: 100%;
+  border-radius: 10px;
+}
+
+.specification-value-details:first-child,
+.specification-type-details:first-child {
+  padding-top: 10px;
+}
+
+.specification-value-details:last-child,
+.specification-type-details:last-child {
+  padding-bottom: 10px;
+}
+
+.specification-value-details,
+.specification-type-details {
+  padding-block: 5px;
+  padding-inline: 10px;
+  margin-right: 10px;
+}
+
+.specification-value-details input,
+.specification-type-details input {
+  width: 100%;
+  height: 20px;
+  border: none;
+  background-color: #f2f2f2;
+  padding: 0;
+  padding-left: 10px;
+}
+
+.remove-specification-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.remove-specification-container .remove-specification-button:first-child {
+  padding-top: 10px;
+}
+
+.remove-specification-container .remove-specification-button:last-child {
+  padding-bottom: 10px;
+}
+
+.remove-specification-container .remove-specification-button {
+  background-color: transparent;
+  border: none;
+  padding: 5px 3px 5px 0;
+}
+
+.remove-specification-container .remove-specification-button svg {
+  margin: 0;
+  padding: 0;
+}
