@@ -106,35 +106,42 @@ const deleteUser = asyncHandler(async (req, res, next) => {
 });
 
 const addProduct = asyncHandler(async (req, res, next) => {
-  const { name, description, price, brand, category, subcategory } = req.body;
-  const image = req.file.filename;
-
-  const foundBrand = await Brand.findOne({ name: brand });
-  if (!foundBrand) {
-    return res.status(404).json({ message: "Brand not found" });
-  }
-
-  const foundCategory = await Category.findOne({ name: category });
-  if (!foundCategory) {
-    return res.status(404).json({ message: "Category not found" });
-  }
-
-  const foundSubcategory = await Subcategory.findOne({ name: subcategory });
-  // if (!foundSubcategory) {
-  //   return res.status(404).json({ message: "Subcategory not found" });
-  // }
-
-  await Product.create({
+  const {
     name,
     description,
     price,
-    image,
-    brand: foundBrand._id,
-    category: foundCategory._id,
-    subcategory: foundCategory || foundSubcategory._id,
-  });
+    brand,
+    category,
+    subcategory,
+    specifications,
+  } = req.body;
 
-  res.status(200).json({ message: "Product has created successfuly" });
+  const images = req.files;
+  console.log(req);
+
+  // const foundBrand = await Brand.findOne({ name: brand });
+  // if (!foundBrand) {
+  //   return res.status(404).json({ message: "Brand not found" });
+  // }
+
+  // const foundCategory = await Category.findOne({ name: category });
+  // if (!foundCategory) {
+  //   return res.status(404).json({ message: "Category not found" });
+  // }
+
+  // const foundSubcategory = await Subcategory.findOne({ name: subcategory });
+
+  // await Product.create({
+  //   name,
+  //   description,
+  //   price,
+  //   image,
+  //   brand: foundBrand._id,
+  //   category: foundCategory._id,
+  //   subcategory: foundCategory || foundSubcategory._id,
+  // });
+
+  // res.status(200).json({ message: "Product has created successfuly" });
 });
 
 const getAllProducts = asyncHandler(async (req, res, next) => {
@@ -331,12 +338,10 @@ const addSubcategory = asyncHandler(async (req, res) => {
     select: "name",
   });
 
-  res
-    .status(200)
-    .json({
-      subcategories: updatedSubcategories,
-      message: "Subcategory has created successfuly",
-    });
+  res.status(200).json({
+    subcategories: updatedSubcategories,
+    message: "Subcategory has created successfuly",
+  });
 });
 
 const addProductToCart = asyncHandler(async (req, res, next) => {

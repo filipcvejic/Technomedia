@@ -32,7 +32,12 @@ router
   .get(adminProtect, getAdminProfile)
   .put(adminProtect, updateAdminProfile);
 
-router.post("/add-product", adminProtect, upload.single("image"), addProduct);
+router.post(
+  "/add-product",
+  adminProtect,
+  upload.array("images", 3),
+  addProduct
+);
 router.post("/cart/add-product", adminProtect, addProductToCart);
 router.delete(
   "/cart/remove-product/:productId",
