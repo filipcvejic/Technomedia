@@ -1,24 +1,24 @@
 .login-container {
   max-width: 500px;
   margin: 50px auto;
-  background-color: #fff;
+  background-color: #ffede1;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .login-section {
   margin-inline: 15px;
-  padding: 40px;
+  padding: 30px;
 }
 
 .login-section .form-group {
   display: flex;
   flex-direction: column;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .login-form .form-group label {
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 .login-form .form-group input {
@@ -38,7 +38,7 @@
 
 .login-form .submit-button {
   display: block;
-  background-color: #004080;
+  background-color: #ff9900;
   width: 100%;
   padding: 10px;
   margin: 0 0 10px 0;
@@ -55,33 +55,35 @@
   margin-bottom: 15px;
 }
 
-.login-form .forgot-password a {
+.login-form .forgot-password a,
+.register-suggest a,
+.continue-as-guest a {
   text-decoration: none;
-  color: #004080;
+  color: #ff5c00;
 }
 
-.actions-toolbar .addition-actions {
+.login-section .continue-as-guest {
+  margin-top: 5px;
+}
+
+.login-section .actions-toolbar .addition-actions {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.addition-actions .register-suggest {
+.login-section .addition-actions .register-suggest {
   margin: 10px 0 0 0;
   color: #8e8e8e;
 }
 
-.register-suggest a {
-  text-decoration: none;
-  color: #004080;
-}
-.addition-actions .or-option {
+.login-section .addition-actions .or-option {
   color: black;
   font-weight: bold;
-  margin-block: 15px;
+  margin-block: 10px;
 }
 
-.external-login-container {
+.login-section .external-login-container {
   display: block;
   width: 100%;
 }
@@ -101,9 +103,4 @@
 
 .external-login-container svg {
   margin-inline: 10px;
-}
-
-.continue-as-guest a {
-  text-decoration: none;
-  color: #004080;
 }

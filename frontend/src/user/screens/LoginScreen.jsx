@@ -71,7 +71,7 @@ const LoginScreen = () => {
   return (
     <div className="login-container">
       <section className="login-section">
-        <h1 className="login-heading">Login</h1>
+        <h1 className="login-title">Login</h1>
         <form className="login-form" onSubmit={loginHandler}>
           <div className="form-group">
             <label htmlFor="email" className="form-label">
@@ -146,9 +146,9 @@ const LoginScreen = () => {
               </button>
             </div>
             <span className="or-option">or</span>
-            <p className="continue-as-guest">
+            <span className="continue-as-guest">
               <Link to="/">Continue as Guest</Link>
-            </p>
+            </span>
           </div>
         </div>
       </section>
