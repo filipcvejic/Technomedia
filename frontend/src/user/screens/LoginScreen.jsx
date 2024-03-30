@@ -70,7 +70,7 @@ const LoginScreen = () => {
 
   return (
     <div className="login-container">
-      <section className="login-section">
+      <div className="login-section">
         <h1 className="login-title">Login</h1>
         <form className="login-form" onSubmit={loginHandler}>
           <div className="form-group">
@@ -151,7 +151,7 @@ const LoginScreen = () => {
             </span>
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 };

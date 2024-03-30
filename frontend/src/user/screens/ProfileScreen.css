@@ -1,14 +1,50 @@
-.update-container {
-  max-width: 500px;
+.profile-container {
   margin: 50px auto;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: row;
+  max-width: 1280px;
+  gap: 20px;
 }
 
-.update-section {
+.profile-section {
+  display: flex;
+  flex-direction: column;
+  gap: 114px;
+}
+
+.profile-section .user-main {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.profile-section .user-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 15px;
+  font-size: 26px;
+}
+
+.user-info .user-name span,
+.user-info .user-surname span,
+.user-info .user-email span,
+.user-info .user-register-date span {
+  font-weight: bold;
+}
+
+.profile-section .user-main .user-full-name {
+  margin-bottom: 5px;
+}
+
+.update-section,
+.profile-section {
+  background-color: #ffede1;
   margin-inline: 15px;
   padding: 40px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  width: 100%;
 }
 
 .update-description {
@@ -20,11 +56,11 @@
 .update-section .form-group {
   display: flex;
   flex-direction: column;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .update-form .form-group label {
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 .update-form .form-group input {
@@ -45,7 +81,7 @@
 
 .update-form .submit-button {
   display: block;
-  background-color: #004080;
+  background-color: #ff9900;
   width: 100%;
   padding: 10px;
   margin-top: 25px;
@@ -64,7 +100,7 @@
   width: 48px;
   height: 48px;
   border: 8px solid #f3f3f3;
-  border-top: 8px solid #3498db;
+  border-top: 8px solid #ff9900;
   border-radius: 50%;
   margin: 20px auto;
   display: inline-block;

@@ -109,11 +109,16 @@ const logoutUser = asyncHandler(async (req, res) => {
 });
 
 const getUserProfile = asyncHandler(async (req, res) => {
+  const registerDate = `${req.user.createdAt.getDate()}.${
+    req.user.createdAt.getMonth() + 1
+  }.${req.user.createdAt.getFullYear()}`;
+
   const user = {
     _id: req.user._id,
     name: req.user.name,
     surname: req.user.surname || "",
     email: req.user.email,
+    registerDate,
   };
 
   const cart = await Cart.findOne({ user: req.user._id }).populate({

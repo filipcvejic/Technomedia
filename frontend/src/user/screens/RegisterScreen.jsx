@@ -78,7 +78,7 @@ const RegisterScreen = () => {
 
   return (
     <div className="register-container">
-      <section className="register-section">
+      <div className="register-section">
         <h1 className="register-heading">Register</h1>
         <form className="register-form" onSubmit={registerHandler}>
           <div className="form-group">
@@ -204,7 +204,7 @@ const RegisterScreen = () => {
             </div>
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 };
