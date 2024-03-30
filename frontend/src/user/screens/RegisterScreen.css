@@ -1,24 +1,24 @@
 .register-container {
   max-width: 500px;
   margin: 50px auto;
-  background-color: #fff;
+  background-color: #ffede1;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .register-section {
   margin-inline: 15px;
-  padding: 40px;
+  padding: 30px;
 }
 
 .register-section .form-group {
   display: flex;
   flex-direction: column;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .register-form .form-group label {
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 .register-form .form-group input {
@@ -44,14 +44,15 @@
   margin-left: 5px;
 }
 
-.register-form .agreement a {
+.register-form .agreement a,
+.login-suggest a {
   text-decoration: none;
-  color: #004080;
+  color: #ff5c00;
 }
 
 .register-form .submit-button {
   display: block;
-  background-color: #004080;
+  background-color: #ff9900;
   width: 100%;
   padding: 10px;
   margin: 0 0 10px 0;
@@ -62,28 +63,24 @@
   font-size: 18px;
 }
 
-.actions-toolbar .addition-actions {
+.register-section .actions-toolbar .addition-actions {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.addition-actions .login-suggest {
-  margin: 10px 0 0 0;
+.register-section .addition-actions .login-suggest {
+  margin: 5px 0 0 0;
   color: #8e8e8e;
 }
 
-.login-suggest a {
-  text-decoration: none;
-  color: #004080;
-}
-.addition-actions .or-option {
+.register-section .addition-actions .or-option {
   color: black;
   font-weight: bold;
-  margin-block: 15px;
+  margin-block: 10px;
 }
 
-.external-register-container {
+.register-section .external-register-container {
   display: block;
   width: 100%;
 }
