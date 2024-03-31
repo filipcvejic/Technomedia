@@ -8,6 +8,8 @@ function CartScreen() {
 
   const dispatch = useDispatch();
 
+  let totalAmount = 0;
+
   const removeItemFromCartHandler = (event, productId) => {
     event.preventDefault();
 
@@ -19,36 +21,41 @@ function CartScreen() {
       <div className="cart-content">
         <h1 className="cart-content-title">Your cart</h1>
         <div className="cart-items">
-          {cart.map((item) => (
-            <div className="cart-item" key={item.product._id}>
-              <img src={`http://localhost:5000/images/${item.product.image}`} />
-              <p className="cart-item-description">
-                Laptop HP 15s-fq0002nm N4120/4/256 9J2W7EA Intel Celeron N4120
-                do 2.60 GHz, 15.6", Integrisana UHD 600, 4GB
-              </p>
-              <div className="cart-item-details">
-                <QuantityInput item={item} />
-                <span>{item.product.price - 0.01} EUR</span>
-              </div>
-              <button
-                className="remove-cart-item-button"
-                onClick={(event) =>
-                  removeItemFromCartHandler(event, item.product._id)
-                }
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="28"
-                  height="28"
-                  fill="black"
-                  className="bi bi-x"
-                  viewBox="0 0 16 16"
+          {cart.map((item) => {
+            totalAmount += item.product.price * item.quantity;
+            return (
+              <div className="cart-item" key={item.product._id}>
+                <img
+                  src={`http://localhost:5000/images/${item.product.image}`}
+                />
+                <p className="cart-item-description">
+                  Laptop HP 15s-fq0002nm N4120/4/256 9J2W7EA Intel Celeron N4120
+                  do 2.60 GHz, 15.6", Integrisana UHD 600, 4GB
+                </p>
+                <div className="cart-item-details">
+                  <QuantityInput item={item} />
+                  <span>{item.product.price - 0.01} EUR</span>
+                </div>
+                <button
+                  className="remove-cart-item-button"
+                  onClick={(event) =>
+                    removeItemFromCartHandler(event, item.product._id)
+                  }
                 >
-                  <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
-                </svg>
-              </button>
-            </div>
-          ))}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="28"
+                    height="28"
+                    fill="black"
+                    className="bi bi-x"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                  </svg>
+                </button>
+              </div>
+            );
+          })}
         </div>
       </div>
       <div className="order-informations">
@@ -57,7 +64,7 @@ function CartScreen() {
           <div className="orded-price-details">
             <div className="online-price">
               <p>Price for online payment:</p>
-              <span>58.318,00 RSD</span>
+              <span>{totalAmount - 0.01} EUR</span>
             </div>
             <div className="online-discount">
               <p>Discount:</p>
@@ -66,7 +73,7 @@ function CartScreen() {
           </div>
           <div className="purchase-amount">
             <p>Purchase amount:</p>
-            <span>58.318,00</span>
+            <span>{totalAmount - 0.01}</span>
           </div>
           <button className="order-button">Order</button>
         </div>
