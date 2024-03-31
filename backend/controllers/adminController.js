@@ -114,10 +114,10 @@ const addProduct = asyncHandler(async (req, res, next) => {
     category,
     subcategory,
     specifications,
-  } = req.body;
+  } = req.body; 
 
   const images = req.files;
-  console.log(req);
+  console.log(req.files, req.file);
 
   // const foundBrand = await Brand.findOne({ name: brand });
   // if (!foundBrand) {
@@ -147,6 +147,10 @@ const addProduct = asyncHandler(async (req, res, next) => {
 const getAllProducts = asyncHandler(async (req, res, next) => {
   const products = await Product.find()
     .select("-createdAt -updatedAt -__v")
+    .populate({
+      path: "brand",
+      select: "name",
+    })
     .populate({
       path: "category",
       select: "name",
@@ -368,6 +372,10 @@ const addProductToCart = asyncHandler(async (req, res, next) => {
   const addedProduct = await Product.findById(product)
     .select("-createdAt -updatedAt -__v")
     .populate({
+      path: "brand",
+      select: "name",
+    })
+    .populate({
       path: "category",
       select: "name",
     })
@@ -383,6 +391,7 @@ const addProductToCart = asyncHandler(async (req, res, next) => {
       description: addedProduct.description,
       price: addedProduct.price,
       image: addedProduct.image,
+      brand: addProduct.brand,
       category: addedProduct.category,
       subcategory: addedProduct.subcategory,
     },

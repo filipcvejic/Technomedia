@@ -28,6 +28,7 @@ function ProductItem({ data }) {
           description: data.description,
           price: data.price,
           image: data.image,
+          brand: data.brand?._id,
           category: data.category?._id,
           subcategory: data.subcategory?._id,
         })
@@ -41,6 +42,7 @@ function ProductItem({ data }) {
             description: data.description,
             price: data.price,
             image: data.image,
+            brand: data.brand?._id,
             category: data.category?._id,
             subcategory: data.subcategory?._id,
           },
