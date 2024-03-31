@@ -12,6 +12,7 @@ const Category = require("../models/categoryModel");
 const Subcategory = require("../models/subcategoryModel");
 const User = require("../models/userModel");
 const Brand = require("../models/brandModel");
+const Image = require("../models/imageModel");
 
 const loginAdmin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -114,34 +115,38 @@ const addProduct = asyncHandler(async (req, res, next) => {
     category,
     subcategory,
     specifications,
-  } = req.body; 
+  } = req.body;
 
-  const images = req.files;
-  console.log(req.files, req.file);
+  const images = [];
 
-  // const foundBrand = await Brand.findOne({ name: brand });
-  // if (!foundBrand) {
-  //   return res.status(404).json({ message: "Brand not found" });
-  // }
+  for (const file of req.files) {
+    const newImage = await Image.create({ url: file.path });
+    images.push(newImage._id);
+  }
 
-  // const foundCategory = await Category.findOne({ name: category });
-  // if (!foundCategory) {
-  //   return res.status(404).json({ message: "Category not found" });
-  // }
+  const foundBrand = await Brand.findOne({ name: brand });
+  if (!foundBrand) {
+    return res.status(404).json({ message: "Brand not found" });
+  }
 
-  // const foundSubcategory = await Subcategory.findOne({ name: subcategory });
+  const foundCategory = await Category.findOne({ name: category });
+  if (!foundCategory) {
+    return res.status(404).json({ message: "Category not found" });
+  }
 
-  // await Product.create({
-  //   name,
-  //   description,
-  //   price,
-  //   image,
-  //   brand: foundBrand._id,
-  //   category: foundCategory._id,
-  //   subcategory: foundCategory || foundSubcategory._id,
-  // });
+  const foundSubcategory = await Subcategory.findOne({ name: subcategory });
 
-  // res.status(200).json({ message: "Product has created successfuly" });
+  await Product.create({
+    name,
+    description,
+    price,
+    images,
+    brand: foundBrand._id,
+    category: foundCategory._id,
+    subcategory: foundCategory || foundSubcategory._id,
+  });
+
+  res.status(200).json({ message: "Product has created successfuly" });
 });
 
 const getAllProducts = asyncHandler(async (req, res, next) => {

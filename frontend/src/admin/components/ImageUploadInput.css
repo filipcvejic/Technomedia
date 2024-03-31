@@ -47,10 +47,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 .images-preview img {
   width: 60px;
   height: 60px;
+}
+
+.single-image-preview .remove-image-button {
+  position: absolute;
+  border: none;
+  background-color: transparent;
+  top: 0;
+  right: 0;
+  padding: 0;
+  cursor: pointer;
 }
 
 /* .file-input {
