@@ -2,18 +2,41 @@ import { useDispatch, useSelector } from "react-redux";
 import "./Header.css";
 import { toast } from "react-toastify";
 import { logout } from "../features/auth/userAuthSlice";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { clearGuestCart } from "../features/cart/cartSlice";
 import { Link } from "react-router-dom";
 import Subheader from "./Subheader";
+import QuantityInput from "./QuantityInput";
 
 const Header = () => {
   const { userInfo } = useSelector((state) => state.userAuth);
   const { cart } = useSelector((state) => state.userCart);
 
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isUserMenuExpanded, setIsUserMenuExpanded] = useState(false);
+  const [isCartExpanded, setIsCartExpanded] = useState(false);
+  const userMenuRef = useRef(null);
+  const cartRef = useRef(null);
 
   const dispatch = useDispatch();
+
+  let totalAmount = 0;
+
+  const clickOutsideHandler = (event) => {
+    if (userMenuRef && !userMenuRef.current.contains(event.target)) {
+      setIsUserMenuExpanded(false);
+    }
+
+    if (cartRef && !cartRef.current.contains(event.target)) {
+      setIsCartExpanded(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", clickOutsideHandler);
+    return () => {
+      document.removeEventListener("mousedown", clickOutsideHandler);
+    };
+  }, []);
 
   const logoutHandler = async (e) => {
     e.preventDefault();
@@ -87,26 +110,72 @@ const Header = () => {
           <div className="header-links">
             <div
               className="user-actions"
-              onMouseEnter={() => setIsExpanded(true)}
-              onMouseLeave={() => setIsExpanded(false)}
+              ref={userMenuRef}
+              onClick={(e) => {
+                e.preventDefault();
+                setIsUserMenuExpanded((prevValue) => !prevValue);
+              }}
             >
-              <Link to="/login">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="30"
-                  height="30"
-                  viewBox="0 0 256 256"
-                  version="1.1"
-                >
-                  <path
-                    d="M 109.230 2.015 C 89.255 7.249, 71.745 21.396, 61.951 40.213 C 56.320 51.033, 54 60.891, 54 74 C 54 94.943, 61.278 112.426, 76.054 126.973 L 81.782 132.613 74.641 134.405 C 64.447 136.962, 48.813 143.315, 39.500 148.683 C 23.177 158.093, 12.392 168.299, 6.581 179.840 C 1.227 190.471, 0.032 196.999, 0.015 215.712 C -0.004 235.967, 1.283 240.316, 9.517 247.841 C 19.073 256.575, 10.721 256, 128 256 C 244.515 256, 236.900 256.492, 245.916 248.386 C 248.626 245.949, 251.811 241.828, 252.993 239.228 C 254.176 236.628, 255.561 233.719, 256.072 232.764 C 257.264 230.533, 257.303 196.695, 256.112 197.431 C 255.624 197.733, 254.928 196.005, 254.566 193.592 C 252.697 181.125, 241.036 165.114, 226.516 155.076 C 217.619 148.926, 204.136 142, 201.058 142 C 195.518 142, 191.044 146.691, 191.044 152.500 C 191.044 157.905, 192.928 159.879, 203.243 165.288 C 219.741 173.939, 228.855 182.671, 233.052 193.847 C 236.009 201.721, 237.010 223.715, 234.665 229.286 C 231.689 236.358, 237.376 236, 128 236 C 18.624 236, 24.311 236.358, 21.335 229.286 C 18.972 223.672, 19.992 201.720, 22.985 193.748 C 27.220 182.470, 36.753 173.462, 53.732 164.693 C 72.604 154.945, 90.822 150.644, 122.288 148.505 C 145.550 146.923, 151.038 145.717, 162.583 139.649 C 176.709 132.225, 187.196 121.358, 194.575 106.500 C 199.984 95.606, 201.960 86.784, 201.983 73.410 C 202.004 60.937, 199.601 50.881, 194.049 40.213 C 184.157 21.208, 166.632 7.149, 146.377 1.968 C 136.092 -0.662, 119.367 -0.641, 109.230 2.015 M 120 21.040 C 104.740 23.392, 91.519 32.065, 82.827 45.428 C 71.857 62.290, 71.871 85.823, 82.860 102.572 C 93.536 118.845, 108.852 127.202, 128 127.202 C 147.148 127.202, 162.464 118.845, 173.140 102.572 C 184.143 85.802, 184.143 62.198, 173.140 45.428 C 161.262 27.323, 140.640 17.859, 120 21.040 M 0.413 215.500 C 0.414 225.400, 0.564 229.315, 0.746 224.199 C 0.928 219.084, 0.927 210.984, 0.744 206.199 C 0.561 201.415, 0.412 205.600, 0.413 215.500"
-                    stroke="none"
-                    fill="#fffcfc"
-                    fillRule="evenodd"
-                  />
-                  <path d="" stroke="none" fill="#fcfcfc" fillRule="evenodd" />
-                </svg>
-              </Link>
+              {userInfo ? (
+                <div className="user-profile">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="30"
+                    height="30"
+                    viewBox="0 0 256 256"
+                    version="1.1"
+                  >
+                    <path
+                      d="M 109.230 2.015 C 89.255 7.249, 71.745 21.396, 61.951 40.213 C 56.320 51.033, 54 60.891, 54 74 C 54 94.943, 61.278 112.426, 76.054 126.973 L 81.782 132.613 74.641 134.405 C 64.447 136.962, 48.813 143.315, 39.500 148.683 C 23.177 158.093, 12.392 168.299, 6.581 179.840 C 1.227 190.471, 0.032 196.999, 0.015 215.712 C -0.004 235.967, 1.283 240.316, 9.517 247.841 C 19.073 256.575, 10.721 256, 128 256 C 244.515 256, 236.900 256.492, 245.916 248.386 C 248.626 245.949, 251.811 241.828, 252.993 239.228 C 254.176 236.628, 255.561 233.719, 256.072 232.764 C 257.264 230.533, 257.303 196.695, 256.112 197.431 C 255.624 197.733, 254.928 196.005, 254.566 193.592 C 252.697 181.125, 241.036 165.114, 226.516 155.076 C 217.619 148.926, 204.136 142, 201.058 142 C 195.518 142, 191.044 146.691, 191.044 152.500 C 191.044 157.905, 192.928 159.879, 203.243 165.288 C 219.741 173.939, 228.855 182.671, 233.052 193.847 C 236.009 201.721, 237.010 223.715, 234.665 229.286 C 231.689 236.358, 237.376 236, 128 236 C 18.624 236, 24.311 236.358, 21.335 229.286 C 18.972 223.672, 19.992 201.720, 22.985 193.748 C 27.220 182.470, 36.753 173.462, 53.732 164.693 C 72.604 154.945, 90.822 150.644, 122.288 148.505 C 145.550 146.923, 151.038 145.717, 162.583 139.649 C 176.709 132.225, 187.196 121.358, 194.575 106.500 C 199.984 95.606, 201.960 86.784, 201.983 73.410 C 202.004 60.937, 199.601 50.881, 194.049 40.213 C 184.157 21.208, 166.632 7.149, 146.377 1.968 C 136.092 -0.662, 119.367 -0.641, 109.230 2.015 M 120 21.040 C 104.740 23.392, 91.519 32.065, 82.827 45.428 C 71.857 62.290, 71.871 85.823, 82.860 102.572 C 93.536 118.845, 108.852 127.202, 128 127.202 C 147.148 127.202, 162.464 118.845, 173.140 102.572 C 184.143 85.802, 184.143 62.198, 173.140 45.428 C 161.262 27.323, 140.640 17.859, 120 21.040 M 0.413 215.500 C 0.414 225.400, 0.564 229.315, 0.746 224.199 C 0.928 219.084, 0.927 210.984, 0.744 206.199 C 0.561 201.415, 0.412 205.600, 0.413 215.500"
+                      stroke="none"
+                      fill="#fffcfc"
+                      fillRule="evenodd"
+                    />
+                    <path
+                      d=""
+                      stroke="none"
+                      fill="#fcfcfc"
+                      fillRule="evenodd"
+                    />
+                  </svg>
+                  {isUserMenuExpanded && (
+                    <div className="extended-user-menu">
+                      <div className="menu-triangle" />
+                      <Link to="/profile">My profile</Link>
+                      <button
+                        className="logout-button"
+                        type="button"
+                        onClick={logoutHandler}
+                      >
+                        Log out
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Link to="/login">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="30"
+                    height="30"
+                    viewBox="0 0 256 256"
+                    version="1.1"
+                  >
+                    <path
+                      d="M 109.230 2.015 C 89.255 7.249, 71.745 21.396, 61.951 40.213 C 56.320 51.033, 54 60.891, 54 74 C 54 94.943, 61.278 112.426, 76.054 126.973 L 81.782 132.613 74.641 134.405 C 64.447 136.962, 48.813 143.315, 39.500 148.683 C 23.177 158.093, 12.392 168.299, 6.581 179.840 C 1.227 190.471, 0.032 196.999, 0.015 215.712 C -0.004 235.967, 1.283 240.316, 9.517 247.841 C 19.073 256.575, 10.721 256, 128 256 C 244.515 256, 236.900 256.492, 245.916 248.386 C 248.626 245.949, 251.811 241.828, 252.993 239.228 C 254.176 236.628, 255.561 233.719, 256.072 232.764 C 257.264 230.533, 257.303 196.695, 256.112 197.431 C 255.624 197.733, 254.928 196.005, 254.566 193.592 C 252.697 181.125, 241.036 165.114, 226.516 155.076 C 217.619 148.926, 204.136 142, 201.058 142 C 195.518 142, 191.044 146.691, 191.044 152.500 C 191.044 157.905, 192.928 159.879, 203.243 165.288 C 219.741 173.939, 228.855 182.671, 233.052 193.847 C 236.009 201.721, 237.010 223.715, 234.665 229.286 C 231.689 236.358, 237.376 236, 128 236 C 18.624 236, 24.311 236.358, 21.335 229.286 C 18.972 223.672, 19.992 201.720, 22.985 193.748 C 27.220 182.470, 36.753 173.462, 53.732 164.693 C 72.604 154.945, 90.822 150.644, 122.288 148.505 C 145.550 146.923, 151.038 145.717, 162.583 139.649 C 176.709 132.225, 187.196 121.358, 194.575 106.500 C 199.984 95.606, 201.960 86.784, 201.983 73.410 C 202.004 60.937, 199.601 50.881, 194.049 40.213 C 184.157 21.208, 166.632 7.149, 146.377 1.968 C 136.092 -0.662, 119.367 -0.641, 109.230 2.015 M 120 21.040 C 104.740 23.392, 91.519 32.065, 82.827 45.428 C 71.857 62.290, 71.871 85.823, 82.860 102.572 C 93.536 118.845, 108.852 127.202, 128 127.202 C 147.148 127.202, 162.464 118.845, 173.140 102.572 C 184.143 85.802, 184.143 62.198, 173.140 45.428 C 161.262 27.323, 140.640 17.859, 120 21.040 M 0.413 215.500 C 0.414 225.400, 0.564 229.315, 0.746 224.199 C 0.928 219.084, 0.927 210.984, 0.744 206.199 C 0.561 201.415, 0.412 205.600, 0.413 215.500"
+                      stroke="none"
+                      fill="#fffcfc"
+                      fillRule="evenodd"
+                    />
+                    <path
+                      d=""
+                      stroke="none"
+                      fill="#fcfcfc"
+                      fillRule="evenodd"
+                    />
+                  </svg>
+                </Link>
+              )}
             </div>
             <div className="favourite-items">
               <svg
@@ -125,7 +194,14 @@ const Header = () => {
                 <path d="" stroke="none" fill="#fcfcfc" fillRule="evenodd" />
               </svg>
             </div>
-            <div className="shopping-cart">
+            <div
+              className="shopping-cart"
+              ref={cartRef}
+              onClick={(e) => {
+                e.preventDefault();
+                setIsCartExpanded((prevValue) => !prevValue);
+              }}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="30"
@@ -144,6 +220,68 @@ const Header = () => {
               <span className="cart-counter">
                 <span>{Object.keys(cart).length}</span>
               </span>
+              {isCartExpanded && (
+                <div className="mini-cart">
+                  <div className="mini-cart-title">
+                    <span>MINI CART</span>
+                    {!cart.length > 0 && (
+                      <p>You don't have products in your shopping cart</p>
+                    )}
+                  </div>
+                  <div className="mini-cart-items">
+                    {cart.map((item) => {
+                      console.log(item);
+
+                      totalAmount += item.product.price * item.quantity;
+                      return (
+                        <div
+                          className="single-mini-cart-item"
+                          key={item.product._id}
+                        >
+                          <img
+                            src={`http://localhost:5000/images/${item.product.image}`}
+                          />
+                          <div className="single-item-details">
+                            <span>
+                              {item.product.brand?.name}{" "}
+                              {item.product.category?.name}
+                            </span>
+                            <span className="single-item-price">
+                              {item.product.price - 0.01} EUR
+                            </span>
+                            <div className="single-item-quantity">
+                              <QuantityInput item={item} />
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="28"
+                                height="28"
+                                fill="black"
+                                className="bi bi-x"
+                                viewBox="0 0 16 16"
+                              >
+                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"></path>
+                              </svg>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className="mini-cart-details">
+                    <div className="mini-cart-amount-details">
+                      <span className="cart-total-amount">
+                        Total: <span>{totalAmount} EUR</span>
+                      </span>
+                    </div>
+                    <div className="mini-cart-actions">
+                      <button className="payment-button" type="button">
+                        Continue on payment
+                      </button>
+                      <Link to="/cart">View and edit cart</Link>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
