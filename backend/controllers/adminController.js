@@ -13,6 +13,7 @@ const Subcategory = require("../models/subcategoryModel");
 const User = require("../models/userModel");
 const Brand = require("../models/brandModel");
 const Image = require("../models/imageModel");
+const Specification = require("../models/specificationModel");
 
 const loginAdmin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -118,6 +119,7 @@ const addProduct = asyncHandler(async (req, res, next) => {
   } = req.body;
 
   const images = [];
+  const newSpecifications = [];
 
   for (const file of req.files) {
     const newImage = await Image.create({ url: file.path });
@@ -134,6 +136,19 @@ const addProduct = asyncHandler(async (req, res, next) => {
     return res.status(404).json({ message: "Category not found" });
   }
 
+  for (const specification of JSON.parse(specifications)) {
+    if (!foundCategory.specifications.includes(specification.type)) {
+      foundCategory.specifications.push(specification.type);
+    }
+    const newSpecification = await Specification.create({
+      type: specification.type,
+      value: specification.value,
+    });
+    newSpecifications.push(newSpecification._id);
+  }
+
+  await foundCategory.save();
+
   const foundSubcategory = await Subcategory.findOne({ name: subcategory });
 
   await Product.create({
@@ -143,7 +158,8 @@ const addProduct = asyncHandler(async (req, res, next) => {
     images,
     brand: foundBrand._id,
     category: foundCategory._id,
-    subcategory: foundCategory || foundSubcategory._id,
+    subcategory: foundSubcategory?._id,
+    specifications: newSpecifications,
   });
 
   res.status(200).json({ message: "Product has created successfuly" });
@@ -314,7 +330,7 @@ const addCategory = asyncHandler(async (req, res) => {
   await brand.save();
 
   const updatedCategories = await Brand.find().select("name").populate({
-    path: "subcategories",
+    path: "categories",
     select: "name",
   });
 
@@ -416,7 +432,6 @@ const removeProductFromCart = asyncHandler(async (req, res, next) => {
   }
 
   cart.products = cart.products.filter((item) => {
-    console.log(item.product.toString(), productId);
     return item.product.toString() !== productId;
   });
 

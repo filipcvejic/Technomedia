@@ -328,7 +328,7 @@ const addProductToCart = asyncHandler(async (req, res, next) => {
       name: addedProduct.name,
       description: addedProduct.description,
       price: addedProduct.price,
-      image: addedProduct.image,
+      image: addedProduct?.images[0],
       brand: addedProduct.brand,
       category: addedProduct.category,
       subcategory: addedProduct.subcategory || null,
