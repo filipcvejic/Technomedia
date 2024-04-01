@@ -15,10 +15,13 @@ const productSchema = new Schema(
       type: Number,
       required: true,
     },
-    image: {
-      type: String,
-      required: true,
-    },
+    images: [
+      {
+        type: Schema.Types.ObjectId,
+        required: true,
+        ref: "Image",
+      },
+    ],
     brand: {
       type: Schema.Types.ObjectId,
       ref: "Brand",
@@ -33,6 +36,7 @@ const productSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Subcategory",
     },
+    specifications: [{ type: Schema.Types.ObjectId, ref: "Specification" }],
   },
   { timestamps: true }
 );
