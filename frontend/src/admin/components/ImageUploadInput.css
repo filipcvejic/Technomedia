@@ -54,10 +54,22 @@
   height: 60px;
 }
 
+.single-image-preview .remove-circle {
+  background-color: #ff7c32;
+  border-radius: 50%;
+  height: 20px;
+  width: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: -15px -8px 0 0;
+}
+
 .single-image-preview .remove-image-button {
   position: absolute;
   border: none;
   background-color: transparent;
+  height: 20px;
   top: 0;
   right: 0;
   padding: 0;
