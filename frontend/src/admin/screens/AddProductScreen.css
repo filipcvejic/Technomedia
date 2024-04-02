@@ -16,7 +16,7 @@
 .image-price-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 28px;
 }
 
 .image-price-wrapper .image-container,
@@ -128,10 +128,6 @@
 }
 
 .react-select__option:hover {
-  background-color: #ffc69f !important;
-}
-
-.react-select__menu-list > .react-select__option:first-of-type:hover {
   background-color: #ffc69f !important;
 }
 
