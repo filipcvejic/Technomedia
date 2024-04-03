@@ -19,7 +19,7 @@ const categorySchema = new Schema({
   },
   specifications: [
     {
-      type: Schema.Types.ObjectId,
+      type: String,
       ref: "Specification",
     },
   ],

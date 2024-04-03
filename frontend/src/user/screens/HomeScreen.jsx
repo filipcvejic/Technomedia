@@ -120,7 +120,7 @@ const HomeScreen = () => {
               description: "Best washing machine",
               price: 599.99,
               image: "9a286ffc-564e-492a-8d6d-6bc72b4bd40f_.png",
-              brand: "66009fae180274c42401607a",
+              brand: { _id: "66009fae180274c42401607a", name: "Bosch" },
               category: {
                 _id: "6600a19b93fde57dc34234f5",
                 name: "Washing machine",
@@ -135,7 +135,7 @@ const HomeScreen = () => {
               description: "Best gaming mouse",
               price: 79.99,
               image: "fafcdaa0-c6a9-42b4-89d6-059121760459_.png",
-              brand: "6600a746e0336efb4b41b8ed",
+              brand: { _id: "6600a746e0336efb4b41b8ed", name: "Asus" },
               category: {
                 _id: "6600a754e0336efb4b41b8f1",
                 name: "Mouse",
@@ -150,7 +150,7 @@ const HomeScreen = () => {
               description: "Best smart tv",
               price: 449.99,
               image: "82d806b0-1ea0-4722-b00e-a9e02da9bb3f_.png",
-              brand: "6600a7d8e0336efb4b41b901",
+              brand: { _id: "6600a7d8e0336efb4b41b901", name: "Panasonic" },
               category: {
                 _id: "6600a7e4e0336efb4b41b905",
                 name: "TV",
@@ -165,7 +165,7 @@ const HomeScreen = () => {
               description: "Best gaming keyboard",
               price: 150,
               image: "eb09f370-0d00-4be7-a2f0-dfd2045fcc4c_.png",
-              brand: "6600b30c0cd179e15253fc5c",
+              brand: { _id: "6600b30c0cd179e15253fc5c", name: "Genius" },
               category: {
                 _id: "6600b3f40cd179e15253fc62",
                 name: "Keyboard",

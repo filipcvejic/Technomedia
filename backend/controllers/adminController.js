@@ -358,8 +358,8 @@ const addSubcategory = asyncHandler(async (req, res) => {
   category.subcategories.push(subcategory._id);
   await category.save();
 
-  const updatedSubcategories = await Brand.find().select("name").populate({
-    path: "category",
+  const updatedSubcategories = await Category.find().select("name").populate({
+    path: "subcategories",
     select: "name",
   });
 
