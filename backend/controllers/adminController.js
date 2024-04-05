@@ -188,6 +188,33 @@ const getAllProducts = asyncHandler(async (req, res, next) => {
   res.status(200).json({ products });
 });
 
+const getInfoForAddingProduct = asyncHandler(async (req, res, next) => {
+  const products = await Product.find()
+    .select("-createdAt -updatedAt -__v")
+    .populate({
+      path: "images",
+      select: "url",
+    })
+    .populate({
+      path: "brand",
+      select: "name",
+    })
+    .populate({
+      path: "category",
+      select: "name",
+    })
+    .populate({
+      path: "subcategory",
+      select: "name",
+    })
+    .populate({
+      path: "specifications",
+      select: "type",
+    });
+
+  res.status(200).json({ products });
+});
+
 const getProductByCategory = asyncHandler(async (req, res, next) => {
   const categoryName = req.params.category;
 
@@ -290,7 +317,7 @@ const getSubcategories = asyncHandler(async (req, res) => {
 });
 
 const addBrand = asyncHandler(async (req, res) => {
-  const brandName = req.body.brand;
+  const { brandName } = req.body;
 
   const brand = await Brand.findOne({ name: brandName });
 
@@ -298,18 +325,16 @@ const addBrand = asyncHandler(async (req, res) => {
     return res.status(401).json({ message: "This brand already exists" });
   }
 
-  await Brand.create({
+  const newBrand = await Brand.create({
     name: brandName,
   });
 
-  const updatedBrands = await Brand.find().select("name").populate({
-    path: "categories",
-    select: "name",
-  });
+  // const updatedBrands = await Brand.find().select("name").populate({
+  //   path: "categories",
+  //   select: "name",
+  // });
 
-  res
-    .status(200)
-    .json({ brands: updatedBrands, message: "Brand has created successfuly" });
+  res.status(200).json({ newBrand, message: "Brand has created successfuly" });
 });
 
 const addCategory = asyncHandler(async (req, res) => {
@@ -510,4 +535,5 @@ module.exports = {
   addProductToCart,
   removeProductFromCart,
   decreaseProductQuantity,
+  getInfoForAddingProduct,
 };
