@@ -287,8 +287,6 @@ const getCategories = asyncHandler(async (req, res) => {
 const addProductToCart = asyncHandler(async (req, res, next) => {
   const { product, quantity } = req.body;
 
-  console.log(product);
-
   let cart = await Cart.findOne({ user: req.user._id });
 
   if (!cart) {

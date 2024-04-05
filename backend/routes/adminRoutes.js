@@ -18,6 +18,7 @@ const {
   decreaseProductQuantity,
   addBrand,
   getBrands,
+  getInfoForAddingProduct,
 } = require("../controllers/adminController");
 const { adminProtect } = require("../middleware/authMiddleware");
 
@@ -68,5 +69,6 @@ router.get(
 );
 // router.get("/categories", adminProtect, getCategories);
 router.get("/brands", adminProtect, getBrands);
+router.get("/info/products", adminProtect, getInfoForAddingProduct);
 
 module.exports = router;
