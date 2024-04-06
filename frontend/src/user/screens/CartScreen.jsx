@@ -22,11 +22,11 @@ function CartScreen() {
         <h1 className="cart-content-title">Your cart</h1>
         <div className="cart-items">
           {cart.map((item) => {
-            totalAmount += item.product.price * item.quantity;
+            totalAmount += item.product?.price * item.quantity;
             return (
-              <div className="cart-item" key={item.product._id}>
+              <div className="cart-item" key={item.product?._id}>
                 <img
-                  src={`http://localhost:5000/images/${item.product.image}`}
+                  src={`http://localhost:5000/images/${item.product?.image}`}
                 />
                 <p className="cart-item-description">
                   Laptop HP 15s-fq0002nm N4120/4/256 9J2W7EA Intel Celeron N4120
@@ -34,12 +34,12 @@ function CartScreen() {
                 </p>
                 <div className="cart-item-details">
                   <QuantityInput item={item} />
-                  <span>{item.product.price - 0.01} EUR</span>
+                  <span>{item.product?.price - 0.01} EUR</span>
                 </div>
                 <button
                   className="remove-cart-item-button"
                   onClick={(event) =>
-                    removeItemFromCartHandler(event, item.product._id)
+                    removeItemFromCartHandler(event, item.product?._id)
                   }
                 >
                   <svg
