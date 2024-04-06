@@ -69,6 +69,6 @@ router.get(
 );
 // router.get("/categories", adminProtect, getCategories);
 router.get("/brands", adminProtect, getBrands);
-router.get("/info/products", adminProtect, getInfoForAddingProduct);
+router.get("/records/info", adminProtect, getInfoForAddingProduct);
 
 module.exports = router;
