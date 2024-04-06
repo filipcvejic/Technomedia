@@ -1,56 +1,28 @@
 import Creatable from "react-select/creatable";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 function BrandSelectInput({
+  onSelectBrand,
+  onChangeCategory,
+  onChangeSubcategory,
   brands,
-  setBrands,
-  setBrand,
-  setCategory,
-  brand,
-  setCategories,
+  initialBrand,
 }) {
-  const getCategories = async (brandId) => {
-    try {
-      const response = await fetch(
-        `http://localhost:3000/api/admin/brands/${brandId}/categories`
-      );
+  const [selectedBrand, setSelectedBrand] = useState(initialBrand || null);
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message);
-      }
-
-      setCategories(data.categories);
-    } catch (err) {
-      toast.error(err?.message);
-    }
-  };
-
-  const onSelectBrandHandler = (selectedBrand) => {
-    const brandId = brands.find((brand) => brand.name === selectedBrand)?._id;
-
-    if (brandId) {
-      setCategory("");
-      getCategories(brandId);
-    }
-  };
-
-  const options = brands.map((singleBrand) => ({
-    value: singleBrand.name,
-    label: singleBrand.name,
-  }));
+  useEffect(() => {
+    onChangeCategory("");
+    onChangeSubcategory("");
+  }, [selectedBrand]);
 
   const onBrandChangeHadler = (selectedOption) => {
-    setBrand(selectedOption.value);
-    onSelectBrandHandler(selectedOption.value);
+    setSelectedBrand(selectedOption);
+    onSelectBrand(selectedOption.value, selectedOption._id);
   };
 
   const createBrandHandler = async (inputValue) => {
     try {
-      const newOption = { value: inputValue, label: inputValue };
-      const brandId = brands.find((brand) => brand.name === inputValue)?._id;
-
       const response = await fetch(
         `http://localhost:3000/api/admin/add-brand`,
         {
@@ -59,7 +31,7 @@ function BrandSelectInput({
             "Content-Type": "application/json",
           },
           credentials: "include",
-          body: JSON.stringify({ brand: inputValue }),
+          body: JSON.stringify({ brandName: inputValue }),
         }
       );
 
@@ -69,15 +41,25 @@ function BrandSelectInput({
         throw new Error(data.message);
       }
 
-      setBrand(inputValue);
-      setBrands(data.brands);
-      onSelectBrandHandler(inputValue);
+      const newBrand = { name: data.newBrand.name, _id: data.newBrand._id };
+      setSelectedBrand({
+        value: newBrand.name,
+        label: newBrand.name,
+        _id: newBrand._id,
+      });
+      onSelectBrand(newBrand.name, newBrand._id, newBrand);
       toast.success(data.message);
-      return newOption;
     } catch (err) {
       toast.error(err?.message);
     }
   };
+
+  const options =
+    brands?.map((singleBrand) => ({
+      value: singleBrand.name,
+      label: singleBrand.name,
+      _id: singleBrand._id,
+    })) || [];
 
   return (
     <div className="brand-select-input">
@@ -99,7 +81,7 @@ function BrandSelectInput({
         options={options}
         onChange={onBrandChangeHadler}
         onCreateOption={createBrandHandler}
-        value={{ value: brand, label: brand }}
+        value={selectedBrand}
         placeholder="Select or type a new brand..."
         isSearchable
       />
