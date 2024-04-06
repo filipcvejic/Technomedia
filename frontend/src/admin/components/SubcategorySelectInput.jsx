@@ -1,26 +1,31 @@
+import { useEffect, useState } from "react";
 import Creatable from "react-select/creatable";
 import { toast } from "react-toastify";
 
 function SubcategorySelectInput({
-  setSubcategories,
+  onSelectSubcategory,
   subcategories,
-  subcategory,
-  setSubcategory,
-  category,
+  selectedBrand,
+  selectedCategory,
+  onChangeSubcategory,
+  initialSubcategory,
 }) {
-  const options = subcategories.map((singleSubcategory) => ({
-    value: singleSubcategory.name,
-    label: singleSubcategory.name,
-  }));
+  const [selectedSubcategory, setSelectedSubcategory] = useState(
+    initialSubcategory || null
+  );
+
+  useEffect(() => {
+    setSelectedSubcategory(null);
+    onChangeSubcategory("");
+  }, [selectedBrand, selectedCategory]);
 
   const onSubcategoryChangeHadler = (selectedOption) => {
-    setSubcategory(selectedOption.value);
+    setSelectedSubcategory(selectedOption);
+    onSelectSubcategory(selectedOption.value, selectedOption._id);
   };
 
   const createSubcategoryHandler = async (inputValue) => {
     try {
-      const newOption = { value: inputValue, label: inputValue };
-
       const response = await fetch(
         `http://localhost:3000/api/admin/add-subcategory`,
         {
@@ -29,7 +34,11 @@ function SubcategorySelectInput({
             "Content-Type": "application/json",
           },
           credentials: "include",
-          body: JSON.stringify({ category, subcategory: inputValue }),
+          body: JSON.stringify({
+            subcategoryName: inputValue,
+            categoryName: selectedCategory,
+            brandName: selectedBrand,
+          }),
         }
       );
 
@@ -39,14 +48,32 @@ function SubcategorySelectInput({
         throw new Error(data.message);
       }
 
-      setSubcategories(data.subcategories);
-      setSubcategory(inputValue);
+      const newSubcategory = {
+        name: data.newSubcategory.name,
+        _id: data.newSubcategory._id,
+      };
+      setSelectedSubcategory({
+        value: newSubcategory.name,
+        label: newSubcategory.name,
+        _id: newSubcategory._id,
+      });
+      onSelectSubcategory(
+        newSubcategory.name,
+        newSubcategory._id,
+        newSubcategory
+      );
       toast.success(data.message);
-      return newOption;
     } catch (err) {
       toast.error(err?.message);
     }
   };
+
+  const options =
+    subcategories?.map((singleSubcategory) => ({
+      value: singleSubcategory.name,
+      label: singleSubcategory.name,
+      _id: singleSubcategory._id,
+    })) || [];
 
   return (
     <div className="subcategory-select-input">
@@ -68,7 +95,7 @@ function SubcategorySelectInput({
         options={options}
         onChange={onSubcategoryChangeHadler}
         onCreateOption={createSubcategoryHandler}
-        value={{ value: subcategory, label: subcategory }}
+        value={selectedSubcategory}
         placeholder="Select or type a new subcategory..."
         isSearchable
       />

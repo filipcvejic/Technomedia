@@ -1,58 +1,30 @@
+import { useEffect, useState } from "react";
 import Creatable from "react-select/creatable";
 import { toast } from "react-toastify";
 
 function CategorySelectInput({
-  setCategories,
-  brand,
+  onSelectCategory,
   categories,
-  setCategory,
-  setSubcategory,
-  category,
-  setSubcategories,
+  selectedBrand,
+  onChangeSubcategory,
+  initialCategory,
 }) {
-  const getSubcategories = async (categoryId) => {
-    try {
-      const response = await fetch(
-        `http://localhost:3000/api/admin/categories/${categoryId}/subcategories`
-      );
+  const [selectedCategory, setSelectedCategory] = useState(
+    initialCategory || null
+  );
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message);
-      }
-
-      setSubcategories(data.subcategories);
-    } catch (err) {
-      toast.error(err?.message);
-    }
-  };
-
-  const onSelectCategoryHandler = (selectedCategory) => {
-    const categoryId = categories.find(
-      (category) => category.name === selectedCategory
-    )?._id;
-
-    if (categoryId) {
-      setSubcategory("");
-      getSubcategories(categoryId);
-    }
-  };
-
-  const options = categories.map((singleCategory) => ({
-    value: singleCategory.name,
-    label: singleCategory.name,
-  }));
+  useEffect(() => {
+    setSelectedCategory(null);
+    onChangeSubcategory("");
+  }, [selectedBrand]);
 
   const onCategoryChangeHadler = (selectedOption) => {
-    setCategory(selectedOption.value);
-    onSelectCategoryHandler(selectedOption.value);
+    setSelectedCategory(selectedOption);
+    onSelectCategory(selectedOption.value, selectedOption._id);
   };
 
   const createCategoryHandler = async (inputValue) => {
     try {
-      const newOption = { value: inputValue, label: inputValue };
-
       const response = await fetch(
         `http://localhost:3000/api/admin/add-category`,
         {
@@ -61,7 +33,7 @@ function CategorySelectInput({
             "Content-Type": "application/json",
           },
           credentials: "include",
-          body: JSON.stringify({ brand, category: inputValue }),
+          body: JSON.stringify({ categoryName: inputValue }),
         }
       );
 
@@ -71,15 +43,28 @@ function CategorySelectInput({
         throw new Error(data.message);
       }
 
-      setCategories(data.categories);
-      setCategory(inputValue);
-      onSelectCategoryHandler(inputValue);
+      const newCategory = {
+        name: data.newCategory.name,
+        _id: data.newCategory._id,
+      };
+      setSelectedCategory({
+        value: newCategory.name,
+        label: newCategory.name,
+        _id: newCategory._id,
+      });
+      onSelectCategory(newCategory.name, newCategory._id, newCategory);
       toast.success(data.message);
-      return newOption;
     } catch (err) {
       toast.error(err?.message);
     }
   };
+
+  const options =
+    categories?.map((singleCategory) => ({
+      value: singleCategory.name,
+      label: singleCategory.name,
+      _id: singleCategory._id,
+    })) || [];
 
   return (
     <div className="category-select-input">
@@ -101,7 +86,7 @@ function CategorySelectInput({
         options={options}
         onChange={onCategoryChangeHadler}
         onCreateOption={createCategoryHandler}
-        value={{ value: category, label: category }}
+        value={selectedCategory}
         placeholder="Select or type a new category..."
         isSearchable
       />
