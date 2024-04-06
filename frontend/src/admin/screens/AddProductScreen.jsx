@@ -16,18 +16,22 @@ function AddProductScreen() {
   const [brand, setBrand] = useState("");
   const [category, setCategory] = useState("");
   const [subcategory, setSubcategory] = useState("");
+  const [specifications, setSpecifications] = useState([]);
   const [brands, setBrands] = useState([]);
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
-  const [productSpecs, setProductSpecs] = useState([]);
+
+  console.log(category);
 
   useEffect(() => {
-    getBrands();
+    getRecords();
   }, []);
 
-  const getBrands = async () => {
+  const getRecords = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/admin/brands");
+      const response = await fetch(
+        "http://localhost:3000/api/admin/records/info"
+      );
 
       const data = await response.json();
 
@@ -35,10 +39,56 @@ function AddProductScreen() {
         throw new Error(data.message);
       }
 
-      setBrands(data.brands);
+      setBrands(data.records.map((singleBrand) => singleBrand));
     } catch (err) {
       toast.error(err?.message);
     }
+  };
+
+  const onChangeCategoryHandler = (category) => {
+    setCategory(category);
+  };
+
+  const onChangeSubcategoryHandler = (subcategory) => {
+    setSubcategory(subcategory);
+  };
+
+  const onSelectBrandHandler = (brandName, brandId, newBrand) => {
+    setBrand(brandName);
+
+    const selectedBrand = brands.find((brand) => brand._id === brandId);
+    if (selectedBrand) {
+      setCategories(selectedBrand.categories);
+      setSubcategories([]);
+    }
+
+    if (newBrand && !brands.find((brand) => brand._id === newBrand._id)) {
+      setBrands((prevBrands) => [...prevBrands, newBrand]);
+    }
+  };
+
+  const onSelectCategoryHandler = (categoryName, categoryId, newCategory) => {
+    setCategory(categoryName);
+
+    const selectedCategory = categories.find(
+      (category) => category._id === categoryId
+    );
+    if (selectedCategory) {
+      setSubcategories(selectedCategory.subcategories);
+    }
+
+    if (
+      newCategory &&
+      !categories.find((category) => category._id === newCategory._id)
+    ) {
+      setCategories((prevCategories) => [...prevCategories, newCategory]);
+    }
+  };
+
+  console.log(category);
+
+  const onSelectSubcategoryHandler = (subcategory) => {
+    setSubcategory(subcategory);
   };
 
   const imageUploadHandler = (images) => {
@@ -50,7 +100,7 @@ function AddProductScreen() {
   };
 
   const addSpecificationHandler = (specs) => {
-    setProductSpecs(specs);
+    setSpecifications(specs);
   };
 
   const addProductHandler = async (e) => {
@@ -69,7 +119,9 @@ function AddProductScreen() {
       formData.append("brand", brand);
       formData.append("category", category);
       formData.append("subcategory", subcategory);
-      formData.append("specifications", JSON.stringify(productSpecs));
+      formData.append("specifications", JSON.stringify(specifications));
+
+      console.log(brand, category);
 
       const response = await fetch(
         "http://localhost:3000/api/admin/add-product",
@@ -85,7 +137,6 @@ function AddProductScreen() {
       if (!response.ok) {
         throw new Error(data.message);
       }
-
       setName("");
       setDescription("");
       setPrice("");
@@ -94,13 +145,15 @@ function AddProductScreen() {
       setBrand("");
       setCategory("");
       setSubcategory("");
-      setProductSpecs([]);
+      setSpecifications([]);
 
       toast.success(data.message);
     } catch (err) {
       toast.error(err?.message);
     }
   };
+
+  console.log(brands);
 
   return (
     <div className="add-product-container">
@@ -112,6 +165,7 @@ function AddProductScreen() {
             <ImageUploadInput
               onImageUpload={imageUploadHandler}
               onResetImages={resetImagesHandler}
+              initialImages={images}
             />
           </div>
           <div className="price-container">
@@ -150,32 +204,44 @@ function AddProductScreen() {
           </div>
           <div className="form-element">
             <BrandSelectInput
-              setBrands={setBrands}
-              brands={brands}
-              setBrand={setBrand}
-              setCategory={setCategory}
-              brand={brand}
-              setCategories={setCategories}
+              onSelectBrand={onSelectBrandHandler}
+              onChangeCategory={onChangeCategoryHandler}
+              onChangeSubcategory={onChangeSubcategoryHandler}
+              initialBrand={brand}
+              brands={
+                brands
+                  ? brands.map((brand) => ({
+                      _id: brand._id,
+                      name: brand.name,
+                    }))
+                  : []
+              }
             />
           </div>
           <div className="form-element">
             <CategorySelectInput
-              brand={brand}
-              setCategories={setCategories}
-              categories={categories}
-              setCategory={setCategory}
-              setSubcategory={setSubcategory}
-              category={category}
-              setSubcategories={setSubcategories}
+              onSelectCategory={onSelectCategoryHandler}
+              onChangeSubcategory={onChangeSubcategoryHandler}
+              selectedBrand={brand}
+              initialCategory={category}
+              categories={
+                categories
+                  ? categories.map((category) => ({
+                      _id: category._id,
+                      name: category.name,
+                    }))
+                  : []
+              }
             />
           </div>
           <div className="form-element">
             <SubcategorySelectInput
-              setSubcategories={setSubcategories}
+              onSelectSubcategory={onSelectSubcategoryHandler}
               subcategories={subcategories}
-              subcategory={subcategory}
-              setSubcategory={setSubcategory}
-              category={category}
+              selectedBrand={brand}
+              selectedCategory={category}
+              initialSubcategory={subcategory}
+              onChangeSubcategory={onChangeSubcategoryHandler}
             />
           </div>
           <div className="form">
