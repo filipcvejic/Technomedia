@@ -9,18 +9,12 @@ function CategorySelectInput({
   onChangeSubcategory,
   initialCategory,
 }) {
-  const [selectedCategory, setSelectedCategory] = useState(
-    initialCategory || null
-  );
-
   useEffect(() => {
-    setSelectedCategory(null);
     onChangeSubcategory("");
   }, [selectedBrand]);
 
   const onCategoryChangeHadler = (selectedOption) => {
-    setSelectedCategory(selectedOption);
-    onSelectCategory(selectedOption.value, selectedOption._id);
+    onSelectCategory(selectedOption);
   };
 
   const createCategoryHandler = async (inputValue) => {
@@ -33,7 +27,10 @@ function CategorySelectInput({
             "Content-Type": "application/json",
           },
           credentials: "include",
-          body: JSON.stringify({ categoryName: inputValue }),
+          body: JSON.stringify({
+            brandId: selectedBrand._id,
+            categoryName: inputValue,
+          }),
         }
       );
 
@@ -43,16 +40,20 @@ function CategorySelectInput({
         throw new Error(data.message);
       }
 
-      const newCategory = {
-        name: data.newCategory.name,
-        _id: data.newCategory._id,
-      };
-      setSelectedCategory({
-        value: newCategory.name,
-        label: newCategory.name,
-        _id: newCategory._id,
-      });
-      onSelectCategory(newCategory.name, newCategory._id, newCategory);
+      const newCategory = data.newCategory;
+
+      const isNewCategory = !categories.find(
+        (category) => category._id === newCategory._id
+      );
+
+      onSelectCategory(
+        {
+          value: newCategory.name,
+          label: newCategory.name,
+          _id: newCategory._id,
+        },
+        isNewCategory && { info: newCategory }
+      );
       toast.success(data.message);
     } catch (err) {
       toast.error(err?.message);
@@ -86,7 +87,7 @@ function CategorySelectInput({
         options={options}
         onChange={onCategoryChangeHadler}
         onCreateOption={createCategoryHandler}
-        value={selectedCategory}
+        value={initialCategory}
         placeholder="Select or type a new category..."
         isSearchable
       />

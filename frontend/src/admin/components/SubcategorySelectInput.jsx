@@ -10,18 +10,12 @@ function SubcategorySelectInput({
   onChangeSubcategory,
   initialSubcategory,
 }) {
-  const [selectedSubcategory, setSelectedSubcategory] = useState(
-    initialSubcategory || null
-  );
-
   useEffect(() => {
-    setSelectedSubcategory(null);
     onChangeSubcategory("");
   }, [selectedBrand, selectedCategory]);
 
   const onSubcategoryChangeHadler = (selectedOption) => {
-    setSelectedSubcategory(selectedOption);
-    onSelectSubcategory(selectedOption.value, selectedOption._id);
+    onSelectSubcategory(selectedOption);
   };
 
   const createSubcategoryHandler = async (inputValue) => {
@@ -36,8 +30,8 @@ function SubcategorySelectInput({
           credentials: "include",
           body: JSON.stringify({
             subcategoryName: inputValue,
-            categoryName: selectedCategory,
-            brandName: selectedBrand,
+            categoryId: selectedCategory._id,
+            brandId: selectedBrand._id,
           }),
         }
       );
@@ -48,19 +42,21 @@ function SubcategorySelectInput({
         throw new Error(data.message);
       }
 
-      const newSubcategory = {
-        name: data.newSubcategory.name,
-        _id: data.newSubcategory._id,
-      };
-      setSelectedSubcategory({
-        value: newSubcategory.name,
-        label: newSubcategory.name,
-        _id: newSubcategory._id,
-      });
+      const newSubcategory = data.newSubcategory;
+
+      const isNewSubcategory = !subcategories.find(
+        (subcategory) => subcategory._id === newSubcategory._id
+      );
+
       onSelectSubcategory(
-        newSubcategory.name,
-        newSubcategory._id,
-        newSubcategory
+        {
+          value: newSubcategory.name,
+          label: newSubcategory.name,
+          _id: newSubcategory._id,
+        },
+        isNewSubcategory && {
+          info: newSubcategory,
+        }
       );
       toast.success(data.message);
     } catch (err) {
@@ -95,7 +91,7 @@ function SubcategorySelectInput({
         options={options}
         onChange={onSubcategoryChangeHadler}
         onCreateOption={createSubcategoryHandler}
-        value={selectedSubcategory}
+        value={initialSubcategory}
         placeholder="Select or type a new subcategory..."
         isSearchable
       />

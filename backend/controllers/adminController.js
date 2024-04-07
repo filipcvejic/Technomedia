@@ -340,8 +340,12 @@ const addCategory = asyncHandler(async (req, res) => {
   brand.categories.push(newCategory._id);
   await brand.save();
 
+  const adjustedNewCategoryInfo = await Category.findById(
+    newCategory._id
+  ).select("-__v -brand");
+
   res.status(200).json({
-    newCategory,
+    newCategory: adjustedNewCategoryInfo,
     message: "Category has created successfuly",
   });
 });
@@ -372,8 +376,12 @@ const addSubcategory = asyncHandler(async (req, res) => {
   category.subcategories.push(newSubcategory._id);
   await category.save();
 
+  const adjustedNewSubcategoryInfo = await Subcategory.findById(
+    newSubcategory._id
+  ).select("-__v");
+
   res.status(200).json({
-    newSubcategory,
+    newSubcategory: adjustedNewSubcategoryInfo,
     message: "Subcategory has created successfuly",
   });
 });

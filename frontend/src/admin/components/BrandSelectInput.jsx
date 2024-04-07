@@ -9,16 +9,13 @@ function BrandSelectInput({
   brands,
   initialBrand,
 }) {
-  const [selectedBrand, setSelectedBrand] = useState(initialBrand || null);
-
   useEffect(() => {
     onChangeCategory("");
     onChangeSubcategory("");
-  }, [selectedBrand]);
+  }, [initialBrand]);
 
   const onBrandChangeHadler = (selectedOption) => {
-    setSelectedBrand(selectedOption);
-    onSelectBrand(selectedOption.value, selectedOption._id);
+    onSelectBrand(selectedOption);
   };
 
   const createBrandHandler = async (inputValue) => {
@@ -41,13 +38,21 @@ function BrandSelectInput({
         throw new Error(data.message);
       }
 
-      const newBrand = { name: data.newBrand.name, _id: data.newBrand._id };
-      setSelectedBrand({
-        value: newBrand.name,
-        label: newBrand.name,
-        _id: newBrand._id,
-      });
-      onSelectBrand(newBrand.name, newBrand._id, newBrand);
+      const newBrand = data.newBrand;
+
+      const isNewBrand = !brands.find((brand) => brand._id === newBrand._id);
+
+      onSelectBrand(
+        {
+          value: newBrand.name,
+          label: newBrand.name,
+          _id: newBrand._id,
+        },
+        isNewBrand && {
+          info: newBrand,
+        }
+      );
+
       toast.success(data.message);
     } catch (err) {
       toast.error(err?.message);
@@ -81,7 +86,7 @@ function BrandSelectInput({
         options={options}
         onChange={onBrandChangeHadler}
         onCreateOption={createBrandHandler}
-        value={selectedBrand}
+        value={initialBrand}
         placeholder="Select or type a new brand..."
         isSearchable
       />
