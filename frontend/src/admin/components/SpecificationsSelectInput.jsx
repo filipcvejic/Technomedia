@@ -2,36 +2,32 @@ import { useState } from "react";
 
 import "./SpecificationsSelectInput.css";
 
-function ProductSpecContainer({ onSpecSelect }) {
-  const [specs, setSpecs] = useState([]);
+function ProductSpecContainer({ onSpecSelect, initialSpecifications }) {
   const [invalidIndex, setInvalidIndex] = useState(-1);
 
   const handleChange = (index, key, value) => {
-    const updatedSpecs = [...specs];
+    const updatedSpecs = [...initialSpecifications];
     updatedSpecs[index][key] = value;
-    setSpecs(updatedSpecs);
     onSpecSelect(updatedSpecs);
   };
 
-  const addSpec = () => {
-    const lastSpec = specs[specs.length - 1];
+  const addSpecification = () => {
+    const lastSpec = initialSpecifications[initialSpecifications.length - 1];
     if (
       lastSpec &&
       (lastSpec.type.trim() === "" || lastSpec.value.trim() === "")
     ) {
-      setInvalidIndex(specs.length - 1);
+      setInvalidIndex(initialSpecifications.length - 1);
       return;
     }
 
-    setSpecs([...specs, { type: "", value: "" }]);
-    onSpecSelect([...specs, { type: "", quantity: "" }]);
+    onSpecSelect([...initialSpecifications, { type: "", quantity: "" }]);
     setInvalidIndex(-1);
   };
 
   const removeSpec = (index) => {
-    const updatedSpecs = [...specs];
+    const updatedSpecs = [...initialSpecifications];
     updatedSpecs.splice(index, 1);
-    setSpecs(updatedSpecs);
     onSpecSelect(updatedSpecs);
   };
 
@@ -41,7 +37,7 @@ function ProductSpecContainer({ onSpecSelect }) {
         <label htmlFor="specifications">Add specifications</label>
         <button
           className="add-specification-button"
-          onClick={addSpec}
+          onClick={addSpecification}
           type="button"
         >
           +
@@ -49,7 +45,7 @@ function ProductSpecContainer({ onSpecSelect }) {
       </div>
       <div className="specifications-container">
         <div className="specification-type-container">
-          {specs.map((spec, index) => (
+          {initialSpecifications?.map((spec, index) => (
             <div className="specification-type-details" key={index}>
               <input
                 type="text"
@@ -58,9 +54,9 @@ function ProductSpecContainer({ onSpecSelect }) {
                 value={spec.type}
                 onChange={(e) => handleChange(index, "type", e.target.value)}
                 style={{
-                  borderColor:
-                    index === invalidIndex && spec.type.trim() === ""
-                      ? "red"
+                  border:
+                    index === invalidIndex && spec.type?.trim() === ""
+                      ? "1px solid #ff7c32"
                       : "",
                 }}
               />
@@ -68,7 +64,7 @@ function ProductSpecContainer({ onSpecSelect }) {
           ))}
         </div>
         <div className="specification-value-container">
-          {specs.map((spec, index) => (
+          {initialSpecifications?.map((spec, index) => (
             <div className="specification-value-details" key={index}>
               <input
                 type="text"
@@ -78,8 +74,8 @@ function ProductSpecContainer({ onSpecSelect }) {
                 onChange={(e) => handleChange(index, "value", e.target.value)}
                 style={{
                   borderColor:
-                    index === invalidIndex && spec.value.trim() === ""
-                      ? "red"
+                    index === invalidIndex && spec.value?.trim() === ""
+                      ? "1px solid #ff7c32"
                       : "",
                 }}
               />
@@ -87,7 +83,7 @@ function ProductSpecContainer({ onSpecSelect }) {
           ))}
         </div>
         <div className="remove-specification-container">
-          {specs.map((spec, index) => (
+          {initialSpecifications?.map((spec, index) => (
             <button
               className="remove-specification-button"
               key={index}
