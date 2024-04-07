@@ -325,10 +325,9 @@ const addBrand = asyncHandler(async (req, res) => {
 });
 
 const addCategory = asyncHandler(async (req, res) => {
-  const brandName = req.body.brand;
-  const categoryName = req.body.category;
+  const { brandId, categoryName } = req.body;
 
-  const brand = await Brand.findOne({ name: brandName });
+  const brand = await Brand.findOne({ _id: brandId });
   if (!brand) {
     return res.status(404).json({ message: "Brand not found" });
   }
@@ -348,16 +347,16 @@ const addCategory = asyncHandler(async (req, res) => {
 });
 
 const addSubcategory = asyncHandler(async (req, res) => {
-  const { categoryName, subcategoryName, brandName } = req.body;
+  const { categoryId, subcategoryName, brandId } = req.body;
 
-  const brand = await Brand.findOne({ name: brandName });
+  const brand = await Brand.findOne({ _id: brandId });
 
   if (!brand) {
     return res.status(404).json({ message: "Brand not found" });
   }
 
   const category = await Category.findOne({
-    name: categoryName,
+    _id: categoryId,
     brand: brand._id,
   });
 

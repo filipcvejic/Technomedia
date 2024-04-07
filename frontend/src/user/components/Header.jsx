@@ -247,7 +247,7 @@ const Header = () => {
                               {item.product.category?.name}
                             </span>
                             <span className="single-item-price">
-                              {item.product.price - 0.01} EUR
+                              {item.product.price} EUR
                             </span>
                             <div className="single-item-quantity">
                               <QuantityInput item={item} />

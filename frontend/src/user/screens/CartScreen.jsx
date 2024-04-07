@@ -34,7 +34,7 @@ function CartScreen() {
                 </p>
                 <div className="cart-item-details">
                   <QuantityInput item={item} />
-                  <span>{item.product?.price - 0.01} EUR</span>
+                  <span>{item.product?.price} EUR</span>
                 </div>
                 <button
                   className="remove-cart-item-button"
@@ -64,7 +64,7 @@ function CartScreen() {
           <div className="orded-price-details">
             <div className="online-price">
               <p>Price for online payment:</p>
-              <span>{totalAmount - 0.01} EUR</span>
+              <span>{totalAmount} EUR</span>
             </div>
             <div className="online-discount">
               <p>Discount:</p>
@@ -73,7 +73,7 @@ function CartScreen() {
           </div>
           <div className="purchase-amount">
             <p>Purchase amount:</p>
-            <span>{totalAmount - 0.01}</span>
+            <span>{totalAmount}</span>
           </div>
           <button className="order-button">Order</button>
         </div>
