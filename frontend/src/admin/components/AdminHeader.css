@@ -1,0 +1,11 @@
+.admin-header {
+  background-image: linear-gradient(to bottom right, #ff9900, #ff5c00);
+  color: white;
+  height: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 30px;
+  padding-inline: 50px;
+  font-weight: 600;
+}
