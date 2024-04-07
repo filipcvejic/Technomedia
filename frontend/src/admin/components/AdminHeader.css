@@ -1,6 +1,11 @@
-.admin-header {
+.admin-header-wrapper {
+  width: 100%;
   background-image: linear-gradient(to bottom right, #ff9900, #ff5c00);
+}
+
+.admin-header {
   color: white;
+  max-width: 1440px;
   height: 100px;
   display: flex;
   justify-content: space-between;
@@ -8,4 +13,5 @@
   font-size: 30px;
   padding-inline: 50px;
   font-weight: 600;
+  margin: 0 auto;
 }

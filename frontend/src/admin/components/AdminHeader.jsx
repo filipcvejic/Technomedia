@@ -37,8 +37,8 @@ const AdminHeader = () => {
   };
 
   return (
-    <>
-      <header className="admin-header">
+    <div className="admin-header-wrapper">
+      <div className="admin-header">
         <div className="admin-header-logo">
           <a className="logo" href="/admin">
             <svg
@@ -62,8 +62,8 @@ const AdminHeader = () => {
             </span>
           )}
         </div>
-      </header>
-    </>
+      </div>
+    </div>
   );
 };
 
