@@ -1,14 +1,9 @@
-import { useState, useRef, useEffect } from "react";
+import { useRef } from "react";
 
 import "./ImageUploadInput.css";
 
-function ImageUploadInput({ onImageUpload, onResetImages }) {
-  const [images, setImages] = useState([]);
+function ImageUploadInput({ onImageUpload, initialImages }) {
   const fileInputRef = useRef(null);
-
-  useEffect(() => {
-    onResetImages();
-  }, [onResetImages]);
 
   const selectFiles = () => {
     fileInputRef.current.click();
@@ -19,19 +14,25 @@ function ImageUploadInput({ onImageUpload, onResetImages }) {
     if (files.length === 0) return;
 
     const newImages = [];
-    for (let i = 0; i < files.length && i < 3 - images.length; i++) {
+    for (let i = 0; i < files.length && i < 3 - initialImages.length; i++) {
       newImages.push(files[i]);
     }
 
-    setImages((prevImages) => [...prevImages, ...newImages]);
-    onImageUpload([...images, ...newImages]);
+    onImageUpload([...initialImages, ...newImages]);
   };
 
   const removeImageHandler = (index) => {
-    const updatedImages = [...images];
-    updatedImages.splice(index, 1);
-    setImages(updatedImages);
+    const updatedImages = initialImages.filter((_, i) => i !== index);
     onImageUpload(updatedImages);
+
+    const input = fileInputRef.current;
+    if (input && input.files.length > 0) {
+      const files = Array.from(input.files);
+      files.splice(index, 1);
+      const dataTransfer = new DataTransfer();
+      files.forEach((file) => dataTransfer.items.add(file));
+      input.files = dataTransfer.files;
+    }
   };
 
   return (
@@ -53,10 +54,10 @@ function ImageUploadInput({ onImageUpload, onResetImages }) {
       <div className="images-preview">
         {[...Array(3)].map((_, index) => (
           <div className="single-image-preview" key={index}>
-            {images[index] && (
+            {initialImages[index] && (
               <>
                 <img
-                  src={URL.createObjectURL(images[index])}
+                  src={URL.createObjectURL(initialImages[index])}
                   alt={`Image ${index}`}
                 />
                 <button
