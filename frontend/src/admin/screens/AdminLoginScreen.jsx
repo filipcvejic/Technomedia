@@ -5,6 +5,8 @@ import { setCredentials, setLoading } from "../features/auth/adminAuthSlice";
 import { logout as userLogout } from "../../user/features/auth/userAuthSlice";
 import { toast } from "react-toastify";
 
+import "./AdminLoginScreen.css";
+
 function AdminLoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -55,14 +57,10 @@ function AdminLoginScreen() {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-section">
-        <h2 className="login-heading">Registered users</h2>
-        <p className="login-description">
-          If you have an account, sign in using your email address.
-        </p>
-
-        <form className="login-form" onSubmit={loginHandler}>
+    <div className="admin-login-container">
+      <div className="admin-login-section">
+        <h1 className="admin-login-title">Admin Login</h1>
+        <form className="admin-login-form" onSubmit={loginHandler}>
           <div className="form-group">
             <label htmlFor="email" className="form-label">
               Email Address
@@ -91,26 +89,10 @@ function AdminLoginScreen() {
               required
             />
           </div>
-
-          <div className="actions-toolbar">
-            <button className="submit-button" type="submit">
-              Sign In
-            </button>
-            <div className="forgot-password">
-              <Link to="/forgotpassword">Forgot password?</Link>
-            </div>
-          </div>
+          <button className="submit-button" type="submit">
+            Login
+          </button>
         </form>
-      </div>
-      <div className="register-section">
-        <h2 className="register-heading">New user</h2>
-        <p className="register-description">
-          Creating an account on our site is fast and free! Enjoy the benefits
-          of simpler ordering and faster checkout.
-        </p>
-        <Link to="/register" className="register-button">
-          Register
-        </Link>
       </div>
     </div>
   );
