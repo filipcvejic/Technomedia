@@ -262,6 +262,14 @@ const getAllProducts = asyncHandler(async (req, res, next) => {
     .populate({
       path: "subcategory",
       select: "name",
+    })
+    .populate({
+      path: "images",
+      select: "url",
+    })
+    .populate({
+      path: "specifications",
+      select: "type value",
     });
 
   if (!products) {

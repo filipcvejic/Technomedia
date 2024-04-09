@@ -21,7 +21,6 @@ const userAuthSlice = createSlice({
     logout: (state, action) => {
       state.adminInfo = null;
       localStorage.removeItem("adminInfo");
-      localStorage.removeItem("cart");
     },
     setLoading: (state, action) => {
       state.isLoading = action.payload;
