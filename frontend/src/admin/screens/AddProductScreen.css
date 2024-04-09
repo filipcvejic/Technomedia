@@ -132,9 +132,12 @@
 }
 
 .react-select__option--is-selected {
-  background-color: #ff7c32 !important;
+  /* background-color: #ff7c32 !important; */
+  background-color: transparent !important;
+  color: black !important;
 }
 
 .react-select__option--is-focused {
-  background-color: #ffc69f !important;
+  /* background-color: #ffc69f !important; */
+  background-color: transparent !important;
 }

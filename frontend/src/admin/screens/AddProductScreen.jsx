@@ -21,8 +21,6 @@ function AddProductScreen() {
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
 
-  console.log(category);
-
   useEffect(() => {
     getRecords();
   }, []);
@@ -53,50 +51,90 @@ function AddProductScreen() {
     setSubcategory(subcategory);
   };
 
-  const onSelectBrandHandler = (brandName, brandId, newBrand) => {
-    setBrand(brandName);
+  const onSelectBrandHandler = (brandInput, newBrand) => {
+    setBrand(brandInput);
 
-    const selectedBrand = brands.find((brand) => brand._id === brandId);
+    const selectedBrand = brands.find(
+      (singleBrand) => singleBrand._id === brandInput._id
+    );
+
     if (selectedBrand) {
       setCategories(selectedBrand.categories);
       setSubcategories([]);
     }
 
-    if (newBrand && !brands.find((brand) => brand._id === newBrand._id)) {
-      setBrands((prevBrands) => [...prevBrands, newBrand]);
+    if (newBrand) {
+      setBrands((prevBrands) => [...prevBrands, newBrand.info]);
+      setCategories(newBrand.info.categories);
+      setSubcategories([]);
     }
   };
 
-  const onSelectCategoryHandler = (categoryName, categoryId, newCategory) => {
-    setCategory(categoryName);
+  const onSelectCategoryHandler = (categoryInput, newCategory) => {
+    setCategory(categoryInput);
 
     const selectedCategory = categories.find(
-      (category) => category._id === categoryId
+      (singleCategory) => singleCategory._id === categoryInput._id
     );
+
     if (selectedCategory) {
       setSubcategories(selectedCategory.subcategories);
     }
 
-    if (
-      newCategory &&
-      !categories.find((category) => category._id === newCategory._id)
-    ) {
-      setCategories((prevCategories) => [...prevCategories, newCategory]);
+    if (newCategory) {
+      const selectedBrandIndex = brands.findIndex(
+        (singleBrand) => singleBrand._id === brand._id
+      );
+
+      if (selectedBrandIndex !== -1) {
+        const updatedBrands = [...brands];
+
+        updatedBrands[selectedBrandIndex].categories.push(newCategory.info);
+
+        setBrands(updatedBrands);
+        setCategories(updatedBrands[selectedBrandIndex].categories);
+        setSubcategories([]);
+      }
     }
   };
 
-  console.log(category);
+  const onSelectSubcategoryHandler = (subcategoryInput, newSubcategory) => {
+    setSubcategory(subcategoryInput);
 
-  const onSelectSubcategoryHandler = (subcategory) => {
-    setSubcategory(subcategory);
+    if (newSubcategory) {
+      const updatedBrands = [...brands];
+
+      const selectedBrandIndex = updatedBrands.findIndex(
+        (singleBrand) => singleBrand._id === brand._id
+      );
+
+      if (selectedBrandIndex !== -1) {
+        const selectedCategoryIndex = updatedBrands[
+          selectedBrandIndex
+        ].categories.findIndex(
+          (singleCategory) => singleCategory._id === category._id
+        );
+
+        if (selectedCategoryIndex !== -1) {
+          const updatedCategory = {
+            ...updatedBrands[selectedBrandIndex].categories[
+              selectedCategoryIndex
+            ],
+          };
+          updatedCategory.subcategories.push(newSubcategory.info);
+          updatedBrands[selectedBrandIndex].categories[selectedCategoryIndex] =
+            updatedCategory;
+
+          setBrands(updatedBrands);
+          setCategories(updatedBrands[selectedBrandIndex].categories);
+          setSubcategories(updatedCategory.subcategories);
+        }
+      }
+    }
   };
 
   const imageUploadHandler = (images) => {
     setImages(images);
-  };
-
-  const resetImagesHandler = () => {
-    setImages([]);
   };
 
   const addSpecificationHandler = (specs) => {
@@ -116,9 +154,9 @@ function AddProductScreen() {
       formData.append("name", name);
       formData.append("description", description);
       formData.append("price", price);
-      formData.append("brand", brand);
-      formData.append("category", category);
-      formData.append("subcategory", subcategory);
+      formData.append("brand", brand?.label);
+      formData.append("category", category?.label);
+      formData.append("subcategory", subcategory?.label);
       formData.append("specifications", JSON.stringify(specifications));
 
       console.log(brand, category);
@@ -141,11 +179,12 @@ function AddProductScreen() {
       setDescription("");
       setPrice("");
       setImages([]);
-      resetImagesHandler();
       setBrand("");
       setCategory("");
       setSubcategory("");
       setSpecifications([]);
+      setCategories([]);
+      setSubcategories([]);
 
       toast.success(data.message);
     } catch (err) {
@@ -153,18 +192,14 @@ function AddProductScreen() {
     }
   };
 
-  console.log(brands);
-
   return (
     <div className="add-product-container">
-      {/* <h1 className="add-product-title">Add Product</h1> */}
       <form className="add-product-form" onSubmit={addProductHandler}>
         <div className="image-price-wrapper">
           <div className="image-container">
             <label htmlFor="image">Add images</label>
             <ImageUploadInput
               onImageUpload={imageUploadHandler}
-              onResetImages={resetImagesHandler}
               initialImages={images}
             />
           </div>
@@ -245,7 +280,10 @@ function AddProductScreen() {
             />
           </div>
           <div className="form">
-            <SpecificationsSelectInput onSpecSelect={addSpecificationHandler} />
+            <SpecificationsSelectInput
+              onSpecSelect={addSpecificationHandler}
+              initialSpecifications={specifications}
+            />
           </div>
           <div className="submit-product">
             <button type="submit">Add product</button>
