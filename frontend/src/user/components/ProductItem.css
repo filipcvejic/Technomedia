@@ -8,7 +8,7 @@
   display: inline-block;
   width: 100%;
   height: 190px;
-  object-fit: contain;
+  object-fit: cover;
 }
 
 .product-item-details .product-item-name {

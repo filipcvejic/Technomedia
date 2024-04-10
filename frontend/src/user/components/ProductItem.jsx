@@ -27,7 +27,7 @@ function ProductItem({ data }) {
           name: data.name,
           description: data.description,
           price: data.price,
-          image: data.image,
+          images: data.images,
           brand: data.brand?._id,
           category: data.category?._id,
           subcategory: data.subcategory?._id,
@@ -41,7 +41,7 @@ function ProductItem({ data }) {
             name: data.name,
             description: data.description,
             price: data.price,
-            image: data.image,
+            images: data.images,
             brand: data.brand?._id,
             category: data.category?._id,
             subcategory: data.subcategory?._id,
@@ -82,7 +82,9 @@ function ProductItem({ data }) {
         <span className="product-image-container">
           <img
             className="product-image-photo"
-            src={`http://localhost:5000/images/${data.image}`}
+            src={`http://localhost:5000/images/${
+              data.images[0].url.split("\\")[2]
+            }`}
             alt={data.name}
           />
         </span>
