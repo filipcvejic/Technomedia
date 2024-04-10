@@ -90,6 +90,7 @@ function CategorySelectInput({
         value={initialCategory}
         placeholder="Select or type a new category..."
         isSearchable
+        required
       />
     </div>
   );

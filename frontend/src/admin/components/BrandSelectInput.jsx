@@ -89,6 +89,7 @@ function BrandSelectInput({
         value={initialBrand}
         placeholder="Select or type a new brand..."
         isSearchable
+        required
       />
     </div>
   );
