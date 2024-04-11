@@ -32,7 +32,6 @@ function SearchBar() {
     setFilteredProducts(filtered);
   };
 
-  console.log(filteredProducts);
   return (
     <div className="search-form">
       <div className={`search-bar ${isFilterMenuExpanded ? "expanded" : ""}`}>

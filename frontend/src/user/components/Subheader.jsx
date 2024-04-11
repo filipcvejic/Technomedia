@@ -1,10 +1,14 @@
+import "../components/ProductsMenu";
+import ProductsMenu from "../components/ProductsMenu";
+
 import "./Subheader.css";
 
 function Subheader() {
   return (
     <div className="subheader">
       <div className="wrapperr">
-        <div className="productss">
+        <ProductsMenu />
+        {/* <div className="productss">
           <button>
             <svg
               width="42"
@@ -36,7 +40,7 @@ function Subheader() {
               <h3>Products</h3>
             </span>
           </button>
-        </div>
+        </div> */}
         <div className="header-nav">
           <ul className="nav-menu">
             <li>
