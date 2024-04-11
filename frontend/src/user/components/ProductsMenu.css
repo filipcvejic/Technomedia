@@ -1,0 +1,29 @@
+.all-products-container {
+  position: relative;
+}
+
+.all-products-container button {
+  background-color: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.products-dropdown-menu {
+  position: absolute;
+  color: black;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  margin: auto;
+  background-color: #fff;
+  display: flex;
+  flex-direction: row;
+}
+
+.single-products-subcategory {
+}

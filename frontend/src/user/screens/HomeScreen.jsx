@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 // import Slider from "../components/Slider";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -10,13 +10,14 @@ import ProductItem from "../components/ProductItem";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
+import { useProductsContext } from "../context/products-context";
 
 // import "swiper/css/bundle";
 
 const HomeScreen = () => {
-  useEffect(() => {
-    fetchProducts();
-  }, []);
+  const [filteredProducts, setFilteredProducts] = useState();
+
+  const { products, isLoading } = useProductsContext();
 
   const leftImages = [
     "/images/laptop-mockup.png",
@@ -52,14 +53,6 @@ const HomeScreen = () => {
     // customPaging: function (i) {
     //   return <CustomSliderDots />;
     // },
-  };
-
-  const fetchProducts = async () => {
-    const response = await fetch("http://localhost:3000/api/products");
-
-    const data = await response.json();
-
-    console.log(data.products);
   };
 
   return (
@@ -113,7 +106,10 @@ const HomeScreen = () => {
       <div className="recommended-products-container">
         <h1 className="recommended-products-title">Recommended products</h1>
         <div className="recommended-products">
-          <ProductItem
+          {products.map((product) => (
+            <ProductItem data={product} key={product._id} />
+          ))}
+          {/* <ProductItem
             data={{
               _id: "6600a56b8c649d96c2823335",
               name: "BOSCH WGG14402BY Washing machine",
@@ -172,7 +168,7 @@ const HomeScreen = () => {
               },
               subcategory: null,
             }}
-          />
+          /> */}
         </div>
       </div>
       <div className="special-discounts-container">

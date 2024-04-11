@@ -80,8 +80,6 @@ export const decreaseProductQuantity = createAsyncThunk(
 export const syncCartProducts = createAsyncThunk(
   "cart/syncCartProducts",
   async ({ cartProducts }, { rejectWithValue }) => {
-    console.log(cartProducts);
-
     try {
       const response = await fetch(
         "http://localhost:3000/api/cart/sync-products",

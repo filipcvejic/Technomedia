@@ -348,8 +348,6 @@ const addProductToCart = asyncHandler(async (req, res, next) => {
 const syncCartProducts = asyncHandler(async (req, res, next) => {
   const { cartProducts } = req.body;
 
-  console.log(cartProducts);
-
   const cart = await Cart.findOne({ user: req.user._id });
 
   if (!cart) {
@@ -393,15 +391,11 @@ const removeProductFromCart = asyncHandler(async (req, res, next) => {
 
   const updatedCart = await cart.save();
 
-  console.log(updatedCart);
-
   res.status(200).json({ message: "Product removed from cart successfully" });
 });
 
 const decreaseProductQuantity = asyncHandler(async (req, res, next) => {
   const { productId } = req.params;
-
-  console.log(productId);
 
   const cart = await Cart.findOne({ user: req.user._id });
 

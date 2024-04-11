@@ -16,7 +16,6 @@ const cartSlice = createSlice({
     setCart: (state, action) => {
       state.cart = action.payload;
       localStorage.setItem("cart", JSON.stringify(action.payload));
-      console.log(JSON.parse(localStorage.getItem("cart")));
     },
   },
   extraReducers: (builder) => {
