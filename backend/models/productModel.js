@@ -22,11 +22,6 @@ const productSchema = new Schema(
         ref: "Image",
       },
     ],
-    brand: {
-      type: Schema.Types.ObjectId,
-      ref: "Brand",
-      required: true,
-    },
     category: {
       type: Schema.Types.ObjectId,
       ref: "Category",
@@ -35,6 +30,17 @@ const productSchema = new Schema(
     subcategory: {
       type: Schema.Types.ObjectId,
       ref: "Subcategory",
+      required: true,
+    },
+    group: {
+      type: Schema.Types.ObjectId,
+      ref: "Group",
+      required: true,
+    },
+    brand: {
+      type: Schema.Types.ObjectId,
+      ref: "Brand",
+      required: true,
     },
     specifications: [{ type: Schema.Types.ObjectId, ref: "Specification" }],
   },

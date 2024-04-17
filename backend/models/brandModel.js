@@ -6,12 +6,6 @@ const brandSchema = new Schema({
     type: String,
     required: true,
   },
-  categories: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Category",
-    },
-  ],
 });
 
 const Brand = mongoose.model("Brand", brandSchema);

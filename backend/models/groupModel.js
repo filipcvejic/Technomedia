@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const subcategorySchema = new Schema({
+const groupSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -11,15 +11,20 @@ const subcategorySchema = new Schema({
     ref: "Category",
     required: true,
   },
-  groups: [
+  subcategory: {
+    type: Schema.Types.ObjectId,
+    ref: "Subcategory",
+    required: true,
+  },
+  brands: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Group",
+      ref: "Brand",
       required: true,
     },
   ],
 });
 
-const Subcategory = mongoose.model("Subcategory", subcategorySchema);
+const Group = mongoose.model("Group", groupSchema);
 
-module.exports = Subcategory;
+module.exports = Group;

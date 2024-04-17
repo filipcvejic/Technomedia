@@ -10,17 +10,7 @@ const categorySchema = new Schema({
     {
       type: Schema.Types.ObjectId,
       ref: "Subcategory",
-    },
-  ],
-  brand: {
-    type: Schema.Types.ObjectId,
-    ref: "Brand",
-    required: true,
-  },
-  specifications: [
-    {
-      type: String,
-      ref: "Specification",
+      required: true,
     },
   ],
 });
