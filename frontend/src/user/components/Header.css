@@ -31,35 +31,6 @@
   font-size: 18px;
 }
 
-.search-form {
-  display: flex;
-  width: 41.875rem;
-  margin: 20px 30px;
-}
-
-.search-input {
-  background-color: #fff;
-  flex: 1;
-  padding: 10px;
-  height: 45px;
-  border: none;
-  border-top-left-radius: 25px;
-  border-bottom-left-radius: 25px;
-  box-sizing: border-box;
-}
-
-.search-button {
-  display: flex;
-  align-items: center;
-  background-color: #fff;
-  border: none;
-  border-top-right-radius: 25px;
-  border-bottom-right-radius: 25px;
-  color: #fff;
-  cursor: pointer;
-  padding: 0 15px;
-}
-
 .header-links {
   display: flex;
   align-items: center;

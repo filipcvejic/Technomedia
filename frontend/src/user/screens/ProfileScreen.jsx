@@ -44,6 +44,7 @@ const ProfileScreen = () => {
             body: JSON.stringify({
               name,
               email,
+              surname,
               oldPassword,
               newPassword,
             }),
