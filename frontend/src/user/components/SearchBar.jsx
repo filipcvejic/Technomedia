@@ -6,7 +6,6 @@ import "./SearchBar.css";
 function SearchBar() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [isFilterMenuExpanded, setIsFilterMenuExpanded] = useState(false);
 
   const { products, isLoading } = useProductsContext();
 
@@ -32,9 +31,11 @@ function SearchBar() {
     setFilteredProducts(filtered);
   };
 
+  console.log(filteredProducts);
+
   return (
     <div className="search-form">
-      <div className={`search-bar ${isFilterMenuExpanded ? "expanded" : ""}`}>
+      <div className="search-bar">
         <input
           type="text"
           placeholder="Search product, category or brand"

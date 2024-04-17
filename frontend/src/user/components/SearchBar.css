@@ -53,7 +53,8 @@
 .search-menu-container {
   position: absolute;
   color: black;
-  top: 100%;
+  /* top: 100%; */
+  bottom: -39px;
   left: 0;
   width: 100%;
   margin: auto;
