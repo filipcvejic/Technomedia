@@ -19,6 +19,7 @@ const {
   addBrand,
   getBrands,
   getInfoForAddingProduct,
+  addGroup,
 } = require("../controllers/adminController");
 const { adminProtect } = require("../middleware/authMiddleware");
 
@@ -50,10 +51,11 @@ router.put(
   adminProtect,
   decreaseProductQuantity
 );
-router.post("/add-brand", adminProtect, addBrand);
 router.post("/add-category", adminProtect, addCategory);
-router.delete("/:userId", adminProtect, deleteUser);
 router.post("/add-subcategory", adminProtect, addSubcategory);
+router.post("/add-group", adminProtect, addGroup);
+router.post("/add-brand", adminProtect, addBrand);
+router.delete("/:userId", adminProtect, deleteUser);
 router.get("/products", adminProtect, getAllProducts);
 router.get("/products/:category", adminProtect, getProductByCategory);
 router.get(
