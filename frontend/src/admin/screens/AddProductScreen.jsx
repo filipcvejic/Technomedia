@@ -7,19 +7,22 @@ import SubcategorySelectInput from "../components/SubcategorySelectInput";
 import BrandSelectInput from "../components/BrandSelectInput";
 import ImageUploadInput from "../components/ImageUploadInput";
 import SpecificationsSelectInput from "../components/SpecificationsSelectInput";
+import GroupSelectInput from "../components/GroupSelectInput";
 
 function AddProductScreen() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [images, setImages] = useState([]);
-  const [brand, setBrand] = useState("");
   const [category, setCategory] = useState("");
   const [subcategory, setSubcategory] = useState("");
+  const [group, setGroup] = useState("");
+  const [brand, setBrand] = useState("");
   const [specifications, setSpecifications] = useState([]);
-  const [brands, setBrands] = useState([]);
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
+  const [groups, setGroups] = useState([]);
+  const [brands, setBrands] = useState([]);
 
   useEffect(() => {
     getRecords();
@@ -37,37 +40,22 @@ function AddProductScreen() {
         throw new Error(data.message);
       }
 
-      setBrands(data.records.map((singleBrand) => singleBrand));
+      setCategories(data.records.map((singleCategory) => singleCategory));
     } catch (err) {
       toast.error(err?.message);
     }
-  };
-
-  const onChangeCategoryHandler = (category) => {
-    setCategory(category);
   };
 
   const onChangeSubcategoryHandler = (subcategory) => {
     setSubcategory(subcategory);
   };
 
-  const onSelectBrandHandler = (brandInput, newBrand) => {
-    setBrand(brandInput);
+  const onChangeGroupHandler = (group) => {
+    setGroup(group);
+  };
 
-    const selectedBrand = brands.find(
-      (singleBrand) => singleBrand._id === brandInput._id
-    );
-
-    if (selectedBrand) {
-      setCategories(selectedBrand.categories);
-      setSubcategories([]);
-    }
-
-    if (newBrand) {
-      setBrands((prevBrands) => [...prevBrands, newBrand.info]);
-      setCategories(newBrand.info.categories);
-      setSubcategories([]);
-    }
+  const onChangeBrandHandler = (brand) => {
+    setBrand(brand);
   };
 
   const onSelectCategoryHandler = (categoryInput, newCategory) => {
@@ -77,57 +65,139 @@ function AddProductScreen() {
       (singleCategory) => singleCategory._id === categoryInput._id
     );
 
+    console.log(selectedCategory);
+
     if (selectedCategory) {
       setSubcategories(selectedCategory.subcategories);
     }
 
     if (newCategory) {
-      const selectedBrandIndex = brands.findIndex(
-        (singleBrand) => singleBrand._id === brand._id
-      );
-
-      if (selectedBrandIndex !== -1) {
-        const updatedBrands = [...brands];
-
-        updatedBrands[selectedBrandIndex].categories.push(newCategory.info);
-
-        setBrands(updatedBrands);
-        setCategories(updatedBrands[selectedBrandIndex].categories);
-        setSubcategories([]);
-      }
+      setCategories((prevCategories) => [...prevCategories, newCategory.info]);
+      setSubcategories(newCategory.info.subcategories);
     }
+
+    setGroups([]);
+    setBrands([]);
   };
 
   const onSelectSubcategoryHandler = (subcategoryInput, newSubcategory) => {
     setSubcategory(subcategoryInput);
 
-    if (newSubcategory) {
-      const updatedBrands = [...brands];
+    const selectedSubcategory = subcategories.find(
+      (singleSubcategory) => singleSubcategory._id === subcategoryInput._id
+    );
 
-      const selectedBrandIndex = updatedBrands.findIndex(
-        (singleBrand) => singleBrand._id === brand._id
+    if (selectedSubcategory) {
+      setGroups(selectedSubcategory.groups);
+    }
+
+    if (newSubcategory) {
+      const selectedCategoryIndex = categories.findIndex(
+        (singleCategory) => singleCategory._id === category._id
       );
 
-      if (selectedBrandIndex !== -1) {
-        const selectedCategoryIndex = updatedBrands[
-          selectedBrandIndex
-        ].categories.findIndex(
-          (singleCategory) => singleCategory._id === category._id
+      if (selectedCategoryIndex !== -1) {
+        const updatedCategories = [...categories];
+
+        updatedCategories[selectedCategoryIndex].subcategories.push(
+          newSubcategory.info
         );
 
-        if (selectedCategoryIndex !== -1) {
-          const updatedCategory = {
-            ...updatedBrands[selectedBrandIndex].categories[
-              selectedCategoryIndex
+        setCategories(updatedCategories);
+        setSubcategories(
+          updatedCategories[selectedCategoryIndex].subcategories
+        );
+        setGroups([]);
+        setBrands([]);
+      }
+    }
+  };
+
+  const onSelectGroupHandler = (groupInput, newGroup) => {
+    setGroup(groupInput);
+
+    if (newGroup) {
+      const updatedCategories = [...categories];
+
+      const selectedCategoryIndex = updatedCategories.findIndex(
+        (singleCategory) => singleCategory._id === category._id
+      );
+
+      if (selectedCategoryIndex !== -1) {
+        const selectedSubcategoryIndex = updatedCategories[
+          selectedCategoryIndex
+        ].subcategories.findIndex(
+          (singleSubcategory) => singleSubcategory._id === subcategory._id
+        );
+
+        if (selectedSubcategoryIndex !== -1) {
+          const updatedSubcategory = {
+            ...updatedCategories[selectedCategoryIndex].subcategories[
+              selectedSubcategoryIndex
             ],
           };
-          updatedCategory.subcategories.push(newSubcategory.info);
-          updatedBrands[selectedBrandIndex].categories[selectedCategoryIndex] =
-            updatedCategory;
+          updatedSubcategory.groups.push(newGroup.info);
+          updatedCategories[selectedCategoryIndex].subcategories[
+            selectedSubcategoryIndex
+          ] = updatedSubcategory;
 
-          setBrands(updatedBrands);
-          setCategories(updatedBrands[selectedBrandIndex].categories);
-          setSubcategories(updatedCategory.subcategories);
+          setCategories(updatedCategories);
+          setSubcategories(
+            updatedCategories[selectedCategoryIndex].subcategories
+          );
+          setGroups(updatedSubcategory.groups);
+          setBrands([]);
+        }
+      }
+    }
+  };
+
+  const onSelectBrandHandler = (brandInput, newBrand) => {
+    setBrand(brandInput);
+
+    if (newBrand) {
+      const updatedCategories = [...categories];
+      const selectedCategoryIndex = updatedCategories.findIndex(
+        (singleCategory) => singleCategory._id === category._id
+      );
+
+      if (selectedCategoryIndex !== -1) {
+        const selectedSubcategoryIndex = updatedCategories[
+          selectedCategoryIndex
+        ].subcategories.findIndex(
+          (singleSubcategory) => singleSubcategory._id === subcategory._id
+        );
+
+        if (selectedSubcategoryIndex !== -1) {
+          const selectedGroupIndex = updatedCategories[
+            selectedCategoryIndex
+          ].subcategories[selectedSubcategoryIndex].groups.findIndex(
+            (singleGroup) => singleGroup._id === group._id
+          );
+
+          if (selectedGroupIndex !== -1) {
+            const updatedGroup = {
+              ...updatedCategories[selectedCategoryIndex].subcategories[
+                selectedSubcategoryIndex
+              ].groups[selectedGroupIndex],
+            };
+
+            updatedGroup.brands.push(newBrand.info);
+            updatedCategories[selectedCategoryIndex].subcategories[
+              selectedSubcategoryIndex
+            ].groups[selectedGroupIndex] = updatedGroup;
+
+            setCategories(updatedCategories);
+            setSubcategories(
+              updatedCategories[selectedCategoryIndex].subcategories
+            );
+            setGroups(
+              updatedCategories[selectedCategoryIndex].subcategories[
+                selectedSubcategoryIndex
+              ].groups
+            );
+            setBrands(updatedGroup.brands);
+          }
         }
       }
     }
@@ -154,12 +224,11 @@ function AddProductScreen() {
       formData.append("name", name);
       formData.append("description", description);
       formData.append("price", price);
-      formData.append("brand", brand?.label);
       formData.append("category", category?.label);
       formData.append("subcategory", subcategory?.label);
+      formData.append("group", group?.label);
+      formData.append("brand", brand?.label);
       formData.append("specifications", JSON.stringify(specifications));
-
-      console.log(brand, category);
 
       const response = await fetch(
         "http://localhost:3000/api/admin/add-product",
@@ -182,6 +251,8 @@ function AddProductScreen() {
       setBrand("");
       setCategory("");
       setSubcategory("");
+      setGroup("");
+      setGroups([]);
       setSpecifications([]);
       setCategories([]);
       setSubcategories([]);
@@ -229,8 +300,10 @@ function AddProductScreen() {
           </div>
           <div className="custom-form-element">
             <label htmlFor="description">Description</label>
-            <input
-              type="text"
+            <textarea
+              class="textarea-description"
+              rows="6"
+              maxLength="400"
               placeholder="Enter description"
               id="description"
               onChange={(e) => setDescription(e.target.value)}
@@ -238,45 +311,41 @@ function AddProductScreen() {
             />
           </div>
           <div className="form-element">
-            <BrandSelectInput
-              onSelectBrand={onSelectBrandHandler}
-              onChangeCategory={onChangeCategoryHandler}
-              onChangeSubcategory={onChangeSubcategoryHandler}
-              initialBrand={brand}
-              brands={
-                brands
-                  ? brands.map((brand) => ({
-                      _id: brand._id,
-                      name: brand.name,
-                    }))
-                  : []
-              }
-            />
-          </div>
-          <div className="form-element">
             <CategorySelectInput
               onSelectCategory={onSelectCategoryHandler}
               onChangeSubcategory={onChangeSubcategoryHandler}
-              selectedBrand={brand}
+              onChangeGroup={onChangeGroupHandler}
+              onChangeBrand={onChangeBrandHandler}
+              categories={categories}
               initialCategory={category}
-              categories={
-                categories
-                  ? categories.map((category) => ({
-                      _id: category._id,
-                      name: category.name,
-                    }))
-                  : []
-              }
             />
           </div>
           <div className="form-element">
             <SubcategorySelectInput
               onSelectSubcategory={onSelectSubcategoryHandler}
               subcategories={subcategories}
-              selectedBrand={brand}
               selectedCategory={category}
+              onChangeGroup={onChangeGroupHandler}
+              onChangeBrand={onChangeBrandHandler}
               initialSubcategory={subcategory}
-              onChangeSubcategory={onChangeSubcategoryHandler}
+            />
+          </div>
+          <div className="form-element">
+            <GroupSelectInput
+              groups={groups}
+              selectedCategory={category}
+              selectedSubcategory={subcategory}
+              onSelectGroup={onSelectGroupHandler}
+              onChangeBrand={onChangeBrandHandler}
+              initialGroup={group}
+            />
+          </div>
+          <div className="form-element">
+            <BrandSelectInput
+              brands={brands}
+              onSelectBrand={onSelectBrandHandler}
+              initialBrand={brand}
+              selectedGroup={group}
             />
           </div>
           <div className="form">
