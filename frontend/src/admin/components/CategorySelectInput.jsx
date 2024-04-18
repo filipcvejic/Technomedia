@@ -1,17 +1,20 @@
-import { useEffect, useState } from "react";
 import Creatable from "react-select/creatable";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 function CategorySelectInput({
   onSelectCategory,
-  categories,
-  selectedBrand,
   onChangeSubcategory,
+  onChangeGroup,
+  onChangeBrand,
+  categories,
   initialCategory,
 }) {
   useEffect(() => {
     onChangeSubcategory("");
-  }, [selectedBrand]);
+    onChangeGroup("");
+    onChangeBrand("");
+  }, [initialCategory]);
 
   const onCategoryChangeHadler = (selectedOption) => {
     onSelectCategory(selectedOption);
@@ -27,10 +30,7 @@ function CategorySelectInput({
             "Content-Type": "application/json",
           },
           credentials: "include",
-          body: JSON.stringify({
-            brandId: selectedBrand._id,
-            categoryName: inputValue,
-          }),
+          body: JSON.stringify({ categoryName: inputValue }),
         }
       );
 
@@ -52,8 +52,11 @@ function CategorySelectInput({
           label: newCategory.name,
           _id: newCategory._id,
         },
-        isNewCategory && { info: newCategory }
+        isNewCategory && {
+          info: newCategory,
+        }
       );
+
       toast.success(data.message);
     } catch (err) {
       toast.error(err?.message);
@@ -68,7 +71,7 @@ function CategorySelectInput({
     })) || [];
 
   return (
-    <div className="category-select-input">
+    <div className="brand-select-input">
       <label>Category</label>
       <Creatable
         className="react-select-container"

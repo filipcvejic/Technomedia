@@ -1,20 +1,14 @@
+import React, { useEffect } from "react";
 import Creatable from "react-select/creatable";
-import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 function BrandSelectInput({
-  onSelectBrand,
-  onChangeCategory,
-  onChangeSubcategory,
   brands,
+  onSelectBrand,
   initialBrand,
+  selectedGroup,
 }) {
-  useEffect(() => {
-    onChangeCategory("");
-    onChangeSubcategory("");
-  }, [initialBrand]);
-
-  const onBrandChangeHadler = (selectedOption) => {
+  const onBrandChangeHandler = (selectedOption) => {
     onSelectBrand(selectedOption);
   };
 
@@ -28,7 +22,10 @@ function BrandSelectInput({
             "Content-Type": "application/json",
           },
           credentials: "include",
-          body: JSON.stringify({ brandName: inputValue }),
+          body: JSON.stringify({
+            brandName: inputValue,
+            groupId: selectedGroup._id,
+          }),
         }
       );
 
@@ -48,11 +45,8 @@ function BrandSelectInput({
           label: newBrand.name,
           _id: newBrand._id,
         },
-        isNewBrand && {
-          info: newBrand,
-        }
+        isNewBrand && { info: newBrand }
       );
-
       toast.success(data.message);
     } catch (err) {
       toast.error(err?.message);
@@ -84,7 +78,7 @@ function BrandSelectInput({
           }),
         }}
         options={options}
-        onChange={onBrandChangeHadler}
+        onChange={onBrandChangeHandler}
         onCreateOption={createBrandHandler}
         value={initialBrand}
         placeholder="Select or type a new brand..."

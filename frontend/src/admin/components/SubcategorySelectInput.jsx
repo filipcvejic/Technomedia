@@ -5,14 +5,15 @@ import { toast } from "react-toastify";
 function SubcategorySelectInput({
   onSelectSubcategory,
   subcategories,
-  selectedBrand,
   selectedCategory,
-  onChangeSubcategory,
+  onChangeGroup,
+  onChangeBrand,
   initialSubcategory,
 }) {
   useEffect(() => {
-    onChangeSubcategory("");
-  }, [selectedBrand, selectedCategory]);
+    onChangeGroup("");
+    onChangeBrand("");
+  }, [initialSubcategory]);
 
   const onSubcategoryChangeHadler = (selectedOption) => {
     onSelectSubcategory(selectedOption);
@@ -31,7 +32,6 @@ function SubcategorySelectInput({
           body: JSON.stringify({
             subcategoryName: inputValue,
             categoryId: selectedCategory._id,
-            brandId: selectedBrand._id,
           }),
         }
       );
@@ -58,6 +58,7 @@ function SubcategorySelectInput({
           info: newSubcategory,
         }
       );
+
       toast.success(data.message);
     } catch (err) {
       toast.error(err?.message);
