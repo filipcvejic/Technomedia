@@ -148,7 +148,7 @@
 }
 
 .mini-cart .single-mini-cart-item {
-  height: 130px;
+  height: 140px;
   width: 350px;
   display: flex;
   flex-direction: row;
@@ -163,6 +163,14 @@
   flex-direction: column;
   gap: 5px;
   color: black;
+}
+
+.mini-cart .single-mini-cart-item .remove-item-button {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  height: 28px;
+  cursor: pointer;
 }
 
 .mini-cart .single-mini-cart-item .single-item-details span {
@@ -187,7 +195,7 @@
   .single-item-quantity
   .quantity-input {
   width: 140px;
-  height: 40px;
+  height: 38px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -196,6 +204,14 @@
 .single-item-quantity .quantity-input button {
   font-size: 20px;
   font-weight: 500;
+}
+
+.single-item-quantity .quantity-input .quantity-count-minus {
+  padding: 5px 10px 5px 10px;
+}
+
+.single-item-quantity .quantity-input .quantity-count-plus {
+  padding: 5px 10px 5px 10px;
 }
 
 .single-item-quantity .quantity-input .item-quantity {

@@ -109,66 +109,6 @@ const HomeScreen = () => {
           {products.map((product) => (
             <ProductItem data={product} key={product._id} />
           ))}
-          {/* <ProductItem
-            data={{
-              _id: "6600a56b8c649d96c2823335",
-              name: "BOSCH WGG14402BY Washing machine",
-              description: "Best washing machine",
-              price: 599.99,
-              image: "9a286ffc-564e-492a-8d6d-6bc72b4bd40f_.png",
-              brand: { _id: "66009fae180274c42401607a", name: "Bosch" },
-              category: {
-                _id: "6600a19b93fde57dc34234f5",
-                name: "Washing machine",
-              },
-              subcategory: null,
-            }}
-          />
-          <ProductItem
-            data={{
-              _id: "6600a760e0336efb4b41b8fd",
-              name: "ASUS TUF M4 Black 90MP02F Wireless gaming mouse",
-              description: "Best gaming mouse",
-              price: 79.99,
-              image: "fafcdaa0-c6a9-42b4-89d6-059121760459_.png",
-              brand: { _id: "6600a746e0336efb4b41b8ed", name: "Asus" },
-              category: {
-                _id: "6600a754e0336efb4b41b8f1",
-                name: "Mouse",
-              },
-              subcategory: null,
-            }}
-          />
-          <ProductItem
-            data={{
-              _id: "6600a7ebe0336efb4b41b911",
-              name: "PANASONIC TV TX55LX940E SMART",
-              description: "Best smart tv",
-              price: 449.99,
-              image: "82d806b0-1ea0-4722-b00e-a9e02da9bb3f_.png",
-              brand: { _id: "6600a7d8e0336efb4b41b901", name: "Panasonic" },
-              category: {
-                _id: "6600a7e4e0336efb4b41b905",
-                name: "TV",
-              },
-              subcategory: null,
-            }}
-          />
-          <ProductItem
-            data={{
-              _id: "6600b4100cd179e15253fc70",
-              name: "GENIUS Wired gaming keyboard KM170USF10",
-              description: "Best gaming keyboard",
-              price: 150,
-              image: "eb09f370-0d00-4be7-a2f0-dfd2045fcc4c_.png",
-              brand: { _id: "6600b30c0cd179e15253fc5c", name: "Genius" },
-              category: {
-                _id: "6600b3f40cd179e15253fc62",
-                name: "Keyboard",
-              },
-              subcategory: null,
-            }}
-          /> */}
         </div>
       </div>
       <div className="special-discounts-container">

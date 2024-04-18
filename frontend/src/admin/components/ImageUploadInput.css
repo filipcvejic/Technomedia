@@ -1,12 +1,12 @@
 .image-upload-container {
   display: flex;
   flex-direction: column;
-  gap: 30px;
-  width: 210px;
+  gap: 23px;
+  width: 190px;
 }
 
 .drag-area {
-  height: 210px;
+  height: 190px;
   background-color: #e6e6e6;
   display: flex;
   justify-content: center;
@@ -34,14 +34,14 @@
 
 .images-preview {
   height: 65px;
-  width: 210px;
+  width: 190px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  gap: 5px;
 }
 
 .images-preview .single-image-preview {
-  height: 65px;
+  height: 60px;
   background-color: #e6e6e6;
   border-radius: 10px;
   display: flex;
@@ -52,6 +52,7 @@
 .images-preview img {
   width: 60px;
   height: 60px;
+  object-fit: contain;
 }
 
 .single-image-preview .remove-circle {

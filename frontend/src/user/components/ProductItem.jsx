@@ -17,6 +17,8 @@ function ProductItem({ data }) {
 
   const { userInfo } = useSelector((state) => state.userAuth);
 
+  console.log(data);
+
   const addToCartHandler = async (e) => {
     e.preventDefault();
 
@@ -28,9 +30,10 @@ function ProductItem({ data }) {
           description: data.description,
           price: data.price,
           images: data.images,
-          brand: data.brand?._id,
           category: data.category?._id,
           subcategory: data.subcategory?._id,
+          group: data.group?._id,
+          brand: data.brand?._id,
         })
       );
     } else {
@@ -42,9 +45,10 @@ function ProductItem({ data }) {
             description: data.description,
             price: data.price,
             images: data.images,
-            brand: data.brand?._id,
             category: data.category?._id,
             subcategory: data.subcategory?._id,
+            group: data.group?._id,
+            brand: data.brand?._id,
           },
         })
       );

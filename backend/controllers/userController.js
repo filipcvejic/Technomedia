@@ -123,11 +123,11 @@ const getUserProfile = asyncHandler(async (req, res) => {
 
   const cart = await Cart.findOne({ user: req.user._id }).populate({
     path: "products.product",
-    select: "-createdAt -updatedAt -__v ",
-    populate: {
-      path: "category subcategory brand",
-      select: "name",
-    },
+    select: "-createdAt -updatedAt -__v",
+    populate: [
+      { path: "category subcategory group brand", select: "name" },
+      { path: "images", select: "url" },
+    ],
   });
 
   const adjustedCartData = cart.products.map((item) => ({
@@ -316,25 +316,34 @@ const addProductToCart = asyncHandler(async (req, res, next) => {
   const addedProduct = await Product.findById(product)
     .select("-createdAt -updatedAt -__v")
     .populate({
-      path: "brand",
-      select: "name",
-    })
-    .populate({
       path: "category",
       select: "name",
     })
     .populate({
       path: "subcategory",
       select: "name",
+    })
+    .populate({
+      path: "group",
+      select: "name",
+    })
+    .populate({
+      path: "brand",
+      select: "name",
+    })
+    .populate({
+      path: "images",
+      select: "url",
     });
 
+  console.log(addedProduct);
   const adjustedProduct = {
     product: {
       _id: addedProduct._id,
       name: addedProduct.name,
       description: addedProduct.description,
       price: addedProduct.price,
-      image: addedProduct?.images[0],
+      images: addedProduct.images,
       brand: addedProduct.brand,
       category: addedProduct.category,
       subcategory: addedProduct.subcategory || null,

@@ -14,7 +14,7 @@ export default function QuantityInput({ item }) {
         name: item.product.name,
         description: item.product.description,
         price: item.product.price,
-        image: item.product.image,
+        images: item.product.images,
         category: item.product.category?._id,
         subcategory: item.product.subcategory?._id,
       })

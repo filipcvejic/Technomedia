@@ -32,11 +32,19 @@
   gap: 15px;
 }
 
+.cart-item .cart-item-name {
+  font-size: 20px;
+}
+
 .cart-item-details {
   display: flex;
   flex-direction: column;
   gap: 10px;
   justify-content: center;
+}
+
+.cart-item-details .quantity-input {
+  width: 160px;
 }
 
 .cart-item-details span {
@@ -144,5 +152,5 @@
 @media screen and (max-width: 600px) {
   .cart-container {
     flex-direction: column;
-  } 
+  }
 }

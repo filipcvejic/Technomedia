@@ -26,12 +26,11 @@ function CartScreen() {
             return (
               <div className="cart-item" key={item.product?._id}>
                 <img
-                  src={`http://localhost:5000/images/${item.product?.image}`}
+                  src={`http://localhost:5000/images/${
+                    item.product?.images[0].url.split("\\")[2]
+                  }`}
                 />
-                <p className="cart-item-description">
-                  Laptop HP 15s-fq0002nm N4120/4/256 9J2W7EA Intel Celeron N4120
-                  do 2.60 GHz, 15.6", Integrisana UHD 600, 4GB
-                </p>
+                <p className="cart-item-name">{item.product.name}</p>
                 <div className="cart-item-details">
                   <QuantityInput item={item} />
                   <span>{item.product?.price} EUR</span>
