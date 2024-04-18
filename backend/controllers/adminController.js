@@ -10,6 +10,7 @@ const Product = require("../models/productModel");
 const Cart = require("../models/cartModel");
 const Category = require("../models/categoryModel");
 const Subcategory = require("../models/subcategoryModel");
+const Group = require("../models/groupModel");
 const User = require("../models/userModel");
 const Brand = require("../models/brandModel");
 const Image = require("../models/imageModel");
@@ -112,33 +113,47 @@ const addProduct = asyncHandler(async (req, res, next) => {
     name,
     description,
     price,
-    brand,
     category,
     subcategory,
+    group,
+    brand,
     specifications,
   } = req.body;
+
+  const foundCategory = await Category.findOne({
+    name: category,
+  });
+  if (!foundCategory) {
+    return res.status(404).json({ message: "Category not found" });
+  }
+
+  const foundSubcategory = await Subcategory.findOne({
+    name: subcategory,
+    category: foundCategory._id,
+  });
+
+  if (!foundSubcategory) {
+    return res.status(404).json({ message: "Subcategory not found" });
+  }
+
+  const foundGroup = await Group.findOne({
+    name: group,
+    category: foundCategory._id,
+    subcategory: foundSubcategory._id,
+  });
+
+  if (!foundGroup) {
+    return res.status(404).json({ message: "Group not found" });
+  }
 
   const foundBrand = await Brand.findOne({ name: brand });
   if (!foundBrand) {
     return res.status(404).json({ message: "Brand not found" });
   }
 
-  const foundCategory = await Category.findOne({
-    name: category,
-    brand: foundBrand._id,
-  });
-  if (!foundCategory) {
-    return res.status(404).json({ message: "Category not found" });
-  }
-
-  const foundSubcategory = await Subcategory.findOne({ name: subcategory });
-
   const newSpecifications = [];
 
   for (const specification of JSON.parse(specifications)) {
-    if (!foundCategory.specifications.includes(specification.type)) {
-      foundCategory.specifications.push(specification.type);
-    }
     const newSpecification = await Specification.create({
       type: specification.type,
       value: specification.value,
@@ -160,9 +175,10 @@ const addProduct = asyncHandler(async (req, res, next) => {
     description,
     price,
     images,
-    brand: foundBrand._id,
     category: foundCategory._id,
     subcategory: foundSubcategory?._id,
+    group: foundGroup?._id,
+    brand: foundBrand?._id,
     specifications: newSpecifications,
   });
 
@@ -193,14 +209,18 @@ const getAllProducts = asyncHandler(async (req, res, next) => {
 });
 
 const getInfoForAddingProduct = asyncHandler(async (req, res, next) => {
-  const records = await Brand.find()
-    .select("-createdAt -updatedAt -__v")
+  const records = await Category.find()
+    .select("-__v")
     .populate({
-      path: "categories",
-      select: "-brand -__v",
+      path: "subcategories",
+      select: "-category -__v",
       populate: {
-        path: "subcategories",
-        select: "name",
+        path: "groups",
+        select: "-category -subcategory",
+        populate: {
+          path: "brands",
+          select: "-__v",
+        },
       },
     });
 
@@ -256,10 +276,7 @@ const getProductByCategoryAndSubcategory = asyncHandler(async (req, res) => {
 });
 
 const getBrands = asyncHandler(async (req, res) => {
-  const brands = await Brand.find().select("name").populate({
-    path: "categories",
-    select: "name",
-  });
+  const brands = await Brand.find().select("name");
   // .populate({
   //   path: "subcategories",
   //   select: "name",
@@ -308,61 +325,29 @@ const getSubcategories = asyncHandler(async (req, res) => {
   res.status(200).json({ subcategories });
 });
 
-const addBrand = asyncHandler(async (req, res) => {
-  const { brandName } = req.body;
-
-  const brand = await Brand.findOne({ name: brandName });
-
-  if (brand) {
-    return res.status(401).json({ message: "This brand already exists" });
-  }
-
-  const newBrand = await Brand.create({
-    name: brandName,
-  });
-
-  res.status(200).json({ newBrand, message: "Brand has created successfuly" });
-});
-
 const addCategory = asyncHandler(async (req, res) => {
-  const { brandId, categoryName } = req.body;
+  const { categoryName } = req.body;
 
-  const brand = await Brand.findOne({ _id: brandId });
-  if (!brand) {
-    return res.status(404).json({ message: "Brand not found" });
+  const category = await Category.findOne({ name: categoryName });
+
+  if (category) {
+    return res.status(401).json({ message: "This Category already exists" });
   }
 
   const newCategory = await Category.create({
     name: categoryName,
-    brand: brand._id,
+    subcategories: [],
   });
 
-  brand.categories.push(newCategory._id);
-  await brand.save();
-
-  const adjustedNewCategoryInfo = await Category.findById(
-    newCategory._id
-  ).select("-__v -brand");
-
-  res.status(200).json({
-    newCategory: adjustedNewCategoryInfo,
-    message: "Category has created successfuly",
-  });
+  res
+    .status(200)
+    .json({ newCategory, message: "CategnewCategory has created successfuly" });
 });
 
 const addSubcategory = asyncHandler(async (req, res) => {
-  const { categoryId, subcategoryName, brandId } = req.body;
+  const { categoryId, subcategoryName } = req.body;
 
-  const brand = await Brand.findOne({ _id: brandId });
-
-  if (!brand) {
-    return res.status(404).json({ message: "Brand not found" });
-  }
-
-  const category = await Category.findOne({
-    _id: categoryId,
-    brand: brand._id,
-  });
+  const category = await Category.findById(categoryId);
 
   if (!category) {
     return res.status(404).json({ message: "Category not found" });
@@ -371,6 +356,7 @@ const addSubcategory = asyncHandler(async (req, res) => {
   const newSubcategory = await Subcategory.create({
     name: subcategoryName,
     category: category._id,
+    groups: [],
   });
 
   category.subcategories.push(newSubcategory._id);
@@ -384,6 +370,76 @@ const addSubcategory = asyncHandler(async (req, res) => {
     newSubcategory: adjustedNewSubcategoryInfo,
     message: "Subcategory has created successfuly",
   });
+});
+
+const addGroup = asyncHandler(async (req, res, next) => {
+  const { categoryId, subcategoryId, groupName } = req.body;
+
+  const category = await Category.findById(categoryId);
+
+  if (!category) {
+    return res.status(404).json({ message: "Category not found" });
+  }
+
+  const subcategory = await Subcategory.findById(subcategoryId);
+
+  if (!subcategory) {
+    return res.status(404).json({ message: "Subcategory not found" });
+  }
+
+  const newGroup = await Group.create({
+    name: groupName,
+    category: category._id,
+    subcategory: subcategory._id,
+    brands: [],
+  });
+
+  subcategory.groups.push(newGroup._id);
+  await subcategory.save();
+
+  const adjustedNewGroupInfo = await Group.findById(newGroup._id).select(
+    "-__v"
+  );
+
+  res.status(200).json({
+    newGroup: adjustedNewGroupInfo,
+    message: "Group has created successfuly",
+  });
+});
+
+const addBrand = asyncHandler(async (req, res) => {
+  const { groupId, brandName } = req.body;
+
+  console.log(groupId, brandName);
+
+  const foundGroup = await Group.findById(groupId);
+
+  if (!foundGroup) {
+    return res.status(404).json({ message: "Group not found" });
+  }
+
+  const existingBrand = await Brand.findOne({ name: brandName });
+
+  if (existingBrand) {
+    if (!foundGroup.brands.includes(existingBrand._id)) {
+      foundGroup.brands.push(existingBrand._id);
+      await foundGroup.save();
+    }
+
+    return res.status(200).json({
+      existingBrand,
+      message: "Brand already exists and has been added to the group",
+    });
+  }
+
+  const newBrand = await Brand.create({
+    name: brandName,
+  });
+
+  foundGroup.brands.push(newBrand._id);
+  await foundGroup.save();
+
+  res.status(200).json({ newBrand, message: "Brand has created successfuly" });
 });
 
 const addProductToCart = asyncHandler(async (req, res, next) => {
@@ -521,9 +577,10 @@ module.exports = {
   getBrands,
   getSubcategories,
   getCategories,
-  addBrand,
   addCategory,
   addSubcategory,
+  addGroup,
+  addBrand,
   addProductToCart,
   removeProductFromCart,
   decreaseProductQuantity,
