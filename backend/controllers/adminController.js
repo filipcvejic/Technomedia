@@ -15,6 +15,7 @@ const User = require("../models/userModel");
 const Brand = require("../models/brandModel");
 const Image = require("../models/imageModel");
 const Specification = require("../models/specificationModel");
+const slugify = require("../utils/slugify");
 
 const loginAdmin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -336,6 +337,7 @@ const addCategory = asyncHandler(async (req, res) => {
 
   const newCategory = await Category.create({
     name: categoryName,
+    slug: slugify(categoryName),
     subcategories: [],
   });
 
@@ -356,6 +358,7 @@ const addSubcategory = asyncHandler(async (req, res) => {
   const newSubcategory = await Subcategory.create({
     name: subcategoryName,
     category: category._id,
+    slug: slugify(subcategoryName),
     groups: [],
   });
 
@@ -391,6 +394,7 @@ const addGroup = asyncHandler(async (req, res, next) => {
     name: groupName,
     category: category._id,
     subcategory: subcategory._id,
+    slug: slugify(groupName),
     brands: [],
   });
 
@@ -434,6 +438,7 @@ const addBrand = asyncHandler(async (req, res) => {
 
   const newBrand = await Brand.create({
     name: brandName,
+    slug: slugify(brandName),
   });
 
   foundGroup.brands.push(newBrand._id);

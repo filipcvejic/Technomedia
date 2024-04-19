@@ -8,6 +8,9 @@ const Cart = require("../models/cartModel");
 const crypto = require("crypto");
 const sendEmail = require("../utils/sendEmail");
 const Product = require("../models/productModel");
+const Category = require("../models/categoryModel");
+const Subcategory = require("../models/subcategoryModel");
+const Group = require("../models/groupModel");
 
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -252,16 +255,20 @@ const getAllProducts = asyncHandler(async (req, res, next) => {
   const products = await Product.find()
     .select("-createdAt -updatedAt -__v")
     .populate({
-      path: "brand",
-      select: "name",
-    })
-    .populate({
       path: "category",
-      select: "name",
+      select: "name slug",
     })
     .populate({
       path: "subcategory",
-      select: "name",
+      select: "name slug",
+    })
+    .populate({
+      path: "group",
+      select: "name slug",
+    })
+    .populate({
+      path: "brand",
+      select: "name slug",
     })
     .populate({
       path: "images",
@@ -276,6 +283,7 @@ const getAllProducts = asyncHandler(async (req, res, next) => {
     return res.status(404).json({ message: "Products not found" });
   }
 
+  console.log(products);
   res.status(200).json({ products });
 });
 
@@ -431,6 +439,108 @@ const decreaseProductQuantity = asyncHandler(async (req, res, next) => {
   res.status(200).json({ message: "Product quantity decreased successfully" });
 });
 
+const getFilteredSearchProducts = asyncHandler(async (req, res, next) => {
+  const { term } = req.params;
+
+  const products = await Product.find()
+    .select("-createdAt -updatedAt -__v")
+    .populate([
+      { path: "category", select: "name" },
+      { path: "subcategory", select: "name" },
+      { path: "group", select: "name" },
+      { path: "brand", select: "name" },
+      { path: "specifications", select: "type value" },
+    ]);
+
+  const searchTerms = term.toLowerCase().split(" ");
+
+  let filteredProducts = products.filter((product) =>
+    searchTerms.every(
+      (searchTerm) =>
+        product.name.toLowerCase().includes(searchTerm) ||
+        product.description.toLowerCase().includes(searchTerm) ||
+        product.category.name.toLowerCase().includes(searchTerm) ||
+        product.subcategory.name.toLowerCase().includes(searchTerm) ||
+        product.group.name.toLowerCase().includes(searchTerm) ||
+        product.brand.name.toLowerCase().includes(searchTerm) ||
+        product.specifications.some(
+          (spec) =>
+            spec.type.toLowerCase().includes(searchTerm) ||
+            spec.value.toLowerCase().includes(searchTerm)
+        )
+    )
+  );
+
+  if (filteredProducts.length === 0) {
+    filteredProducts = products.filter((product) =>
+      searchTerms.some(
+        (searchTerm) =>
+          product.name.toLowerCase().includes(searchTerm) ||
+          product.description.toLowerCase().includes(searchTerm) ||
+          product.category.name.toLowerCase().includes(searchTerm) ||
+          product.subcategory.name.toLowerCase().includes(searchTerm) ||
+          product.group.name.toLowerCase().includes(searchTerm) ||
+          product.brand.name.toLowerCase().includes(searchTerm) ||
+          product.specifications.some(
+            (spec) =>
+              spec.type.toLowerCase().includes(searchTerm) ||
+              spec.value.toLowerCase().includes(searchTerm)
+          )
+      )
+    );
+  }
+
+  if (filteredProducts.length === 0) {
+    return res.status(404).json({ message: "Nema pronađenih proizvoda." });
+  }
+
+  res.json(filteredProducts);
+});
+
+const getProductData = asyncHandler(async (req, res, next) => {
+  const { categoryName, subcategoryName, groupName, productName } = req.params;
+
+  const foundCategory = await Category.findOne({ slug: categoryName });
+
+  if (!foundCategory) {
+    return res.status(404).json({ message: "Category not found" });
+  }
+
+  const foundSubcategory = await Subcategory.findOne({ slug: subcategoryName });
+
+  if (!foundSubcategory) {
+    return res.status(404).json({ message: "Subcategory not found" });
+  }
+
+  const foundGroup = await Group.findOne({ slug: groupName });
+
+  if (!foundGroup) {
+    return res.status(404).json({ message: "Group not found" });
+  }
+
+  const foundProduct = await Product.findOne({
+    slug: productName,
+    category: foundCategory._id,
+    subcategory: foundSubcategory._id,
+    group: foundGroup._id,
+  })
+    .select("-createdAt -updatedAt -__v -slug")
+    .populate([
+      { path: "category", select: "name" },
+      { path: "subcategory", select: "name" },
+      { path: "group", select: "name" },
+      { path: "brand", select: "name" },
+      { path: "images", select: "url" },
+      { path: "specifications", select: "type value" },
+    ]);
+
+  if (!foundProduct) {
+    return res.status(404).json({ message: "Product not found" });
+  }
+
+  res.status(200).json(foundProduct);
+});
+
 module.exports = {
   loginUser,
   registerUser,
@@ -447,4 +557,6 @@ module.exports = {
   decreaseProductQuantity,
   syncCartProducts,
   getCategories,
+  getFilteredSearchProducts,
+  getProductData,
 };

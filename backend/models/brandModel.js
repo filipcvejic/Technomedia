@@ -6,6 +6,10 @@ const brandSchema = new Schema({
     type: String,
     required: true,
   },
+  slug: {
+    type: String,
+    required: true,
+  },
 });
 
 const Brand = mongoose.model("Brand", brandSchema);
