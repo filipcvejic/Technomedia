@@ -14,6 +14,8 @@ const {
   removeProductFromCart,
   decreaseProductQuantity,
   syncCartProducts,
+  getFilteredSearchProducts,
+  getProductData,
 } = require("../controllers/userController");
 const { protect } = require("../middleware/authMiddleware");
 
@@ -25,6 +27,7 @@ router.post("/auth", loginUser);
 router.post("/logout", logoutUser);
 router.post("/forgot-password", forgotPassword);
 router.get("/check-token/:id/:token", checkResetPasswordToken);
+router.get("/term/:term", getFilteredSearchProducts);
 router.post("/reset-password/:id/:token", resetPassword);
 router
   .route("/profile")
@@ -32,6 +35,10 @@ router
   .put(protect, updateUserProfile);
 router.get("/products", getAllProducts);
 router.post("/cart/add-product", protect, addProductToCart);
+router.get(
+  "/product/:categoryName/:subcategoryName/:groupName/:productName",
+  getProductData
+);
 router.delete(
   "/cart/remove-product/:productId",
   protect,
