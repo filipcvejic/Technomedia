@@ -181,6 +181,7 @@ const addProduct = asyncHandler(async (req, res, next) => {
     group: foundGroup?._id,
     brand: foundBrand?._id,
     specifications: newSpecifications,
+    slug: slugify(name),
   });
 
   res.status(200).json({ message: "Product has created successfuly" });

@@ -524,12 +524,12 @@ const getProductData = asyncHandler(async (req, res, next) => {
     subcategory: foundSubcategory._id,
     group: foundGroup._id,
   })
-    .select("-createdAt -updatedAt -__v -slug")
+    .select("-createdAt -updatedAt -__v")
     .populate([
-      { path: "category", select: "name" },
-      { path: "subcategory", select: "name" },
-      { path: "group", select: "name" },
-      { path: "brand", select: "name" },
+      { path: "category", select: "name slug" },
+      { path: "subcategory", select: "name slug" },
+      { path: "group", select: "name slug" },
+      { path: "brand", select: "name slug" },
       { path: "images", select: "url" },
       { path: "specifications", select: "type value" },
     ]);
@@ -539,6 +539,72 @@ const getProductData = asyncHandler(async (req, res, next) => {
   }
 
   res.status(200).json(foundProduct);
+});
+
+const getRecords = asyncHandler(async (req, res, next) => {
+  const records = await Category.find()
+    .select("-__v")
+    .populate({
+      path: "subcategories",
+      select: "-__v",
+      populate: {
+        path: "groups",
+        select: "-__v",
+        populate: {
+          path: "brands",
+          select: "-__v",
+        },
+      },
+    });
+
+  res.status(200).json(records);
+});
+
+const getGroupData = asyncHandler(async (req, res, next) => {
+  const { categoryName, subcategoryName, groupName } = req.params;
+
+  const foundCategory = await Category.findOne({ slug: categoryName });
+
+  if (!foundCategory) {
+    return res.status(404).json({ message: "Category not found" });
+  }
+
+  const foundSubcategory = await Subcategory.findOne({ slug: subcategoryName });
+
+  if (!foundSubcategory) {
+    return res.status(404).json({ message: "Subcategory not found" });
+  }
+
+  const foundGroup = await Group.findOne({
+    slug: groupName,
+    category: foundCategory._id,
+    subcategory: foundSubcategory._id,
+  });
+
+  if (!foundGroup) {
+    return res.status(404).json({ message: "Group not found" });
+  }
+
+  const products = await Product.find({
+    category: foundCategory._id,
+    subcategory: foundSubcategory._id,
+    group: foundGroup._id,
+  })
+    .select("-__v -createdAt -updatedAt")
+    .populate([
+      { path: "category", select: "name slug" },
+      { path: "subcategory", select: "name slug" },
+      { path: "group", select: "name slug" },
+      { path: "brand", select: "name slug" },
+      { path: "images", select: "url" },
+      { path: "specifications", select: "type value" },
+    ]);
+
+  if (!products) {
+    return res.status(404).json({ message: "Products not found" });
+  }
+
+  res.status(200).json(products);
 });
 
 module.exports = {
@@ -559,4 +625,6 @@ module.exports = {
   getCategories,
   getFilteredSearchProducts,
   getProductData,
+  getRecords,
+  getGroupData
 };

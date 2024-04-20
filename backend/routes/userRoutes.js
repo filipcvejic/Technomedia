@@ -16,6 +16,8 @@ const {
   syncCartProducts,
   getFilteredSearchProducts,
   getProductData,
+  getRecords,
+  getGroupData,
 } = require("../controllers/userController");
 const { protect } = require("../middleware/authMiddleware");
 
@@ -34,11 +36,13 @@ router
   .get(protect, getUserProfile)
   .put(protect, updateUserProfile);
 router.get("/products", getAllProducts);
+router.get("/records", getRecords);
 router.post("/cart/add-product", protect, addProductToCart);
 router.get(
   "/product/:categoryName/:subcategoryName/:groupName/:productName",
   getProductData
 );
+router.get("/products/:categoryName/:subcategoryName/:groupName", getGroupData);
 router.delete(
   "/cart/remove-product/:productId",
   protect,
