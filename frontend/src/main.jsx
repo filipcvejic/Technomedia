@@ -23,6 +23,7 @@ import UniversalRouteWrapper from "./user/components/UniversalRouteWrapper.jsx";
 import CartScreen from "./user/screens/CartScreen.jsx";
 import { ProductsProvider } from "./user/context/products-context.jsx";
 import ProductScreen from "./user/screens/ProductScreen.jsx";
+import ProductsGroupScreen from "./user/screens/ProductsGroupScreen.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -51,6 +52,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                 <Route
                   path="/:categoryName/:subcategoryName/:groupName/:productName"
                   element={<ProductScreen />}
+                />
+                <Route
+                  path="/:categoryName/:subcategoryName/:groupName"
+                  element={<ProductsGroupScreen />}
                 />
                 <Route path="" element={<PrivateRoute />}>
                   <Route path="/profile" element={<ProfileScreen />} />
