@@ -116,6 +116,14 @@ function AddProductScreen() {
   const onSelectGroupHandler = (groupInput, newGroup) => {
     setGroup(groupInput);
 
+    const selectedGroup = groups.find(
+      (singleGroup) => singleGroup._id === groupInput._id
+    );
+
+    if (selectedGroup) {
+      setBrands(selectedGroup.brands);
+    }
+
     if (newGroup) {
       const updatedCategories = [...categories];
 
@@ -137,6 +145,10 @@ function AddProductScreen() {
             ],
           };
           updatedSubcategory.groups.push(newGroup.info);
+          updatedSubcategory.groups.forEach((group) => {
+            group.brands.push(newGroup.info.brands);
+          });
+
           updatedCategories[selectedCategoryIndex].subcategories[
             selectedSubcategoryIndex
           ] = updatedSubcategory;
@@ -146,7 +158,7 @@ function AddProductScreen() {
             updatedCategories[selectedCategoryIndex].subcategories
           );
           setGroups(updatedSubcategory.groups);
-          setBrands([]);
+          setBrands(selectedGroup.brands);
         }
       }
     }
@@ -254,9 +266,8 @@ function AddProductScreen() {
       setGroup("");
       setGroups([]);
       setSpecifications([]);
-      setCategories([]);
       setSubcategories([]);
-
+      setBrands([]);
       toast.success(data.message);
     } catch (err) {
       toast.error(err?.message);
@@ -301,7 +312,7 @@ function AddProductScreen() {
           <div className="custom-form-element">
             <label htmlFor="description">Description</label>
             <textarea
-              class="textarea-description"
+              className="textarea-description"
               rows="6"
               maxLength="400"
               placeholder="Enter description"
