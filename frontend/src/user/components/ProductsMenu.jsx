@@ -44,7 +44,7 @@ function ProductsMenu() {
       <div className="products-hamburger-menu">
         <button ref={buttonRef} onClick={onClickProductsMenuHandler}>
           <svg
-            width="42"
+            width="40"
             height="24"
             viewBox="0 0 42 24"
             fill="none"
@@ -86,7 +86,7 @@ function ProductsMenu() {
                 }`}
                 onMouseEnter={() => setActiveCategory(record._id)}
               >
-                <a href={`/${record.slug}`}>
+                <a className="single-category-name" href={`/${record.slug}`}>
                   {record.name}
                   {activeCategory === record._id && (
                     <svg
@@ -122,7 +122,10 @@ function ProductsMenu() {
                               className="single-products-subcategory"
                               key={subcategory._id}
                             >
-                              <a href={`/${record.slug}/${subcategory.slug}`}>
+                              <a
+                                className="single-subcategory-name"
+                                href={`/${record.slug}/${subcategory.slug}`}
+                              >
                                 {subcategory.name}
                               </a>
                               <ul className="product-groups-menu">
@@ -133,6 +136,7 @@ function ProductsMenu() {
                                       className="single-products-group"
                                     >
                                       <a
+                                        className="single-group-name"
                                         href={`/${record.slug}/${subcategory.slug}/${group.slug}`}
                                       >
                                         {group.name}
