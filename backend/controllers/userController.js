@@ -538,7 +538,25 @@ const getProductData = asyncHandler(async (req, res, next) => {
     return res.status(404).json({ message: "Product not found" });
   }
 
-  res.status(200).json(foundProduct);
+  const similarProducts = await Product.find({
+    category: foundProduct.category,
+    subcategory: foundProduct.subcategory,
+    group: foundProduct.group,
+    brand: foundProduct.brand._id,
+    _id: { $ne: foundProduct._id },
+  })
+    .limit(4)
+    .select("-createdAt -updatedAt -__v")
+    .populate([
+      { path: "category", select: "name slug" },
+      { path: "subcategory", select: "name slug" },
+      { path: "group", select: "name slug" },
+      { path: "brand", select: "name slug" },
+      { path: "images", select: "url" },
+      { path: "specifications", select: "type value" },
+    ]);
+
+  res.status(200).json({ foundProduct, similarProducts });
 });
 
 const getRecords = asyncHandler(async (req, res, next) => {
@@ -626,5 +644,5 @@ module.exports = {
   getFilteredSearchProducts,
   getProductData,
   getRecords,
-  getGroupData
+  getGroupData,
 };

@@ -14,6 +14,24 @@
 .product-page .breadcrumbs li a {
   text-decoration: none;
   color: black;
+  position: relative;
+}
+
+.product-page .breadcrumbs li a::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #ff5c00;
+  display: block;
+  transition: width 0.3s ease;
+}
+
+.product-page .breadcrumbs li a:hover::after,
+.product-page .breadcrumbs li a:focus::after {
+  width: 100%;
 }
 
 .product-page .breadcrumbs li:not(:last-child)::after {
@@ -126,11 +144,12 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
   margin-bottom: 30px;
 }
 
 .price-value .main-price {
-  font-size: 50px;
+  font-size: 45px;
   font-weight: bolder;
   padding-right: 40px;
 }
@@ -218,4 +237,10 @@
   font-size: 20px;
   color: #097a00;
   font-weight: bolder;
+}
+
+.similar-products-container .similar-products {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
 }

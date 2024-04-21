@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import ProductItem from "../components/ProductItem";
 
 import "./ProductScreen.css";
+import { toast } from "react-toastify";
 
 function ProductScreen() {
   const [product, setProduct] = useState("");
+  const [similarProducts, setSimilarProducts] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
 
   const params = useParams();
@@ -24,7 +27,8 @@ function ProductScreen() {
           throw new Error(data.message);
         }
 
-        setProduct(data);
+        setProduct(data.foundProduct);
+        setSimilarProducts(data.similarProducts);
       } catch (err) {
         toast.error(err?.message);
       }
@@ -171,6 +175,14 @@ function ProductScreen() {
             </div>
             <div className="free-delivery-text">
               Free delivery on the territory of Serbia!
+            </div>
+          </div>
+          <div className="similar-products-container">
+            <h2>Similar products</h2>
+            <div className="similar-products">
+              {similarProducts?.map((similarProduct) => (
+                <ProductItem data={similarProduct} />
+              ))}
             </div>
           </div>
         </div>
