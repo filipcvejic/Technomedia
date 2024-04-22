@@ -1,14 +1,19 @@
 .admin-login-container {
   max-width: 500px;
-  margin: 200px auto;
-  background-color: #ffede1;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
 }
 
 .admin-login-section {
+  width: 100%;
   margin-inline: 15px;
   padding: 30px;
+  background-color: #ffede1;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .admin-login-section .form-group {
