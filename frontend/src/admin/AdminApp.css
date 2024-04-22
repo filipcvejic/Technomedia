@@ -1,0 +1,6 @@
+.admin-main-wrapper {
+  display: flex;
+  flex-direction: row;
+  max-width: 1340px;
+  margin: 20px auto;
+}
