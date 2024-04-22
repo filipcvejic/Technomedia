@@ -2,9 +2,12 @@ import { Link, useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 
 import "./ProductsGroupScreen.css";
+import PriceRangeSlider from "../components/PriceRangeSlider";
 
 function ProductsGroupScreen() {
   const [groupData, setGroupData] = useState(null);
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(0);
 
   const params = useParams();
 
@@ -14,7 +17,7 @@ function ProductsGroupScreen() {
 
       try {
         const response = await fetch(
-          `/api/products/${categoryName}/${subcategoryName}/${groupName}`
+          `http://localhost:3000/api/products/${categoryName}/${subcategoryName}/${groupName}`
         );
 
         const data = await response.json();
@@ -23,6 +26,15 @@ function ProductsGroupScreen() {
           throw new Error(data.message);
         }
 
+        const prices = data.map((product) => product.price);
+        const minPrice = Math.ceil(Math.min(...prices));
+        const maxPrice = Math.ceil(Math.max(...prices));
+
+        console.log(minPrice, maxPrice);
+
+        setMinPrice(minPrice);
+        setMaxPrice(maxPrice);
+
         setGroupData(data);
       } catch (err) {
         toast.error(err?.message);
@@ -30,7 +42,7 @@ function ProductsGroupScreen() {
     };
 
     getGroupData();
-  }, []);
+  }, [params]);
   return (
     <>
       {groupData && (
@@ -69,6 +81,13 @@ function ProductsGroupScreen() {
                       </li>
                     ))}
                   </ul>
+                </div>
+                <div className="price-filter-container">
+                  <span>Price</span>
+                  <PriceRangeSlider minPrice={minPrice} maxPrice={maxPrice} />
+                </div>
+                <div className="specifications-filter-container">
+                  {/* {groupData.} */}
                 </div>
               </div>
             </div>

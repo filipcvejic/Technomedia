@@ -3,19 +3,19 @@
   margin: 30px auto;
 }
 
-.group-products {
+.group-products-container {
   display: flex;
   flex-direction: column;
 }
 
-.group-products .group-info {
+.group-products-container .group-info {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
 }
 
-.group-products .group-info .sort-container {
+.group-products-container .group-info .sort-container {
   display: flex;
   flex-direction: row;
   align-items: center;

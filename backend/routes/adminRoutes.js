@@ -20,6 +20,7 @@ const {
   getBrands,
   getInfoForAddingProduct,
   addGroup,
+  getUsers,
 } = require("../controllers/adminController");
 const { adminProtect } = require("../middleware/authMiddleware");
 
@@ -33,7 +34,6 @@ router
   .route("/profile")
   .get(adminProtect, getAdminProfile)
   .put(adminProtect, updateAdminProfile);
-
 router.post(
   "/add-product",
   adminProtect,
@@ -56,6 +56,7 @@ router.post("/add-subcategory", adminProtect, addSubcategory);
 router.post("/add-group", adminProtect, addGroup);
 router.post("/add-brand", adminProtect, addBrand);
 router.delete("/:userId", adminProtect, deleteUser);
+router.get("/users", adminProtect, getUsers);
 router.get("/products", adminProtect, getAllProducts);
 router.get("/products/:category", adminProtect, getProductByCategory);
 router.get(

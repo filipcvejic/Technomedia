@@ -34,7 +34,7 @@ function ProductScreen() {
       }
     };
     getProductData();
-  }, []);
+  }, [params]);
 
   const changeMainImageHandler = (index) => {
     setActiveIndex(index);
@@ -181,7 +181,7 @@ function ProductScreen() {
             <h2>Similar products</h2>
             <div className="similar-products">
               {similarProducts?.map((similarProduct) => (
-                <ProductItem data={similarProduct} />
+                <ProductItem data={similarProduct} key={similarProduct._id} />
               ))}
             </div>
           </div>

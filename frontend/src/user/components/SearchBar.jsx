@@ -22,13 +22,18 @@ function SearchBar() {
     setSearchTerm(searchTerm);
   };
 
-  const filterProducts = (searchTerm) => {
-    const filtered = products.filter((product) =>
-      Object.values(product).some((value) =>
-        value.toString().toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    );
-    setFilteredProducts(filtered);
+  const filterProducts = async (searchTerm) => {
+    if (searchTerm.trim() !== "") {
+      const response = await fetch(
+        `http://localhost:3000/api/term/${searchTerm}`
+      );
+    }
+    //   const filtered = products.filter((product) =>
+    //   Object.values(product).some((value) =>
+    //     value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+    //   )
+    // );
+    //   setFilteredProducts(filtered);
   };
 
   console.log(filteredProducts);

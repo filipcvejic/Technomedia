@@ -2,7 +2,8 @@
   max-width: 1340px;
   margin: 2rem auto;
   display: flex;
-  justify-content: space-between;
+  width: 100%;
+  /* justify-content: space-between; */
 }
 
 .homeslider-hero {
@@ -11,6 +12,32 @@
 
 .homeslider-deal {
   width: 30%;
+}
+
+.homeslider-hero,
+.homeslider-deal {
+  position: relative;
+}
+
+.slick-slider,
+.slick-initialized {
+  position: relative !important;
+}
+
+.slick-slider .slick-prev {
+  display: inherit !important;
+  position: absolute !important;
+  left: 10px;
+  bottom: 5% !important;
+  top: auto !important;
+}
+
+.slick-next {
+  display: inherit !important;
+  position: absolute !important;
+  right: 10px;
+  bottom: 5% !important;
+  top: auto !important;
 }
 
 .services {
