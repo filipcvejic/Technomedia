@@ -92,15 +92,6 @@
   margin-right: 5px;
 }
 
-.single-product-brand .checkbox-custom {
-  display: inline-block;
-  width: 15px;
-  height: 15px;
-  background-color: #e4e4e4;
-  border-radius: 50%;
-  margin-right: 5px;
-}
-
 .single-product-brand label {
   display: flex;
   flex-direction: row;

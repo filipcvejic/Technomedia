@@ -82,8 +82,8 @@ function ProductItem({ data }) {
           </svg>
         </button>
       </div>
-      <Link
-        to={`/${data.category.slug}/${data.subcategory.slug}/${data.group.slug}/${data.slug}`}
+      <a
+        href={`/${data.category.slug}/${data.subcategory.slug}/${data.group.slug}/${data.slug}`}
       >
         <span className="product-image-container">
           <img
@@ -94,14 +94,14 @@ function ProductItem({ data }) {
             alt={data.name}
           />
         </span>
-      </Link>
+      </a>
       <div className="product-item-details">
         <strong className="product-item-name">
-          <Link
-            to={`/${data.category.slug}/${data.subcategory.slug}/${data.group.slug}/${data.slug}`}
+          <a
+            href={`/${data.category.slug}/${data.subcategory.slug}/${data.group.slug}/${data.slug}`}
           >
             {data.name}
-          </Link>
+          </a>
         </strong>
         <div className="product-item-ratings">
           <svg

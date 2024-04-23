@@ -43,7 +43,7 @@ const RegisterScreen = () => {
       email !== "" &&
       password !== "" &&
       confirmedPassword !== "" &&
-      !agree
+      agree
     ) {
       if (password !== confirmedPassword) {
         toast.error("Passwords do not match");
