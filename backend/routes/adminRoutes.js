@@ -21,6 +21,7 @@ const {
   getInfoForAddingProduct,
   addGroup,
   getUsers,
+  updateUserProfile,
 } = require("../controllers/adminController");
 const { adminProtect } = require("../middleware/authMiddleware");
 
@@ -34,6 +35,7 @@ router
   .route("/profile")
   .get(adminProtect, getAdminProfile)
   .put(adminProtect, updateAdminProfile);
+router.put("/update-user/:userId", adminProtect, updateUserProfile);
 router.post(
   "/add-product",
   adminProtect,
