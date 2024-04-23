@@ -1,0 +1,55 @@
+.admin-single-user-update-form {
+  display: flex;
+  flex-direction: column;
+  gap: 47px;
+}
+
+.admin-user-update-details {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.admin-user-update-details h1 {
+  margin: 0;
+}
+
+.admin-user-update-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 18px;
+}
+
+.admin-user-update-fields .user-update-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.user-update-form-group:not(:nth-last-of-type(-n + 2)) label::after {
+  color: #b50938;
+  content: "*";
+  font-size: 16px;
+  margin: 0 0 0 3px;
+}
+
+.user-update-form-group input {
+  height: 35px;
+  border-radius: 10px;
+  border: 1px solid black;
+  outline: none;
+  padding-left: 15px;
+  font-size: 16px;
+}
+
+.admin-user-update-button {
+  width: 180px;
+  color: #fff;
+  background-color: #ff7c32;
+  border: none;
+  border-radius: 20px;
+  height: 40px;
+  font-size: 20px;
+  cursor: pointer;
+}

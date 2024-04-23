@@ -104,7 +104,52 @@ const getUsers = asyncHandler(async (req, res, next) => {
     return res.status(404).json({ message: "Users not found" });
   }
 
-  res.status(200).json(users);
+  const adjustedUsers = users.map((user) => ({
+    ...user.toObject(),
+    createdAt: `${user.createdAt.getDate()}.${
+      user.createdAt.getMonth() + 1
+    }.${user.createdAt.getFullYear()}`,
+  }));
+
+  res.status(200).json(adjustedUsers);
+});
+
+const updateUserProfile = asyncHandler(async (req, res, next) => {
+  const { userId } = req.params;
+  const { name, surname, email, password } = req.body;
+
+  const user = await User.findById(userId);
+
+  user.name = name;
+  user.surname = surname;
+  user.email = email;
+
+  if (password) {
+    const salt = await bcrypt.genSalt(10);
+
+    const newPassword = await bcrypt.hash(password, salt);
+
+    user.password = newPassword;
+  }
+  await user.save();
+
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  const registerDate = `${user.createdAt.getDate()}.${
+    user.createdAt.getMonth() + 1
+  }.${user.createdAt.getFullYear()}`;
+
+  const adjustedUser = {
+    ...user.toObject(),
+    createdAt: registerDate,
+  };
+
+  res.status(200).json({
+    user: adjustedUser,
+    message: `User has been successfully updated.`,
+  });
 });
 
 const deleteUser = asyncHandler(async (req, res, next) => {
@@ -586,6 +631,7 @@ module.exports = {
   getAdminProfile,
   updateAdminProfile,
   getUsers,
+  updateUserProfile,
   deleteUser,
   addProduct,
   getAllProducts,

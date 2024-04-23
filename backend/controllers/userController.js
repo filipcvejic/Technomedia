@@ -116,11 +116,8 @@ const getUserProfile = asyncHandler(async (req, res) => {
     req.user.createdAt.getMonth() + 1
   }.${req.user.createdAt.getFullYear()}`;
 
-  const user = {
-    _id: req.user._id,
-    name: req.user.name,
-    surname: req.user.surname || "",
-    email: req.user.email,
+  const adjustedUser = {
+    ...user.toObject(),
     registerDate,
   };
 
