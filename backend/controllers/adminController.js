@@ -245,18 +245,32 @@ const addProduct = asyncHandler(async (req, res, next) => {
 const getAllProducts = asyncHandler(async (req, res, next) => {
   const products = await Product.find()
     .select("-createdAt -updatedAt -__v")
-    .populate({
-      path: "brand",
-      select: "name",
-    })
-    .populate({
-      path: "category",
-      select: "name",
-    })
-    .populate({
-      path: "subcategory",
-      select: "name",
-    });
+    .populate([
+      {
+        path: "category",
+        select: "name slug",
+      },
+      {
+        path: "subcategory",
+        select: "name slug",
+      },
+      {
+        path: "group",
+        select: "name slug",
+      },
+      {
+        path: "brand",
+        select: "name slug",
+      },
+      {
+        path: "images",
+        select: "url",
+      },
+      {
+        path: "specifications",
+        select: "type value",
+      },
+    ]);
 
   if (!products) {
     return res.status(404).json({ message: "Products not found" });

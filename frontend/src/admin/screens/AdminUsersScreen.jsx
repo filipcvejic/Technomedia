@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import "./AdminUsersScreen.css";
 import { toast } from "react-toastify";
 import UpdateProfileForm from "../components/UpdateProfileForm";
+import DeleteUserModal from "../components/DeleteUserModal";
 
 function AdminUsersScreen() {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [isEditContainerShow, setIsEditContainerShown] = useState(false);
+  const [isEditContainerShown, setIsEditContainerShown] = useState(false);
+  const [isDeleteModalShown, setIsDeleteModalShown] = useState(false);
 
   useEffect(() => {
     const getUsersData = async () => {
@@ -50,8 +52,45 @@ function AdminUsersScreen() {
         singleUser._id === updatedUser._id ? updatedUser : singleUser
       )
     );
-    setSelectedUser(updatedUser)
+    setSelectedUser(updatedUser);
     setIsEditContainerShown(false);
+  };
+
+  const openDeleteModalHandler = (user) => {
+    setSelectedUser(user);
+    setIsDeleteModalShown(true);
+  };
+
+  const onDeleteUserHandler = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/admin/delete-user/${selectedUser._id}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+
+      setUsers((prevUsers) =>
+        prevUsers.filter((singleUser) => singleUser._id !== selectedUser._id)
+      );
+      setSelectedUser(null);
+      setIsDeleteModalShown(false);
+
+      toast.success(data.message);
+    } catch (err) {
+      toast.error(err);
+    }
+  };
+
+  const onCancelDeletionHandler = () => {
+    setIsDeleteModalShown(false);
   };
 
   return (
@@ -108,7 +147,10 @@ function AdminUsersScreen() {
                     />
                   </svg>
                 </div>
-                <div className="delete-user-action">
+                <div
+                  className="delete-user-action"
+                  onClick={() => openDeleteModalHandler(user)}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     version="1.0"
@@ -135,7 +177,7 @@ function AdminUsersScreen() {
       <div className="admin-user-details-wrapper">
         {selectedUser && (
           <>
-            {!isEditContainerShow ? (
+            {!isEditContainerShown ? (
               <div className="admin-single-user-details-wrapper">
                 <div className="admin-single-user-details">
                   <div className="user-main-info">
@@ -167,11 +209,20 @@ function AdminUsersScreen() {
                 </button>
               </div>
             ) : (
-              <UpdateProfileForm user={selectedUser} onUpdateUserInfo={onUpdateUserInfoHandler}/>
+              <UpdateProfileForm
+                user={selectedUser}
+                onUpdateUserInfo={onUpdateUserInfoHandler}
+              />
             )}
           </>
         )}
       </div>
+      {isDeleteModalShown && (
+        <DeleteUserModal
+          onConfirmDelete={onDeleteUserHandler}
+          onCancelDelete={onCancelDeletionHandler}
+        />
+      )}
     </div>
   );
 }

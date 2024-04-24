@@ -36,6 +36,7 @@ router
   .get(adminProtect, getAdminProfile)
   .put(adminProtect, updateAdminProfile);
 router.put("/update-user/:userId", adminProtect, updateUserProfile);
+router.delete("/delete-user/:userId", adminProtect, deleteUser);
 router.post(
   "/add-product",
   adminProtect,
