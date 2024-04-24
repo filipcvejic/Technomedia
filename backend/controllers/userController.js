@@ -117,7 +117,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
   }.${req.user.createdAt.getFullYear()}`;
 
   const adjustedUser = {
-    ...user.toObject(),
+    ...req.user.toObject(),
     registerDate,
   };
 
@@ -135,9 +135,11 @@ const getUserProfile = asyncHandler(async (req, res) => {
     quantity: item.quantity,
   }));
 
-  res
-    .status(200)
-    .json({ user, cart: adjustedCartData, isVerified: req.user.verified });
+  res.status(200).json({
+    user: adjustedUser,
+    cart: adjustedCartData,
+    isVerified: req.user.verified,
+  });
 });
 
 const updateUserProfile = asyncHandler(async (req, res) => {
@@ -251,36 +253,37 @@ const resetPassword = asyncHandler(async (req, res, next) => {
 const getAllProducts = asyncHandler(async (req, res, next) => {
   const products = await Product.find()
     .select("-createdAt -updatedAt -__v")
-    .populate({
-      path: "category",
-      select: "name slug",
-    })
-    .populate({
-      path: "subcategory",
-      select: "name slug",
-    })
-    .populate({
-      path: "group",
-      select: "name slug",
-    })
-    .populate({
-      path: "brand",
-      select: "name slug",
-    })
-    .populate({
-      path: "images",
-      select: "url",
-    })
-    .populate({
-      path: "specifications",
-      select: "type value",
-    });
+    .populate([
+      {
+        path: "category",
+        select: "name slug",
+      },
+      {
+        path: "subcategory",
+        select: "name slug",
+      },
+      {
+        path: "group",
+        select: "name slug",
+      },
+      {
+        path: "brand",
+        select: "name slug",
+      },
+      {
+        path: "images",
+        select: "url",
+      },
+      {
+        path: "specifications",
+        select: "type value",
+      },
+    ]);
 
   if (!products) {
     return res.status(404).json({ message: "Products not found" });
   }
 
-  console.log(products);
   res.status(200).json({ products });
 });
 
@@ -320,28 +323,29 @@ const addProductToCart = asyncHandler(async (req, res, next) => {
 
   const addedProduct = await Product.findById(product)
     .select("-createdAt -updatedAt -__v")
-    .populate({
-      path: "category",
-      select: "name",
-    })
-    .populate({
-      path: "subcategory",
-      select: "name",
-    })
-    .populate({
-      path: "group",
-      select: "name",
-    })
-    .populate({
-      path: "brand",
-      select: "name",
-    })
-    .populate({
-      path: "images",
-      select: "url",
-    });
+    .populate([
+      {
+        path: "category",
+        select: "name",
+      },
+      {
+        path: "subcategory",
+        select: "name",
+      },
+      {
+        path: "group",
+        select: "name",
+      },
+      {
+        path: "brand",
+        select: "name",
+      },
+      {
+        path: "images",
+        select: "url",
+      },
+    ]);
 
-  console.log(addedProduct);
   const adjustedProduct = {
     product: {
       _id: addedProduct._id,
