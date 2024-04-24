@@ -1,0 +1,51 @@
+.admin-products-container {
+  background-color: #ffede1;
+  padding: 20px 10px 20px 25px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-height: 720px;
+  height: 100%;
+}
+
+.admin-products-container .add-product-button {
+  border: none;
+  background-color: #fff;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 245px;
+  width: 100%;
+  border-radius: 10px;
+  height: 40px;
+  font-size: 20px;
+  padding-inline: 10px;
+  cursor: pointer;
+}
+
+.add-product-button span {
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.admin-products {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  max-height: 660px;
+  height: 100%;
+  padding-right: 15px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.admin-products::-webkit-scrollbar {
+  width: 8px;
+}
+
+.admin-products::-webkit-scrollbar-thumb {
+  background-color: #979797;
+  border-radius: 50px;
+}
