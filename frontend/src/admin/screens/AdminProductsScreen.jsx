@@ -3,9 +3,15 @@ import { toast } from "react-toastify";
 import AdminProductItem from "../components/AdminProductItem";
 
 import "./AdminProductsScreen.css";
+import AddProductFormModal from "../components/AddProductFormModal";
 
 function AdminProductsScreen() {
   const [products, setProducts] = useState([]);
+  const [isAddProductFormShown, setIsAddProductFormShown] = useState(false);
+
+  const onCloseModalHandler = () => {
+    setIsAddProductFormShown(false);
+  };
 
   useEffect(() => {
     try {
@@ -29,11 +35,18 @@ function AdminProductsScreen() {
     }
   }, []);
 
+  const onAddProductHandler = (product) => {
+    setProducts((prevProducts) => [...prevProducts, product]);
+  };
+
   return (
     <>
       {products && (
         <div className="admin-products-container">
-          <button className="add-product-button">
+          <button
+            className="add-product-button"
+            onClick={() => setIsAddProductFormShown(true)}
+          >
             Add new product <span>+</span>
           </button>
           <div className="admin-products-wrapper">
@@ -407,6 +420,12 @@ function AdminProductsScreen() {
             </div>
           </div>
         </div>
+      )}
+      {isAddProductFormShown && (
+        <AddProductFormModal
+          onAddProduct={onAddProductHandler}
+          onCloseModal={onCloseModalHandler}
+        />
       )}
     </>
   );

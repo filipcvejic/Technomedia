@@ -18,7 +18,6 @@ import AdminLoginScreen from "./admin/screens/AdminLoginScreen.jsx";
 import AdminHomeScreen from "./admin/screens/AdminHomeScreen.jsx";
 import AdminApp from "./admin/AdminApp.jsx";
 import AdminPrivateRoute from "./admin/components/AdminPrivateRoute.jsx";
-import AddProductScreen from "./admin/screens/AddProductScreen.jsx";
 import UniversalRouteWrapper from "./user/components/UniversalRouteWrapper.jsx";
 import CartScreen from "./user/screens/CartScreen.jsx";
 import ProductScreen from "./user/screens/ProductScreen.jsx";
@@ -69,7 +68,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
               <Route path="/admin" element={<AdminHomeScreen />} />
               <Route path="/admin/users" element={<AdminUsersScreen />} />
               <Route path="/admin/products" element={<AdminProductsScreen />} />
-              <Route path="/admin/add-product" element={<AddProductScreen />} />
             </Route>
           </Route>
           <Route path="/admin/login" element={<AdminLoginScreen />} />
