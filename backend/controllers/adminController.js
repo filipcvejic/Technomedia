@@ -226,7 +226,7 @@ const addProduct = asyncHandler(async (req, res, next) => {
     images.push(newImage._id);
   }
 
-  await Product.create({
+  const newProduct = await Product.create({
     name,
     description,
     price,
@@ -239,7 +239,36 @@ const addProduct = asyncHandler(async (req, res, next) => {
     slug: slugify(name),
   });
 
-  res.status(200).json({ message: "Product has created successfuly" });
+  const addedProduct = await newProduct.populate([
+    {
+      path: "category",
+      select: "name slug",
+    },
+    {
+      path: "subcategory",
+      select: "name slug",
+    },
+    {
+      path: "group",
+      select: "name slug",
+    },
+    {
+      path: "brand",
+      select: "name slug",
+    },
+    {
+      path: "images",
+      select: "url",
+    },
+    {
+      path: "specifications",
+      select: "type value",
+    },
+  ]);
+
+  res
+    .status(200)
+    .json({ addedProduct, message: "Product has created successfuly" });
 });
 
 const getAllProducts = asyncHandler(async (req, res, next) => {
