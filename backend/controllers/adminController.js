@@ -68,35 +68,6 @@ const getAdminProfile = asyncHandler(async (req, res) => {
   res.status(200).json({ admin, cart: adjustedCartData });
 });
 
-const updateAdminProfile = asyncHandler(async (req, res) => {
-  const admin = await Admin.findById(req.admin._id);
-
-  if (!admin) {
-    return res.status(404).json({ message: "Admin not found" });
-  }
-
-  admin.name = req.body.name || admin.name;
-  admin.surname = req.body.surname || admin.surname;
-  admin.email = req.body.email || admin.email;
-
-  const matchPassword = await admin.matchPassword(req.body.oldPassword);
-
-  if (!matchPassword) {
-    return res.status(401).json({ message: "Your old password is incorrect" });
-  }
-
-  admin.password = req.body.newPassword;
-
-  const updatedAdmin = await admin.save();
-
-  res.status(200).json({
-    _id: updatedAdmin._id,
-    name: updatedAdmin.name,
-    surname: updatedAdmin.surname,
-    email: updatedAdmin.email,
-  });
-});
-
 const getUsers = asyncHandler(async (req, res, next) => {
   const users = await User.find().select("-password -verified -updatedAt -__v");
 
@@ -271,6 +242,23 @@ const addProduct = asyncHandler(async (req, res, next) => {
     .json({ addedProduct, message: "Product has created successfuly" });
 });
 
+const deleteProduct = asyncHandler(async (req, res, next) => {
+  const { productId } = req.params;
+
+  const carts = await Cart.find({ "products.product": productId });
+
+  carts.forEach(async (cart) => {
+    cart.products = cart.products.filter(
+      (item) => item.product.toString() !== productId
+    );
+    await cart.save();
+  });
+
+  await Product.findByIdAndDelete(productId);
+
+  res.status(200).json("Product has successfully deleted");
+});
+
 const getAllProducts = asyncHandler(async (req, res, next) => {
   const products = await Product.find()
     .select("-createdAt -updatedAt -__v")
@@ -373,56 +361,6 @@ const getProductByCategoryAndSubcategory = asyncHandler(async (req, res) => {
   }
 
   res.status(200).json({ products });
-});
-
-const getBrands = asyncHandler(async (req, res) => {
-  const brands = await Brand.find().select("name");
-  // .populate({
-  //   path: "subcategories",
-  //   select: "name",
-  // });
-
-  res.status(200).json({ brands });
-});
-
-const getCategories = asyncHandler(async (req, res) => {
-  const brandId = req.params.brand;
-
-  const brand = await Brand.findById(brandId);
-
-  if (!brand) {
-    return res.status(404).json({ message: "Brand not found" });
-  }
-
-  const categories = await Category.find({
-    brand: brand._id,
-  }).select("name");
-
-  if (!categories) {
-    return res.status(404).json({ message: "Categories not found" });
-  }
-
-  res.status(200).json({ categories });
-});
-
-const getSubcategories = asyncHandler(async (req, res) => {
-  const categoryId = req.params.category;
-
-  const category = await Category.findById(categoryId);
-
-  if (!category) {
-    return res.status(404).json({ message: "Category not found" });
-  }
-
-  const subcategories = await Subcategory.find({
-    category: category._id,
-  }).select("name");
-
-  if (!subcategories) {
-    return res.status(404).json({ message: "Subcategories not found" });
-  }
-
-  res.status(200).json({ subcategories });
 });
 
 const addCategory = asyncHandler(async (req, res) => {
@@ -672,17 +610,14 @@ module.exports = {
   loginAdmin,
   logoutAdmin,
   getAdminProfile,
-  updateAdminProfile,
   getUsers,
   updateUserProfile,
   deleteUser,
   addProduct,
+  deleteProduct,
   getAllProducts,
   getProductByCategory,
   getProductByCategoryAndSubcategory,
-  getBrands,
-  getSubcategories,
-  getCategories,
   addCategory,
   addSubcategory,
   addGroup,

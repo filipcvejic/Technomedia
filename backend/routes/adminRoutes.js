@@ -3,12 +3,9 @@ const {
   loginAdmin,
   logoutAdmin,
   getAdminProfile,
-  updateAdminProfile,
   addProduct,
   getProductByCategory,
   getProductByCategoryAndSubcategory,
-  getSubcategories,
-  getCategories,
   addCategory,
   addSubcategory,
   getAllProducts,
@@ -17,11 +14,11 @@ const {
   removeProductFromCart,
   decreaseProductQuantity,
   addBrand,
-  getBrands,
   getInfoForAddingProduct,
   addGroup,
   getUsers,
   updateUserProfile,
+  deleteProduct,
 } = require("../controllers/adminController");
 const { adminProtect } = require("../middleware/authMiddleware");
 
@@ -31,12 +28,10 @@ const upload = require("../middleware/uploadMiddleware");
 
 router.post("/login", loginAdmin);
 router.post("/logout", logoutAdmin);
-router
-  .route("/profile")
-  .get(adminProtect, getAdminProfile)
-  .put(adminProtect, updateAdminProfile);
+router.get("profile", adminProtect, getAdminProfile);
 router.put("/update-user/:userId", adminProtect, updateUserProfile);
 router.delete("/delete-user/:userId", adminProtect, deleteUser);
+router.delete("/delete-product/:productId", adminProtect, deleteProduct);
 router.post(
   "/add-product",
   adminProtect,
@@ -67,14 +62,6 @@ router.get(
   adminProtect,
   getProductByCategoryAndSubcategory
 );
-router.get("/brands/:brand/categories", adminProtect, getCategories);
-router.get(
-  "/categories/:category/subcategories",
-  adminProtect,
-  getSubcategories
-);
-// router.get("/categories", adminProtect, getCategories);
-router.get("/brands", adminProtect, getBrands);
 router.get("/records/info", adminProtect, getInfoForAddingProduct);
 
 module.exports = router;
