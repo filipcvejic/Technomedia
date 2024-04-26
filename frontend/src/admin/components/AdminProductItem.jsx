@@ -1,13 +1,46 @@
-import React from "react";
+import React, { useState } from "react";
 
 import "./AdminProductItem.css";
+import { toast } from "react-toastify";
 
-function AdminProductItem({ data }) {
-  console.log(data);
+function AdminProductItem({ data, onDeleteProduct }) {
+  const [areProductActionsShown, setAreProductActionsShown] = useState(false);
+
+  const deleteProductHandler = async (event, product) => {
+    event.preventDefault();
+
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/admin/delete-product/${product._id}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        throw new Error(data.message);
+      }
+
+      onDeleteProduct(product);
+    } catch (err) {
+      toast.error(err);
+    }
+  };
 
   return (
-    <div className="admin-product-item-wrapper">
-      <div className="admin-product-item">
+    <div
+      className="admin-product-item-wrapper"
+      onMouseEnter={() => setAreProductActionsShown(true)}
+      onMouseLeave={() => setAreProductActionsShown(false)}
+    >
+      <div
+        className={`admin-product-item ${
+          areProductActionsShown ? "active" : ""
+        }`}
+      >
         <span className="admin-product-image-container">
           <img
             className="admin-product-image-photo"
@@ -103,6 +136,14 @@ function AdminProductItem({ data }) {
           </div>
         </div>
       </div>
+      {areProductActionsShown && (
+        <div className="admin-product-item-actions">
+          <button className="edit-button">Edit</button>
+          <button className="delete-button" onClick={deleteProductHandler}>
+            Delete
+          </button>
+        </div>
+      )}
     </div>
   );
 }
