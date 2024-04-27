@@ -28,7 +28,7 @@ const upload = require("../middleware/uploadMiddleware");
 
 router.post("/login", loginAdmin);
 router.post("/logout", logoutAdmin);
-router.get("profile", adminProtect, getAdminProfile);
+router.get("/profile", adminProtect, getAdminProfile);
 router.put("/update-user/:userId", adminProtect, updateUserProfile);
 router.delete("/delete-user/:userId", adminProtect, deleteUser);
 router.delete("/delete-product/:productId", adminProtect, deleteProduct);
