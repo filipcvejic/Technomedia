@@ -1,19 +1,12 @@
-.admin-product-item-wrapper {
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-
 .admin-product-item {
   background-color: #fff;
   border-radius: 10px;
-  cursor: pointer;
   position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 .admin-product-item.active {
-  background-color: #ff610050;
-  filter: blur(1px);
 }
 
 .admin-product-item-details {
@@ -62,30 +55,94 @@
   font-weight: 700;
 }
 
-.admin-product-item-details .admin-product-actions {
+.admin-product-item-options {
+  position: absolute;
+  top: 10px;
+  right: 0px;
+  cursor: pointer;
+}
+
+.three-dots-icon {
+  width: 20px;
+  height: 20px;
+  position: relative;
+}
+
+.three-dots-icon .dot {
+  width: 4px;
+  height: 4px;
+  background-color: #333;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.three-dots-icon .dot:nth-child(1) {
+  top: 0;
+  left: 0;
+}
+
+.three-dots-icon .dot:nth-child(2) {
+  top: 8px;
+  left: 0;
+}
+
+.three-dots-icon .dot:nth-child(3) {
+  top: 16px;
+  left: 0;
+}
+
+/* .admin-product-item-details .admin-product-actions {
   display: none;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+} */
+
+.admin-product-item.active {
+  display: flex;
+  justify-content: center;
+}
+
+.admin-product-item.active .admin-product-item-actions {
+  transition: transform 0.3s ease;
+  /* transform: translateX(200px); */
 }
 
 .admin-product-item-actions {
-  position: absolute;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
   gap: 10px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
+  width: 100%;
 }
 
 .admin-product-item-actions button {
   border: none;
   background-color: transparent;
   cursor: pointer;
-  color: #fff;
-  font-size: 25px;
+}
+
+.admin-product-item-actions .delete-button {
+  color: #ff0000;
+}
+
+.admin-product-item-actions .edit-button,
+.admin-product-item-actions .close-button {
+  color: black;
+}
+
+.admin-product-item-actions .delete-button,
+.admin-product-item-actions .edit-button {
+  font-size: 35px;
+  font-weight: bolder;
+}
+
+.admin-product-item-actions .close-button {
+  position: absolute;
+  top: 10px;
+  right: 5px;
+  font-size: 20px;
+  font-weight: bolder;
 }
