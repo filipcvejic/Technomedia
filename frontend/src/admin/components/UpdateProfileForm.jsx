@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./UpdateProfileForm.css";
 import { toast } from "react-toastify";
 
@@ -8,6 +8,14 @@ function UpdateProfileForm({ user, onUpdateUserInfo }) {
   const [email, setEmail] = useState(user.email);
   const [password, setPassword] = useState("");
   const [confirmedPassword, setConfirmedPassword] = useState("");
+
+  useEffect(() => {
+    setName(user.name);
+    setSurname(user.surname);
+    setEmail(user.email);
+    setPassword("");
+    setConfirmedPassword("");
+  }, [user]);
 
   const editUserInfoHandler = async (event) => {
     event.preventDefault();
