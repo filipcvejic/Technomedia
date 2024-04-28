@@ -54,8 +54,3 @@
 .nav-menu li a:focus::after {
   width: 100%;
 }
-
-.nav-menu li a:hover,
-.nav-menu li a:focus {
-  font-weight: bolder;
-}
