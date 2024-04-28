@@ -1,0 +1,23 @@
+.slider {
+  height: 5px;
+  width: 100%;
+  background-color: #b4b4b4;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.slider .thumb {
+  height: 22px;
+  width: 22px;
+  border-radius: 50%;
+  cursor: grab;
+  background-color: #262626;
+  border: none;
+  top: -8px;
+  outline: none;
+}
+
+.slider .thumb.active {
+  outline: none;
+  border: none;
+}
