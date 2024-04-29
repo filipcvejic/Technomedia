@@ -57,7 +57,13 @@ function ImageUploadInput({ onImageUpload, initialImages }) {
             {initialImages[index] && (
               <>
                 <img
-                  src={URL.createObjectURL(initialImages[index])}
+                  src={
+                    typeof initialImages[index] === "string"
+                      ? `http://localhost:5000/images/${
+                          initialImages[index].split("\\")[2]
+                        }`
+                      : URL.createObjectURL(initialImages[index])
+                  }
                   alt={`Image ${index}`}
                 />
                 <button
