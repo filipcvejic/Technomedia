@@ -10,13 +10,14 @@ function SubcategorySelectInput({
   onChangeBrand,
   initialSubcategory,
 }) {
-  useEffect(() => {
+  const resetInputs = () => {
     onChangeGroup("");
     onChangeBrand("");
-  }, [initialSubcategory]);
+  };
 
   const onSubcategoryChangeHadler = (selectedOption) => {
     onSelectSubcategory(selectedOption);
+    resetInputs();
   };
 
   const createSubcategoryHandler = async (inputValue) => {
@@ -58,6 +59,7 @@ function SubcategorySelectInput({
           info: newSubcategory,
         }
       );
+      resetInputs();
 
       toast.success(data.message);
     } catch (err) {

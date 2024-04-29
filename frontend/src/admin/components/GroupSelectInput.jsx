@@ -10,12 +10,13 @@ function GroupSelectInput({
   onChangeBrand,
   initialGroup,
 }) {
-  useEffect(() => {
+  const resetInputs = () => {
     onChangeBrand("");
-  }, [initialGroup]);
+  };
 
   const onGroupChangeHadler = (selectedOption) => {
     onSelectGroup(selectedOption);
+    resetInputs();
   };
 
   const createGroupHandler = async (inputValue) => {
@@ -54,6 +55,8 @@ function GroupSelectInput({
         },
         isNewGroup && { info: newGroup }
       );
+      resetInputs();
+
       toast.success(data.message);
     } catch (err) {
       toast.error(err?.message);

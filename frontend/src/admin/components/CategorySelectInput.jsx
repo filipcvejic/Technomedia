@@ -10,14 +10,15 @@ function CategorySelectInput({
   categories,
   initialCategory,
 }) {
-  useEffect(() => {
+  const resetInputs = () => {
     onChangeSubcategory("");
     onChangeGroup("");
     onChangeBrand("");
-  }, [initialCategory]);
+  };
 
   const onCategoryChangeHadler = (selectedOption) => {
     onSelectCategory(selectedOption);
+    resetInputs();
   };
 
   const createCategoryHandler = async (inputValue) => {
@@ -57,6 +58,7 @@ function CategorySelectInput({
         }
       );
 
+      resetInputs();
       toast.success(data.message);
     } catch (err) {
       toast.error(err?.message);
