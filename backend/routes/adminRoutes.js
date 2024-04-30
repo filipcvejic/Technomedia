@@ -4,6 +4,7 @@ const {
   logoutAdmin,
   getAdminProfile,
   addProduct,
+  editProduct,
   getProductByCategory,
   getProductByCategoryAndSubcategory,
   addCategory,
@@ -37,6 +38,12 @@ router.post(
   adminProtect,
   upload.array("images", 3),
   addProduct
+);
+router.put(
+  "/edit-product/:productId",
+  adminProtect,
+  upload.array("images", 3),
+  editProduct
 );
 router.post("/cart/add-product", adminProtect, addProductToCart);
 router.delete(

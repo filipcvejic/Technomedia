@@ -237,9 +237,178 @@ const addProduct = asyncHandler(async (req, res, next) => {
     },
   ]);
 
-  res
-    .status(200)
-    .json({ addedProduct, message: "Product has created successfuly" });
+  res.status(200).json({
+    product: addedProduct,
+    message: "Product has created successfuly",
+  });
+});
+
+const editProduct = asyncHandler(async (req, res, next) => {
+  const { productId } = req.params;
+
+  const {
+    name,
+    description,
+    price,
+    category,
+    subcategory,
+    group,
+    brand,
+    specifications,
+  } = req.body;
+
+  const foundProduct = await Product.findById(productId);
+  if (!foundProduct) {
+    return res.status(404).json({ message: "Product not found" });
+  }
+
+  const updatedSpecifications = [];
+  for (const specification of JSON.parse(specifications)) {
+    let updatedSpecification;
+    if (specification._id) {
+      updatedSpecification = await Specification.findByIdAndUpdate(
+        specification._id,
+        { type: specification.type, value: specification.value }
+      );
+    } else {
+      updatedSpecification = await Specification.create({
+        type: specification.type,
+        value: specification.value,
+      });
+    }
+    updatedSpecifications.push(updatedSpecification._id);
+  }
+
+  if (
+    JSON.stringify(foundProduct.specifications) !==
+    JSON.stringify(updatedSpecifications)
+  ) {
+    foundProduct.specifications = updatedSpecifications;
+  }
+
+  if (foundProduct.name !== name) {
+    foundProduct.name = name;
+    foundProduct.slug = slugify(name);
+  }
+
+  foundProduct.description = description || foundProduct.description;
+  foundProduct.price = price || foundProduct.price;
+
+  let foundCategory = await Category.findOne({ name: category });
+  if (!foundCategory) {
+    foundCategory = await Category.create({
+      name: category,
+      slug: slugify(category),
+      subcategories: [],
+    });
+  }
+
+  if (category !== foundProduct.category.toString()) {
+    foundProduct.category = foundCategory._id;
+  }
+
+  let foundSubcategory = await Subcategory.findOne({
+    name: subcategory,
+    category: foundCategory._id,
+  });
+  if (!foundSubcategory) {
+    foundSubcategory = await Subcategory.create({
+      name: subcategory,
+      category: foundCategory._id,
+      slug: slugify(subcategory),
+    });
+    foundCategory.subcategories.push(foundSubcategory._id);
+    await foundCategory.save();
+  }
+
+  if (subcategory !== foundProduct.subcategory.toString()) {
+    foundProduct.subcategory = foundSubcategory._id;
+  }
+
+  let foundGroup = await Group.findOne({
+    name: group,
+    category: foundCategory._id,
+    subcategory: foundSubcategory._id,
+  });
+
+  if (!foundGroup) {
+    foundGroup = await Group.create({
+      name: group,
+      category: foundCategory._id,
+      subcategory: foundSubcategory._id,
+      slug: slugify(group),
+    });
+    foundSubcategory.groups.push(foundGroup._id);
+    await foundSubcategory.save();
+  }
+
+  if (group !== foundProduct.group.toString()) {
+    foundProduct.group = foundGroup._id;
+  }
+
+  let foundBrand = await Brand.findOne({
+    name: brand,
+  });
+
+  if (!foundBrand) {
+    foundBrand = await Brand.create({
+      name: brand,
+      slug: slugify(brand),
+    });
+    foundGroup.brands.push(foundBrand._id);
+    await foundGroup.save();
+  }
+
+  if (brand !== foundProduct.brand.toString()) {
+    foundProduct.brand = foundBrand._id;
+  }
+
+  const updatedImages = [];
+  for (const file of req.files) {
+    const existingImage = await Image.findOne({ url: file.path });
+    if (!existingImage) {
+      const newImage = await Image.create({ url: file.path });
+      updatedImages.push(newImage);
+    } else {
+      updatedImages.push(existingImage);
+    }
+  }
+
+  await foundProduct.save();
+
+  const updatedProduct = await foundProduct.populate([
+    {
+      path: "category",
+      select: "name slug",
+    },
+    {
+      path: "subcategory",
+      select: "name slug",
+    },
+    {
+      path: "group",
+      select: "name slug",
+    },
+    {
+      path: "brand",
+      select: "name slug",
+    },
+    {
+      path: "images",
+      select: "url",
+    },
+    {
+      path: "specifications",
+      select: "type value",
+    },
+  ]);
+
+  console.log(updatedProduct);
+
+  res.status(200).json({
+    product: updatedProduct,
+    message: "Product has been updated successfully",
+  });
 });
 
 const deleteProduct = asyncHandler(async (req, res, next) => {
@@ -266,14 +435,30 @@ const getAllProducts = asyncHandler(async (req, res, next) => {
       {
         path: "category",
         select: "name slug",
+        populate: {
+          path: "subcategories",
+          select: "name slug",
+        },
       },
       {
         path: "subcategory",
         select: "name slug",
+        populate: {
+          path: "groups",
+          select: "name slug",
+          populate: {
+            path: "brands",
+            select: "name slug",
+          },
+        },
       },
       {
         path: "group",
         select: "name slug",
+        populate: {
+          path: "brands",
+          select: "name slug",
+        },
       },
       {
         path: "brand",
@@ -614,6 +799,7 @@ module.exports = {
   updateUserProfile,
   deleteUser,
   addProduct,
+  editProduct,
   deleteProduct,
   getAllProducts,
   getProductByCategory,
