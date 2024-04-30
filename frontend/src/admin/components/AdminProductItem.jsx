@@ -2,9 +2,11 @@ import React, { useState } from "react";
 
 import "./AdminProductItem.css";
 import { toast } from "react-toastify";
+import ProductFormModal from "./ProductFormModal";
 
-function AdminProductItem({ data, onDeleteProduct }) {
+function AdminProductItem({ data, onDeleteProduct, onSubmitProduct }) {
   const [areProductActionsShown, setAreProductActionsShown] = useState(false);
+  const [isEditProductFormShown, setIsEditProductFormShown] = useState(false);
 
   const deleteProductHandler = async (event, product) => {
     event.preventDefault();
@@ -28,6 +30,17 @@ function AdminProductItem({ data, onDeleteProduct }) {
     } catch (err) {
       toast.error(err);
     }
+  };
+
+  const onCloseModalHandler = () => {
+    setIsEditProductFormShown(false);
+  };
+
+  const openEditFormHandler = (event) => {
+    event.preventDefault();
+
+    setIsEditProductFormShown(true);
+    setAreProductActionsShown(false);
   };
 
   return (
@@ -143,8 +156,13 @@ function AdminProductItem({ data, onDeleteProduct }) {
         </>
       ) : (
         <div className="admin-product-item-actions">
-          <button className="edit-button">Edit</button>
-          <button className="delete-button" onClick={deleteProductHandler}>
+          <button className="edit-button" onClick={openEditFormHandler}>
+            Edit
+          </button>
+          <button
+            className="delete-button"
+            onClick={(e) => deleteProductHandler(e, data)}
+          >
             Delete
           </button>
           <button
@@ -154,6 +172,13 @@ function AdminProductItem({ data, onDeleteProduct }) {
             X
           </button>
         </div>
+      )}
+      {isEditProductFormShown && (
+        <ProductFormModal
+          data={data}
+          onSubmitProduct={onSubmitProduct}
+          onCloseModal={onCloseModalHandler}
+        />
       )}
     </div>
   );

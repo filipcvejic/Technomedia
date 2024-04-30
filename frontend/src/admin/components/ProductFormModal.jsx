@@ -15,7 +15,7 @@ function ProductFormModal({ data, onSubmitProduct, onCloseModal }) {
   const [description, setDescription] = useState(data?.description || "");
   const [price, setPrice] = useState(data?.price || "");
   const [images, setImages] = useState(
-    data?.images.map((image) => image.url) || []
+    data?.images ? data.images.map((image) => image.url) : []
   );
   const [category, setCategory] = useState(
     {
@@ -55,14 +55,12 @@ function ProductFormModal({ data, onSubmitProduct, onCloseModal }) {
   const [groups, setGroups] = useState(data?.subcategory.groups || []);
   const [brands, setBrands] = useState(data?.group.brands || []);
 
-  console.log(data);
-
   useEffect(() => {
     getRecords();
   }, []);
 
   const outsideModalClickHandler = (event) => {
-    if (event.target.classList.contains("add-product-container")) {
+    if (event.target.classList.contains("product-form-container")) {
       onCloseModal();
     }
   };
@@ -79,7 +77,7 @@ function ProductFormModal({ data, onSubmitProduct, onCloseModal }) {
         throw new Error(data.message);
       }
 
-      setCategories(data.records.map((singleCategory) => singleCategory));
+      setCategories(data?.records.map((singleCategory) => singleCategory));
     } catch (err) {
       toast.error(err?.message);
     }
@@ -264,23 +262,23 @@ function ProductFormModal({ data, onSubmitProduct, onCloseModal }) {
   };
 
   const submitProductHandler = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
 
     try {
       const formData = new FormData();
 
       images.forEach((image) => {
-        formData.append("images", image);
+        formData.append("images", image || "");
       });
 
-      formData.append("name", name);
-      formData.append("description", description);
-      formData.append("price", price);
-      formData.append("category", category?.label);
-      formData.append("subcategory", subcategory?.label);
-      formData.append("group", group?.label);
-      formData.append("brand", brand?.label);
-      formData.append("specifications", JSON.stringify(specifications));
+      formData.append("name", name || "");
+      formData.append("description", description || "");
+      formData.append("price", price || "");
+      formData.append("category", category?.label || "");
+      formData.append("subcategory", subcategory?.label || "");
+      formData.append("group", group?.label || "");
+      formData.append("brand", brand?.label || "");
+      formData.append("specifications", JSON.stringify(specifications) || []);
 
       const response = await fetch(
         `http://localhost:3000/api/admin/${
@@ -293,27 +291,28 @@ function ProductFormModal({ data, onSubmitProduct, onCloseModal }) {
         }
       );
 
-      const data = await response.json();
+      const responseData = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message);
+        throw new Error(responseData.message);
       }
 
-      onSubmitProduct(data.product);
+      onSubmitProduct(responseData.product);
+      onCloseModal();
 
-      setName("");
-      setDescription("");
-      setPrice("");
-      setImages([]);
-      setBrand("");
-      setCategory("");
-      setSubcategory("");
-      setGroup("");
-      setGroups([]);
-      setSpecifications([]);
-      setSubcategories([]);
-      setBrands([]);
-      toast.success(data.message);
+      // setName("");
+      // setDescription("");
+      // setPrice("");
+      // setImages([]);
+      // setBrand("");
+      // setCategory("");
+      // setSubcategory("");
+      // setGroup("");
+      // setGroups([]);
+      // setSpecifications([]);
+      // setSubcategories([]);
+      // setBrands([]);
+      toast.success(responseData.message);
     } catch (err) {
       toast.error(err?.message);
     }

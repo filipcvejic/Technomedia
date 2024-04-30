@@ -3,7 +3,8 @@ import { toast } from "react-toastify";
 import AdminProductItem from "../components/AdminProductItem";
 
 import "./AdminProductsScreen.css";
-import AddProductFormModal from "../components/AddProductFormModal";
+
+import ProductFormModal from "../components/ProductFormModal";
 
 function AdminProductsScreen() {
   const [products, setProducts] = useState([]);
@@ -41,7 +42,7 @@ function AdminProductsScreen() {
     }
   }, []);
 
-  const onAddProductHandler = (product) => {
+  const onSubmitProductHandler = (product) => {
     setProducts((prevProducts) => [...prevProducts, product]);
   };
 
@@ -61,23 +62,24 @@ function AdminProductsScreen() {
                 <AdminProductItem
                   data={product}
                   key={product._id}
+                  onSubmitProduct={onSubmitProductHandler}
                   onDeleteProduct={onDeleteProductHandler}
                 />
               ))}
-              <div class="admin-product-item-wrapper">
-                <div class="admin-product-item">
-                  <span class="admin-product-image-container">
+              <div className="admin-product-item-wrapper">
+                <div className="admin-product-item">
+                  <span className="admin-product-image-container">
                     <img
-                      class="admin-product-image-photo"
+                      className="admin-product-image-photo"
                       src="http://localhost:5000/images/25ca10ea-1990-47ba-a876-e1d958f3fb32_.png"
                       alt="Candy Washing machine CS4 1172DE 1 S - White"
                     />
                   </span>
-                  <div class="admin-product-item-details">
-                    <strong class="admin-product-item-name">
+                  <div className="admin-product-item-details">
+                    <strong className="admin-product-item-name">
                       <span>Candy Washing machine CS4 1172DE 1 S - White</span>
                     </strong>
-                    <div class="admin-product-item-ratings">
+                    <div className="admin-product-item-ratings">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="15"
@@ -179,26 +181,26 @@ function AdminProductsScreen() {
                         ></path>
                       </svg>
                     </div>
-                    <div class="admin-product-price-container">
-                      <span class="admin-product-price">299.99 EUR</span>
+                    <div className="admin-product-price-container">
+                      <span className="admin-product-price">299.99 EUR</span>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="admin-product-item-wrapper">
-                <div class="admin-product-item">
-                  <span class="admin-product-image-container">
+              <div className="admin-product-item-wrapper">
+                <div className="admin-product-item">
+                  <span className="admin-product-image-container">
                     <img
-                      class="admin-product-image-photo"
+                      className="admin-product-image-photo"
                       src="http://localhost:5000/images/25ca10ea-1990-47ba-a876-e1d958f3fb32_.png"
                       alt="Candy Washing machine CS4 1172DE 1 S - White"
                     />
                   </span>
-                  <div class="admin-product-item-details">
-                    <strong class="admin-product-item-name">
+                  <div className="admin-product-item-details">
+                    <strong className="admin-product-item-name">
                       <span>Candy Washing machine CS4 1172DE 1 S - White</span>
                     </strong>
-                    <div class="admin-product-item-ratings">
+                    <div className="admin-product-item-ratings">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="15"
@@ -300,26 +302,26 @@ function AdminProductsScreen() {
                         ></path>
                       </svg>
                     </div>
-                    <div class="admin-product-price-container">
-                      <span class="admin-product-price">299.99 EUR</span>
+                    <div className="admin-product-price-container">
+                      <span className="admin-product-price">299.99 EUR</span>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="admin-product-item-wrapper">
-                <div class="admin-product-item">
-                  <span class="admin-product-image-container">
+              <div className="admin-product-item-wrapper">
+                <div className="admin-product-item">
+                  <span className="admin-product-image-container">
                     <img
-                      class="admin-product-image-photo"
+                      className="admin-product-image-photo"
                       src="http://localhost:5000/images/25ca10ea-1990-47ba-a876-e1d958f3fb32_.png"
                       alt="Candy Washing machine CS4 1172DE 1 S - White"
                     />
                   </span>
-                  <div class="admin-product-item-details">
-                    <strong class="admin-product-item-name">
+                  <div className="admin-product-item-details">
+                    <strong className="admin-product-item-name">
                       <span>Candy Washing machine CS4 1172DE 1 S - White</span>
                     </strong>
-                    <div class="admin-product-item-ratings">
+                    <div className="admin-product-item-ratings">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="15"
@@ -421,8 +423,8 @@ function AdminProductsScreen() {
                         ></path>
                       </svg>
                     </div>
-                    <div class="admin-product-price-container">
-                      <span class="admin-product-price">299.99 EUR</span>
+                    <div className="admin-product-price-container">
+                      <span className="admin-product-price">299.99 EUR</span>
                     </div>
                   </div>
                 </div>
@@ -432,8 +434,8 @@ function AdminProductsScreen() {
         </div>
       )}
       {isAddProductFormShown && (
-        <AddProductFormModal
-          onAddProduct={onAddProductHandler}
+        <ProductFormModal
+          onSubmitProduct={onSubmitProductHandler}
           onCloseModal={onCloseModalHandler}
         />
       )}
