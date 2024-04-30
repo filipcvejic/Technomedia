@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useProductsContext } from "../context/products-context";
 import "./ProductsMenu.css";
 
 function ProductsMenu() {

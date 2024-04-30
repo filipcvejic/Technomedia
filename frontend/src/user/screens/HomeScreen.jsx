@@ -10,14 +10,13 @@ import ProductItem from "../components/ProductItem";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
-import { useProductsContext } from "../context/products-context";
 
 // import "swiper/css/bundle";
 
 const HomeScreen = () => {
   const [filteredProducts, setFilteredProducts] = useState();
 
-  const { products, isLoading } = useProductsContext();
+  // const { products, isLoading } = useProductsContext();
 
   const leftImages = [
     "/images/laptop-mockup.png",
@@ -106,9 +105,9 @@ const HomeScreen = () => {
       <div className="recommended-products-container">
         <h1 className="recommended-products-title">Recommended products</h1>
         <div className="recommended-products">
-          {products.map((product) => (
+          {/* {products.map((product) => (
             <ProductItem data={product} key={product._id} />
-          ))}
+          ))} */}
         </div>
       </div>
       <div className="special-discounts-container">

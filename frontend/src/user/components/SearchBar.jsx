@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
-import { useProductsContext } from "../context/products-context";
 
 import "./SearchBar.css";
 
 function SearchBar() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
-
-  const { products, isLoading } = useProductsContext();
 
   useEffect(() => {
     const delay = setTimeout(() => {

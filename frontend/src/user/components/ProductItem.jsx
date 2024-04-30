@@ -2,11 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Card from "../../shared/components/Card";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addToCart,
-  removeFromCart,
-  decreaseProductQuantity,
-} from "../features/cart/cartApi";
+import { addToCart } from "../features/cart/cartApi";
 import "./ProductItem.css";
 import { addToCartForGuest } from "../features/cart/cartSlice";
 
