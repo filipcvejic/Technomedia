@@ -24,6 +24,7 @@ import ProductScreen from "./user/screens/ProductScreen.jsx";
 import ProductsGroupScreen from "./user/screens/ProductsGroupScreen.jsx";
 import AdminUsersScreen from "./admin/screens/AdminUsersScreen.jsx";
 import AdminProductsScreen from "./admin/screens/AdminProductsScreen.jsx";
+import SearchResultsScreen from "./user/screens/SearchResultsScreen.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -36,6 +37,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
               <Route path="/cart" element={<CartScreen />} />
               <Route path="/login" element={<LoginScreen />} />
               <Route path="/register" element={<RegisterScreen />} />
+              <Route path="/results" element={<SearchResultsScreen />} />
               <Route
                 path="/forgotpassword"
                 element={<ForgotPasswordScreen />}
