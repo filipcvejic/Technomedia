@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import "./SearchBar.css";
 
 function SearchBar() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const delay = setTimeout(() => {
@@ -20,20 +23,36 @@ function SearchBar() {
   };
 
   const filterProducts = async (searchTerm) => {
-    if (searchTerm.trim() !== "") {
-      const response = await fetch(
-        `http://localhost:3000/api/term/${searchTerm}`
-      );
+    try {
+      if (searchTerm.trim() !== "") {
+        const response = await fetch(
+          `http://localhost:3000/api/search/?q=${searchTerm}`
+        );
+
+        const data = await response.data();
+
+        if (!response.ok) {
+          throw new Error(data.message);
+        }
+
+        setFilteredProducts(data);
+      }
+      //   const filtered = products.filter((product) =>
+      //   Object.values(product).some((value) =>
+      //     value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+      //   )
+      // );
+      //   setFilteredProducts(filtered);
+    } catch (err) {
+      toast.error(err);
     }
-    //   const filtered = products.filter((product) =>
-    //   Object.values(product).some((value) =>
-    //     value.toString().toLowerCase().includes(searchTerm.toLowerCase())
-    //   )
-    // );
-    //   setFilteredProducts(filtered);
   };
 
-  console.log(filteredProducts);
+  const onClickSearchHandler = () => {
+    if (searchTerm.trim() !== "") {
+      navigate(`/results?search=${searchTerm}`);
+    }
+  };
 
   return (
     <div className="search-form">
@@ -44,7 +63,11 @@ function SearchBar() {
           onChange={onChangeSearchHandler}
           value={searchTerm}
         />
-        <button type="submit" className="search-button">
+        <button
+          type="submit"
+          className="search-button"
+          onClick={onClickSearchHandler}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="25"
