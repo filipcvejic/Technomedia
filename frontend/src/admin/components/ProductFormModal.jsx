@@ -417,12 +417,6 @@ function ProductFormModal({ data, onSubmitProduct, onCloseModal }) {
           <div className="product-specifications-container"></div>
         </div>
       </form>
-
-      {/* {isLoading && (
-        <div className="loader-wrapper">
-          <span className="spinner"></span>
-        </div>
-      )} */}
     </div>,
     document.getElementById("modal-root")
   );
