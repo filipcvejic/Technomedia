@@ -29,7 +29,7 @@ router.post("/auth", loginUser);
 router.post("/logout", logoutUser);
 router.post("/forgot-password", forgotPassword);
 router.get("/check-token/:id/:token", checkResetPasswordToken);
-router.get("/term/:term", getFilteredSearchProducts);
+router.get("/search", getFilteredSearchProducts);
 router.post("/reset-password/:id/:token", resetPassword);
 router
   .route("/profile")

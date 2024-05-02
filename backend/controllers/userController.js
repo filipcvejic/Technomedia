@@ -441,61 +441,38 @@ const decreaseProductQuantity = asyncHandler(async (req, res, next) => {
 });
 
 const getFilteredSearchProducts = asyncHandler(async (req, res, next) => {
-  const { term } = req.params;
+  const searchTerm = req.query.q;
 
   const products = await Product.find()
-    .select("-createdAt -updatedAt -__v")
     .populate([
-      { path: "category", select: "name" },
-      { path: "subcategory", select: "name" },
-      { path: "group", select: "name" },
-      { path: "brand", select: "name" },
-      { path: "specifications", select: "type value" },
-    ]);
+      { path: "category", select: "name slug" },
+      { path: "subcategory", select: "name slug" },
+      { path: "group", select: "name slug" },
+      { path: "brand", select: "name slug" },
+      { path: "specifications", select: "type value slug" },
+      { path: "images", select: "url" },
+    ])
+    .select("-createdAt -updatedAt -__v");
 
-  const searchTerms = term.toLowerCase().split(" ");
-
-  let filteredProducts = products.filter((product) =>
-    searchTerms.every(
-      (searchTerm) =>
-        product.name.toLowerCase().includes(searchTerm) ||
-        product.description.toLowerCase().includes(searchTerm) ||
-        product.category.name.toLowerCase().includes(searchTerm) ||
-        product.subcategory.name.toLowerCase().includes(searchTerm) ||
-        product.group.name.toLowerCase().includes(searchTerm) ||
-        product.brand.name.toLowerCase().includes(searchTerm) ||
-        product.specifications.some(
-          (spec) =>
-            spec.type.toLowerCase().includes(searchTerm) ||
-            spec.value.toLowerCase().includes(searchTerm)
+  const searchResults = products.filter((product) => {
+    const searchTerms = searchTerm.toLowerCase().split(" ");
+    return searchTerms.every((term) => {
+      const searchRegex = new RegExp(term, "i");
+      return (
+        product.name.match(searchRegex) ||
+        product.description.match(searchRegex) ||
+        (product.category && product.category.name.match(searchRegex)) ||
+        (product.subcategory && product.subcategory.name.match(searchRegex)) ||
+        (product.group && product.group.name.match(searchRegex)) ||
+        (product.brand && product.brand.name.match(searchRegex)) ||
+        product.specifications.some((spec) =>
+          [spec.type, spec.value].some((field) => field.match(searchRegex))
         )
-    )
-  );
+      );
+    });
+  });
 
-  if (filteredProducts.length === 0) {
-    filteredProducts = products.filter((product) =>
-      searchTerms.some(
-        (searchTerm) =>
-          product.name.toLowerCase().includes(searchTerm) ||
-          product.description.toLowerCase().includes(searchTerm) ||
-          product.category.name.toLowerCase().includes(searchTerm) ||
-          product.subcategory.name.toLowerCase().includes(searchTerm) ||
-          product.group.name.toLowerCase().includes(searchTerm) ||
-          product.brand.name.toLowerCase().includes(searchTerm) ||
-          product.specifications.some(
-            (spec) =>
-              spec.type.toLowerCase().includes(searchTerm) ||
-              spec.value.toLowerCase().includes(searchTerm)
-          )
-      )
-    );
-  }
-
-  if (filteredProducts.length === 0) {
-    return res.status(404).json({ message: "Nema pronađenih proizvoda." });
-  }
-
-  res.json(filteredProducts);
+  res.status(200).json(searchResults);
 });
 
 const getProductData = asyncHandler(async (req, res, next) => {
