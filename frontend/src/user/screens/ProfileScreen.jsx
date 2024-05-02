@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { setCredentials, setLoading } from "../features/auth/userAuthSlice";
+import { setCredentials } from "../features/auth/userAuthSlice";
+import Loader from "../../shared/components/Loader";
 
 import "./ProfileScreen.css";
+import useLoading from "../../shared/hooks/useLoading";
 
 const ProfileScreen = () => {
   const [email, setEmail] = useState("");
@@ -13,8 +15,9 @@ const ProfileScreen = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const { isLoading, setLoading } = useLoading();
+
   const { userInfo } = useSelector((state) => state.userAuth);
-  const { isLoading } = useSelector((state) => state.userAuth);
 
   const dispatch = useDispatch();
 
@@ -34,7 +37,7 @@ const ProfileScreen = () => {
         toast.error("Passwords do not match");
       } else {
         try {
-          dispatch(setLoading(true));
+          setLoading(true);
           const response = await fetch("http://localhost:3000/api/profile", {
             method: "PUT",
             headers: {
@@ -57,14 +60,15 @@ const ProfileScreen = () => {
           }
 
           dispatch(setCredentials({ ...data }));
-          dispatch(setLoading(false));
+
           setOldPassword("");
           setNewPassword("");
           setConfirmPassword("");
           toast.success("Profile updated successfully");
         } catch (err) {
           toast.error(err?.message);
-          dispatch(setLoading(false));
+        } finally {
+          setLoading(false);
         }
       }
     }
@@ -184,12 +188,7 @@ const ProfileScreen = () => {
                   Update
                 </button>
               </form>
-
-              {isLoading && (
-                <div className="loader-wrapper">
-                  <span className="spinner"></span>
-                </div>
-              )}
+              {isLoading && <Loader />}
             </div>
           </div>
         </>
