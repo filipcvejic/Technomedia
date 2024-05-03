@@ -1,24 +1,17 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "./QuantityInput.css";
-import { addToCart, decreaseProductQuantity } from "../features/cart/cartApi";
+import { decreaseProductQuantity } from "../features/cart/cartApi";
+import useAddToCart from "../hooks/useAddToCart";
 
 export default function QuantityInput({ item }) {
   const dispatch = useDispatch();
 
+  const addToCartHandler = useAddToCart();
+
   const increaseQuantityHandler = (event) => {
     event.preventDefault();
 
-    dispatch(
-      addToCart({
-        product: item.product?._id,
-        name: item.product.name,
-        description: item.product.description,
-        price: item.product.price,
-        images: item.product.images,
-        category: item.product.category?._id,
-        subcategory: item.product.subcategory?._id,
-      })
-    );
+    addToCartHandler(item.product);
   };
 
   const decreaseQuantityHandler = (event) => {
