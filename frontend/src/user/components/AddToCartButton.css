@@ -1,0 +1,19 @@
+.cart-button {
+  cursor: pointer;
+  background-color: #ff7c32;
+  border-radius: 50%;
+  border: none;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-button svg {
+  margin-right: 2px;
+}
+
+.cart-button.active {
+  background-color: #17a200;
+}
