@@ -1,13 +1,17 @@
-import ReactDOM from "react-dom";
 import { useDispatch } from "react-redux";
 import { removeFromCart } from "../features/cart/cartApi";
 import QuantityInput from "./QuantityInput";
 import { Link } from "react-router-dom";
 
 import "./MiniCart.css";
+import { useRef } from "react";
 
-function MiniCart({ cart }) {
+function MiniCart({ cart, onOutsideClick }) {
   const dispatch = useDispatch();
+
+  const miniCartRef = useRef(null);
+
+  onOutsideClick(miniCartRef);
 
   const removeItemFromCartHandler = (event, productId) => {
     event.preventDefault();
@@ -17,18 +21,16 @@ function MiniCart({ cart }) {
   let totalAmount = 0;
 
   return (
-    <div className="mini-cart">
+    <div className="mini-cart" ref={miniCartRef}>
       <div className="mini-cart-triangle" />
       <div className="mini-cart-title">
         <span>MINI CART</span>
-        {!cart.length > 0 && (
+        {cart.length === 0 && (
           <p>You don't have products in your shopping cart</p>
         )}
       </div>
       <div className="mini-cart-items">
-        {cart?.map((item) => {
-          console.log(item.product);
-
+        {cart.map((item) => {
           totalAmount += item.product.price * item.quantity;
           return (
             <div className="single-mini-cart-item" key={item.product._id}>
@@ -36,6 +38,7 @@ function MiniCart({ cart }) {
                 src={`http://localhost:5000/images/${
                   item.product.images[0].url.split("\\")[2]
                 }`}
+                alt={item.product.name}
               />
               <div className="single-item-details">
                 <span>{item.product.name}</span>
@@ -70,14 +73,14 @@ function MiniCart({ cart }) {
       <div className="mini-cart-details">
         <div className="mini-cart-amount-details">
           <span className="cart-total-amount">
-            Total: <span>{totalAmount} EUR</span>
+            Total: <span>{totalAmount.toFixed(2)} EUR</span>
           </span>
         </div>
         <div className="mini-cart-actions">
           <button className="payment-button" type="button">
             Continue on payment
           </button>
-          <Link to="/cart">View and edit cart</Link>
+          <a href="/cart">View and edit cart</a>
         </div>
       </div>
     </div>
