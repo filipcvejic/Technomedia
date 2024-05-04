@@ -1,0 +1,84 @@
+.product-specifications-container,
+.product-declaration-container,
+.product-description-container {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 2px solid #00000050;
+  width: 100%;
+}
+
+.product-specifications-container .specifications-header,
+.product-declaration-container .declaration-header,
+.product-description-container .description-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.product-specifications-container .specifications-header svg,
+.product-declaration-container .declaration-header svg,
+.product-description-container .description-header svg {
+  padding-right: 20px;
+}
+
+.product-specifications-container .specifications-header h2,
+.product-declaration-container .declaration-header h2,
+.product-description-container .description-header h2 {
+  font-weight: normal;
+  margin-block: 1.8rem;
+}
+
+.product-specifications-details,
+.product-description-details,
+.product-declaration-details {
+  padding: 20px;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-specifications-details .single-specification-field,
+.product-description-details .single-description-field,
+.product-declaration-details .single-declaration-field {
+  display: flex;
+  flex-direction: row;
+  border-top: 1px solid #00000050;
+}
+
+.product-specifications-details .single-specification-field:last-child,
+.product-description-details .single-description-field:last-child,
+.product-declaration-details .single-declaration-field:last-child {
+  border-bottom: 1px solid #00000050;
+}
+
+.product-specifications-details
+  .single-specification-field
+  .single-specification-field-type,
+.product-description-details
+  .single-description-field
+  .single-description-field-type,
+.product-declaration-details
+  .single-declaration-field
+  .single-declaration-field-type {
+  background-color: #d9d9d9;
+  width: 50%;
+  padding: 10px;
+  border-left: 1px solid #00000050;
+}
+
+.product-specifications-details
+  .single-specification-field
+  .single-specification-field-value,
+.product-description-details
+  .single-description-field
+  .single-description-field-value,
+.product-declaration-details
+  .single-declaration-field
+  .single-declaration-field-value {
+  width: 50%;
+  background-color: #fff;
+  padding: 10px;
+  border-right: 1px solid #00000050;
+}
