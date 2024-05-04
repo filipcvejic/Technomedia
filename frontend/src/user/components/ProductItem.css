@@ -57,8 +57,9 @@
 }
 
 .wish-list-action {
-  width: 100%;
-  position: relative;
+  position: absolute;
+  top: 15px;
+  right: 10px;
   display: flex;
   justify-content: end;
   margin-bottom: 5px;
@@ -72,26 +73,6 @@
   cursor: pointer;
   background-color: transparent;
   border: none;
-}
-
-.product-item-actions .cart-action .cart-button {
-  cursor: pointer;
-  background-color: #ff7c32;
-  border-radius: 50%;
-  border: none;
-  width: 50px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.product-item-actions .cart-action .cart-button svg {
-  margin-right: 2px;
-}
-
-.product-item-actions .cart-action .cart-button.active {
-  background-color: #17a200;
 }
 
 .single-category {
