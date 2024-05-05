@@ -27,6 +27,7 @@ const loginUser = asyncHandler(async (req, res) => {
       .json({ message: "You have to verify email, please check your mail" });
   }
   generateToken(res, user._id);
+
   res.status(200).json({
     _id: user._id,
     name: user.name,
@@ -372,9 +373,9 @@ const syncCartProducts = asyncHandler(async (req, res, next) => {
     return res.status(404).json({ message: "Cart not found" });
   }
 
-  cartProducts.forEach(async (cartProduct) => {
+  cartProducts.forEach((cartProduct) => {
     const existingProduct = cart.products.find(
-      (cp) => cp.product.toString() === cartProduct.product
+      (cp) => cp.product.toString() === cartProduct.product._id
     );
 
     if (existingProduct) {
@@ -389,9 +390,27 @@ const syncCartProducts = asyncHandler(async (req, res, next) => {
 
   await cart.save();
 
-  const updatedCart = await cart.populate("products.product");
+  const updatedCart = await cart.populate({
+    path: "products.product",
+    populate: [
+      { path: "category", select: "name slug" },
+      { path: "subcategory", select: "name slug" },
+      { path: "group", select: "name slug" },
+      { path: "brand", select: "name slug" },
+      { path: "specifications", select: "type value slug" },
+      { path: "images", select: "url" },
+    ],
+    select: "-createdAt -updatedAt -__v",
+  });
 
-  res.status(200).json({ updatedCart });
+  const updatedCartProducts = updatedCart.products.map(
+    ({ product, quantity }) => ({
+      product,
+      quantity,
+    })
+  );
+
+  res.status(200).json({ updatedCartProducts });
 });
 
 const removeProductFromCart = asyncHandler(async (req, res, next) => {
