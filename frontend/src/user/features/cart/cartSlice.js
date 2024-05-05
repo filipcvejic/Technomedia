@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addToCart, removeFromCart, decreaseProductQuantity } from "./cartApi";
+import {
+  addToCart,
+  removeFromCart,
+  decreaseProductQuantity,
+  syncCartProducts,
+} from "./cartApi";
 
 const initialState = {
   cart: localStorage.getItem("cart")
@@ -30,6 +35,28 @@ const cartSlice = createSlice({
         state.cart.push({ product: { ...product }, quantity: 1 });
       }
       localStorage.setItem("cart", JSON.stringify(state.cart));
+    },
+    removeFromCartForGuest: (state, action) => {
+      const { productId } = action.payload;
+
+      state.cart = state.cart.filter((item) => item.product._id !== productId);
+
+      localStorage.setItem("cart", JSON.stringify(state.cart));
+    },
+    decreaseProductQuantityForGuest: (state, action) => {
+      const { productId } = action.payload;
+
+      const productIndex = state.cart.findIndex(
+        (item) => item.product._id === productId
+      );
+
+      if (productIndex !== -1) {
+        state.cart[productIndex].quantity -= 1;
+        if (state.cart[productIndex].quantity <= 0) {
+          state.cart.splice(productIndex, 1);
+        }
+        localStorage.setItem("cart", JSON.stringify(state.cart));
+      }
     },
     clearGuestCart: (state, action) => {
       state.cart = [];
@@ -96,10 +123,28 @@ const cartSlice = createSlice({
       .addCase(decreaseProductQuantity.rejected, (state, action) => {
         state.status = "idle";
         state.error = action.payload;
+      })
+      .addCase(syncCartProducts.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(syncCartProducts.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.cart = action.payload;
+        localStorage.setItem("cart", JSON.stringify(state.cart));
+      })
+      .addCase(syncCartProducts.rejected, (state, action) => {
+        state.status = "idle";
+        state.error = action.payload;
       });
   },
 });
 
-export const { setCart, addToCartForGuest, clearGuestCart } = cartSlice.actions;
+export const {
+  setCart,
+  addToCartForGuest,
+  removeFromCartForGuest,
+  decreaseProductQuantityForGuest,
+  clearGuestCart,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;
