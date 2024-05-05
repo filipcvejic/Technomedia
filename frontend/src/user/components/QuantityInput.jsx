@@ -1,28 +1,9 @@
-import { useDispatch, useSelector } from "react-redux";
 import "./QuantityInput.css";
-import { decreaseProductQuantity } from "../features/cart/cartApi";
-import useAddToCart from "../hooks/useAddToCart";
+
+import { useCartActions } from "../hooks/useCartActions";
 
 export default function QuantityInput({ item }) {
-  const dispatch = useDispatch();
-
-  const addToCartHandler = useAddToCart();
-
-  const increaseQuantityHandler = (event) => {
-    event.preventDefault();
-
-    addToCartHandler(item.product);
-  };
-
-  const decreaseQuantityHandler = (event) => {
-    event.preventDefault();
-
-    dispatch(
-      decreaseProductQuantity({
-        productId: item.product?._id,
-      })
-    );
-  };
+  const { decreaseProductQuantity, addToCart } = useCartActions();
 
   return (
     <div className="quantity-input">
@@ -30,7 +11,7 @@ export default function QuantityInput({ item }) {
         className="quantity-count-minus"
         data-action="minus"
         type="button"
-        onClick={decreaseQuantityHandler}
+        onClick={() => decreaseProductQuantity(item.product?._id)}
       >
         -
       </button>
@@ -46,7 +27,7 @@ export default function QuantityInput({ item }) {
         className="quantity-count-plus"
         data-action="plus"
         type="button"
-        onClick={increaseQuantityHandler}
+        onClick={() => addToCart(item.product)}
       >
         +
       </button>
