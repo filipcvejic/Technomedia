@@ -24,7 +24,7 @@ passport.use(
         if (!user) {
           user = await User.create({
             name: profile.name.givenName,
-            surname: surname ? surname : "",
+            surname: surname || "",
             email: profile.emails[0].value,
             password,
             verified: profile.emails[0].verified,

@@ -51,12 +51,12 @@ const LoginScreen = () => {
           throw new Error(data.message);
         }
 
-        if (cart && Object.keys(cart).length > 0) {
-          dispatch(syncCartProducts({ cartProducts: cart }));
-        }
-
         if (adminInfo) {
           dispatch(adminLogout());
+        }
+
+        if (cart && Object.keys(cart).length > 0) {
+          dispatch(syncCartProducts({ cartProducts: cart }));
         }
 
         dispatch(setCredentials({ ...data }));

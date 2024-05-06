@@ -4,11 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout as adminLogout } from "../../admin/features/auth/adminAuthSlice";
 import { toast } from "react-toastify";
+import { syncCartProducts } from "../features/cart/cartApi";
 
 function GoogleLoginSuccess() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const { cart } = useSelector((state) => state.userCart);
   const { adminInfo } = useSelector((state) => state.adminAuth);
 
   useEffect(() => {
@@ -27,17 +29,17 @@ function GoogleLoginSuccess() {
         }
 
         const { user } = data;
-        const userInfo = {
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-        };
 
         if (adminInfo) {
           dispatch(adminLogout());
         }
 
-        dispatch(setCredentials(userInfo));
+        if (cart && Object.keys(cart).length > 0) {
+          dispatch(syncCartProducts({ cartProducts: cart }));
+        }
+
+        dispatch(setCredentials({ ...user }));
+
         navigate("/");
       } catch (err) {
         toast.error(err?.message);
@@ -45,7 +47,7 @@ function GoogleLoginSuccess() {
     };
 
     checkUser();
-  }, [navigate, dispatch]);
+  }, []);
 }
 
 export default GoogleLoginSuccess;
