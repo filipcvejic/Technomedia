@@ -1,0 +1,7 @@
+.remove-item-button {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  height: 28px;
+  cursor: pointer;
+}

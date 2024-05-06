@@ -1,17 +1,16 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import "./AddToCartButton.css";
-import useAddToCart from "../hooks/useAddToCart";
+import { useCartActions } from "../hooks/useCartActions";
 
 function AddToCartButton({ data }) {
   const [isAddedToCart, setIsAddedToCart] = useState(false);
 
-  const addToCartHandler = useAddToCart();
+  const { addToCart } = useCartActions();
 
   const onAddProductToCartHandler = async (e) => {
     e.preventDefault();
 
-    addToCartHandler(data);
+    addToCart(data);
 
     setIsAddedToCart(true);
 
