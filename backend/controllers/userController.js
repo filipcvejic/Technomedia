@@ -113,16 +113,20 @@ const logoutUser = asyncHandler(async (req, res) => {
 });
 
 const getUserProfile = asyncHandler(async (req, res) => {
-  const registerDate = `${req.user.createdAt.getDate()}.${
-    req.user.createdAt.getMonth() + 1
-  }.${req.user.createdAt.getFullYear()}`;
+  const user = await User.findById(req.user._id).select(
+    "-cart -updatedAt -__v"
+  );
+
+  const registerDate = `${user.createdAt.getDate()}.${
+    user.createdAt.getMonth() + 1
+  }.${user.createdAt.getFullYear()}`;
 
   const adjustedUser = {
-    ...req.user.toObject(),
-    registerDate,
+    ...user.toObject(),
+    createdAt: registerDate,
   };
 
-  const cart = await Cart.findOne({ user: req.user._id }).populate({
+  const cart = await Cart.findOne({ user: user._id }).populate({
     path: "products.product",
     select: "-createdAt -updatedAt -__v",
     populate: [
@@ -139,7 +143,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
   res.status(200).json({
     user: adjustedUser,
     cart: adjustedCartData,
-    isVerified: req.user.verified,
+    isVerified: user.verified,
   });
 });
 

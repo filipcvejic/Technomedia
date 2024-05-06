@@ -11,7 +11,12 @@ const errorLoginUrl = "http://localhost:3000/login/error";
 router.get("/login/success", protect, (req, res) => {
   if (req.user) {
     res.status(200).json({
-      user: req.user,
+      user: {
+        _id: req.user._id,
+        name: req.user.name,
+        surname: req.user.surname,
+        email: req.user.email,
+      },
     });
   }
 });

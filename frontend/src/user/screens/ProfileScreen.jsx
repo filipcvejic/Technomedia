@@ -97,7 +97,7 @@ const ProfileScreen = () => {
                   <span>E-mail:</span> {userInfo.email}
                 </span>
                 <span className="user-register-date">
-                  <span>Registered:</span> {userInfo.registerDate}
+                  <span>Registered:</span> {userInfo.createdAt}
                 </span>
               </div>
               <div className="mini-logo">
