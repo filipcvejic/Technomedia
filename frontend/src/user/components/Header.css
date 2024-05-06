@@ -62,7 +62,7 @@
 .user-profile:hover .bi-user-icon,
 .cart-icon-button:hover .bi-cart-icon,
 .favourite-items:hover .bi-favourite-icon {
-  fill: black;
+  fill: #501d00;
 }
 
 .shopping-cart .cart-icon-button {

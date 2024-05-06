@@ -97,7 +97,6 @@
 .product-images .main-image img {
   height: 515px;
   width: 530px;
-  transition: opacity 0.5s ease;
 }
 
 .product-overview {
