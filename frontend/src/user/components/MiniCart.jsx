@@ -21,29 +21,30 @@ function MiniCart({ cart, onOutsideClick }) {
         )}
       </div>
       <div className="mini-cart-items">
-        {cart.map((item) => {
-          totalAmount += item.product.price * item.quantity;
-          return (
-            <div className="single-mini-cart-item" key={item.product._id}>
-              <img
-                src={`http://localhost:5000/images/${
-                  item.product.images[0].url.split("\\")[2]
-                }`}
-                alt={item.product.name}
-              />
-              <div className="single-item-details">
-                <span>{item.product.name}</span>
-                <span className="single-item-price">
-                  {item.product.price} EUR
-                </span>
-                <div className="single-item-quantity">
-                  <QuantityInput item={item} />
-                  <RemoveFromCartButton item={item} />
+        {Object.keys(cart).length > 0 &&
+          cart?.map((item) => {
+            totalAmount += item.product.price * item.quantity;
+            return (
+              <div className="single-mini-cart-item" key={item.product._id}>
+                <img
+                  src={`http://localhost:5000/images/${
+                    item.product.images[0].url.split("\\")[2]
+                  }`}
+                  alt={item.product.name}
+                />
+                <div className="single-item-details">
+                  <span>{item.product.name}</span>
+                  <span className="single-item-price">
+                    {item.product.price} EUR
+                  </span>
+                  <div className="single-item-quantity">
+                    <QuantityInput item={item} />
+                    <RemoveFromCartButton item={item} />
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
       </div>
       <div className="mini-cart-details">
         <div className="mini-cart-amount-details">
