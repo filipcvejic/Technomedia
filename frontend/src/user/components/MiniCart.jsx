@@ -33,10 +33,15 @@ function MiniCart({ cart, onOutsideClick }) {
                   alt={item.product.name}
                 />
                 <div className="single-item-details">
-                  <span>{item.product.name}</span>
-                  <span className="single-item-price">
-                    {item.product.price} EUR
-                  </span>
+                  <a
+                    className="item-link"
+                    href={`/${item.product.category.slug}/${item.product.subcategory.slug}/${item.product.group.slug}/${item.product.slug}`}
+                  >
+                    <span>{item.product.name}</span>
+                    <span className="single-item-price">
+                      {item.product.price} EUR
+                    </span>
+                  </a>
                   <div className="single-item-quantity">
                     <QuantityInput item={item} />
                     <RemoveFromCartButton item={item} />

@@ -130,7 +130,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
     path: "products.product",
     select: "-createdAt -updatedAt -__v",
     populate: [
-      { path: "category subcategory group brand", select: "name" },
+      { path: "category subcategory group brand", select: "name slug" },
       { path: "images", select: "url" },
     ],
   });
@@ -331,19 +331,19 @@ const addProductToCart = asyncHandler(async (req, res, next) => {
     .populate([
       {
         path: "category",
-        select: "name",
+        select: "name slug",
       },
       {
         path: "subcategory",
-        select: "name",
+        select: "name slug",
       },
       {
         path: "group",
-        select: "name",
+        select: "name slug",
       },
       {
         path: "brand",
-        select: "name",
+        select: "name slug",
       },
       {
         path: "images",
