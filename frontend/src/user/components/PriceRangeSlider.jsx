@@ -1,30 +1,60 @@
 import React, { useEffect, useState } from "react";
 import Slider from "react-slider";
-
 import "./PriceRangeSlider.css";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-function PriceRangeSlider({ minPrice, maxPrice }) {
-  const [values, setValues] = useState([minPrice, maxPrice]);
+function PriceRangeSlider({ products }) {
+  const [values, setValues] = useState([0, 0]);
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(0);
+
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    const delay = setTimeout(() => {
-      const newUrl = new URL(window.location.href);
-      newUrl.searchParams.set("price", `from-${values[0]}-to-${values[1]}`);
-      window.history.replaceState(null, "", newUrl.toString());
-    }, 1000);
+    if (products.length > 0) {
+      const prices = products.map((product) => product.price);
+      const newMinPrice = Math.ceil(Math.min(...prices));
+      const newMaxPrice = Math.ceil(Math.max(...prices));
+      setMinPrice(newMinPrice);
+      setMaxPrice(newMaxPrice);
+    }
+  }, [products]);
 
-    return () => clearTimeout(delay);
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const priceParam = urlParams.get("price");
+    if (priceParam) {
+      const [min, max] = priceParam.match(/\d+/g);
+      setValues([parseInt(min), parseInt(max)]);
+    }
+  }, [location.search]);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      const currentUrlParams = new URLSearchParams(window.location.search);
+      currentUrlParams.set("price", `from-${values[0]}-to-${values[1]}`);
+      const newUrl = `${
+        window.location.pathname
+      }?${currentUrlParams.toString()}`;
+      navigate(newUrl);
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
   }, [values]);
 
-  const handleChange = (newValues) => setValues(newValues);
+  const handleChange = (newValues) => {
+    setValues(newValues);
+  };
 
   return (
     <div className="price-range-slider">
-      <h2>Price Range</h2>
+      <div className="price-range-header">
+        <h3>Price</h3>
+      </div>
       <div className="group-price-range">
-        <p>{minPrice}</p>
-        <p>{maxPrice}</p>
+        <p>{minPrice} EUR</p>
+        <p>{maxPrice} EUR</p>
       </div>
       <Slider
         className="slider"
@@ -36,28 +66,8 @@ function PriceRangeSlider({ minPrice, maxPrice }) {
       />
       <div className="current-price-range">
         <p>
-          {values[0]} - {values[1]}
+          {values[0]} EUR - {values[1]} EUR
         </p>
-      </div>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <div>
-          <label htmlFor="minPrice">Min Price:</label>
-          <input
-            type="number"
-            id="minPrice"
-            value={values[0]}
-            onChange={(e) => handleChange([+e.target.value, values[1]])}
-          />
-        </div>
-        <div>
-          <label htmlFor="maxPrice">Max Price:</label>
-          <input
-            type="number"
-            id="maxPrice"
-            value={values[1]}
-            onChange={(e) => handleChange([values[0], +e.target.value])}
-          />
-        </div>
       </div>
     </div>
   );
