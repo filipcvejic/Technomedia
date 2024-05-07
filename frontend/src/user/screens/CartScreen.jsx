@@ -18,12 +18,17 @@ function CartScreen() {
             totalAmount += item.product?.price * item.quantity;
             return (
               <div className="cart-item" key={item.product?._id}>
-                <img
-                  src={`http://localhost:5000/images/${
-                    item.product?.images[0].url.split("\\")[2]
-                  }`}
-                />
-                <p className="cart-item-name">{item.product.name}</p>
+                <a
+                  className="cart-item-link"
+                  href={`/${item.product.category.slug}/${item.product.subcategory.slug}/${item.product.group.slug}/${item.product.slug}`}
+                >
+                  <img
+                    src={`http://localhost:5000/images/${
+                      item.product?.images[0].url.split("\\")[2]
+                    }`}
+                  />
+                  <p className="cart-item-name">{item.product.name}</p>
+                </a>
                 <div className="cart-item-details">
                   <QuantityInput item={item} />
                   <span>{item.product?.price} EUR</span>
@@ -40,7 +45,7 @@ function CartScreen() {
           <div className="orded-price-details">
             <div className="online-price">
               <p>Price for online payment:</p>
-              <span>{totalAmount} EUR</span>
+              <span>{totalAmount.toFixed(2)} EUR</span>
             </div>
             <div className="online-discount">
               <p>Discount:</p>
@@ -49,7 +54,7 @@ function CartScreen() {
           </div>
           <div className="purchase-amount">
             <p>Purchase amount:</p>
-            <span>{totalAmount} EUR</span>
+            <span>{totalAmount.toFixed(2)} EUR</span>
           </div>
           <button className="order-button">Order</button>
         </div>
