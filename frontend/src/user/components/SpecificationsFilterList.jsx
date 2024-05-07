@@ -70,7 +70,11 @@ function SpecificationsFilterList({ icon, searchResults }) {
                 )
               )
             ).map((specValue, specValueIndex) => (
-              <SpecificationsItem key={specValueIndex} specValue={specValue} />
+              <SpecificationsItem
+                key={specValueIndex}
+                specValue={specValue}
+                specType={specType}
+              />
             ))}
           </ul>
         </div>
