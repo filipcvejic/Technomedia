@@ -1,11 +1,10 @@
 import React from "react";
-
 import "./SearchItem.css";
 
 export default function SearchItem({ data, searchTerm }) {
   const formatProductName = (productName, searchTerm) => {
-    const searchWords = searchTerm.split(" ");
-    const regex = new RegExp(`(${searchWords.join("|")})`, "gi");
+    const searchWords = searchTerm.trim().split(/\s+/);
+    const regex = new RegExp(`(${searchWords.join("|")}\\s*|\\s+)`, "gi");
     const parts = productName.split(regex);
 
     return parts.map((part, index) => {
@@ -25,6 +24,7 @@ export default function SearchItem({ data, searchTerm }) {
       );
     });
   };
+
   return (
     <div className="search-product-item" key={data._id}>
       <div className="search-product-wish-list-action">
