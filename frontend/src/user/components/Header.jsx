@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { logout } from "../features/auth/userAuthSlice";
 import { useRef, useState } from "react";
 import { clearGuestCart } from "../features/cart/cartSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MiniCart from "./MiniCart";
 import SearchBar from "./SearchBar";
 import outsideClickHandler from "../utils/outsideClickHandler";
@@ -19,6 +19,7 @@ const Header = () => {
   const cartButtonRef = useRef(null);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   outsideClickHandler(userMenuRef, () => setIsUserMenuExpanded(false));
 
@@ -48,6 +49,8 @@ const Header = () => {
 
       dispatch(logout());
       dispatch(clearGuestCart());
+
+      navigate("/");
     } catch (err) {
       toast.error(err?.message);
     }
