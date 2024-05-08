@@ -1,14 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { logout } from "../features/auth/adminAuthSlice";
-import { useState } from "react";
 
 import "./AdminHeader.css";
 
 const AdminHeader = () => {
   const { adminInfo } = useSelector((state) => state.adminAuth);
-
-  const [isExpanded, setIsExpanded] = useState(false);
 
   const dispatch = useDispatch();
 
