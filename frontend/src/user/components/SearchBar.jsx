@@ -6,6 +6,7 @@ import "./SearchBar.css";
 import SearchItem from "./SearchItem";
 import Loader from "../../shared/components/Loader";
 import useLoading from "../../shared/hooks/useLoading";
+import outsideClickHandler from "../utils/outsideClickHandler";
 
 function SearchBar() {
   const [isSearchResultsMenuShown, setIsSearchResultsMenuShown] =
@@ -28,22 +29,7 @@ function SearchBar() {
     return () => clearTimeout(delay);
   }, [searchTerm]);
 
-  useEffect(() => {
-    const outsideSearchClickHandler = (event) => {
-      if (
-        searcFormRef.current &&
-        !searcFormRef.current.contains(event.target)
-      ) {
-        setIsSearchResultsMenuShown(false);
-      }
-    };
-
-    document.addEventListener("mousedown", outsideSearchClickHandler);
-
-    return () => {
-      document.removeEventListener("mousedown", outsideSearchClickHandler);
-    };
-  }, []);
+  outsideClickHandler(searcFormRef, () => setIsSearchResultsMenuShown(false));
 
   const onChangeSearchHandler = (event) => {
     const searchTerm = event.target.value;
