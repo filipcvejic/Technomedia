@@ -58,10 +58,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                 path="/:categoryName/:subcategoryName/:groupName"
                 element={<ProductsGroupScreen />}
               />
-              <Route path="" element={<PrivateRoute />}>
-                <Route path="/profile" element={<ProfileScreen />} />
-                <Route path="/SSO/success" element={<GoogleLoginSuccess />} />
-              </Route>
+            </Route>
+            <Route path="" element={<PrivateRoute />}>
+              <Route path="/profile" element={<ProfileScreen />} />
+              <Route path="/SSO/success" element={<GoogleLoginSuccess />} />
             </Route>
           </Route>
 
