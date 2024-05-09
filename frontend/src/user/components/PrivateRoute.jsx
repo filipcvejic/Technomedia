@@ -25,7 +25,7 @@ const PrivateRoute = () => {
         navigate("/login");
       } else {
         dispatch(setCredentials({ ...resData.user }));
-        dispatch(setCart({ ...resData.cart }));
+        dispatch(setCart(resData.cart));
       }
     };
 
