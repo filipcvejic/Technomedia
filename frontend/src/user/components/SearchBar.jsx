@@ -64,7 +64,7 @@ function SearchBar() {
 
   const onClickSearchHandler = () => {
     if (searchTerm.trim() !== "") {
-      navigate(`/results?search=${searchTerm}`);
+      navigate(`/search?q=${searchTerm}`);
     }
   };
 
@@ -114,7 +114,7 @@ function SearchBar() {
             <>
               <div className="search-menu-header">
                 <span>Products ({filteredProducts.length})</span>
-                <a href={`/results?search=${searchTerm}`}>
+                <a href={`/search?q=${searchTerm}`}>
                   View All (+{filteredProducts.length})
                 </a>
               </div>
