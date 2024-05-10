@@ -1,38 +1,58 @@
-import React, { useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 function SpecificationsItem({ specValue, specType }) {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [selectedValues, setSelectedValues] = useState(new Set());
+  const [isFilterActive, setIsFilterActive] = useState(false);
 
   useEffect(() => {
-    // Ova funkcija će se pozvati svaki put kada se promeni lokacija
-    // Ovde možemo obraditi promene lokacije
-    console.log("Location Changed:", location.pathname, location.search);
-  }, [location.pathname, location.search]); // Ova kuka će pratiti promene lokacije samo ako se promeni 'pathname' ili 'search' u URL-u
+    const currentValues = searchParams
+      .getAll(specType)
+      .flatMap((value) => value.split(","));
+    setSelectedValues(new Set(currentValues));
+    setIsFilterActive(selectedValues.has(specValue));
+  }, [searchParams, specType, specValue, selectedValues]);
 
   const specificationClickHandler = () => {
-    const searchParams = new URLSearchParams(location.search);
+    const newValues = new Set(selectedValues);
 
-    if (
-      searchParams.has(specType) &&
-      searchParams.get(specType) === specValue
-    ) {
-      searchParams.delete(specType);
+    if (isFilterActive) {
+      newValues.delete(specValue);
     } else {
-      searchParams.set(specType, specValue);
+      newValues.add(specValue);
     }
 
-    navigate(`${location.pathname}?${searchParams.toString()}`);
+    setSearchParams((prevParams) => {
+      const newParams = new URLSearchParams(prevParams);
+
+      newParams.delete(specType);
+
+      newParams.append(specType, Array.from(new Set(newValues)));
+
+      if (newValues.size === 0) newParams.delete(specType);
+
+      return newParams;
+    });
+
+    setSelectedValues(newValues);
   };
 
   return (
     <li
-      className="single-product-specification"
+      className={`single-product-specification ${
+        isFilterActive ? "active" : ""
+      }`}
       onClick={specificationClickHandler}
     >
       <label>
-        <input type="checkbox" className="custom-checkbox" />
+        <input
+          type="checkbox"
+          className="custom-checkbox"
+          checked={isFilterActive}
+          onChange={() => {}}
+          readOnly
+        />
         <span className="checkbox-custom"></span>
         {specValue}
       </label>
