@@ -15,6 +15,8 @@ export function useCartActions() {
   const { userInfo } = useSelector((state) => state.userAuth);
 
   const addToCartHandler = (product) => {
+    console.log(product.slug);
+
     dispatch(
       userInfo
         ? addToCart({
@@ -27,6 +29,7 @@ export function useCartActions() {
             subcategory: product.subcategory?._id,
             group: product.group?._id,
             brand: product.brand?._id,
+            slug: product.slug,
           })
         : addToCartForGuest({
             product: {
@@ -39,6 +42,7 @@ export function useCartActions() {
               subcategory: product.subcategory?._id,
               group: product.group?._id,
               brand: product.brand?._id,
+              slug: product.slug,
             },
           })
     );
