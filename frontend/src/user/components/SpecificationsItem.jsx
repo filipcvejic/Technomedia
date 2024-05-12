@@ -11,8 +11,8 @@ function SpecificationsItem({ specValue, specType }) {
       .getAll(specType)
       .flatMap((value) => value.split(","));
     setSelectedValues(new Set(currentValues));
-    setIsFilterActive(selectedValues.has(specValue));
-  }, [searchParams, specType, specValue, selectedValues]);
+    setIsFilterActive(new Set(currentValues).has(specValue));
+  }, [searchParams, specType, specValue]);
 
   const specificationClickHandler = () => {
     const newValues = new Set(selectedValues);

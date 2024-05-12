@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import SpecificationsItem from "./SpecificationsItem";
 
-function SpecificationsFilterList({ icon, searchResults }) {
+function SpecificationsFilterList({ icon, products }) {
   const [visibleTypes, setVisibleTypes] = useState({});
 
   const toggleVisibilityHandler = (specType) => {
@@ -15,7 +15,7 @@ function SpecificationsFilterList({ icon, searchResults }) {
     <div className="specifications-filter-container">
       {Array.from(
         new Set(
-          searchResults.flatMap((product) =>
+          products?.flatMap((product) =>
             product.specifications.map((spec) => spec.type)
           )
         )
@@ -46,7 +46,7 @@ function SpecificationsFilterList({ icon, searchResults }) {
             <ul className="specifications-filter-list">
               {Array.from(
                 new Set(
-                  searchResults.flatMap((product) =>
+                  products.flatMap((product) =>
                     product.specifications
                       .filter((spec) => spec.type === specType)
                       .map((spec) => spec.value)
