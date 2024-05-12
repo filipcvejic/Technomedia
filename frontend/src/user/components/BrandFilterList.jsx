@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import BrandItem from "./BrandItem";
 
-function BrandFilterList({ icon, searchResults }) {
+function BrandFilterList({ icon, brands }) {
   const [isBrandsListShown, setIsBrandsListShown] = useState(true);
 
   return (
@@ -10,20 +11,19 @@ function BrandFilterList({ icon, searchResults }) {
         onClick={() => setIsBrandsListShown((prevValue) => !prevValue)}
       >
         <h3>Brand</h3>
-        <span className="arrow-icon">{icon}</span>
+        <span
+          className="arrow-icon"
+          style={{
+            transform: isBrandsListShown ? "rotate(180deg)" : "rotate(0)",
+          }}
+        >
+          {icon}
+        </span>
       </div>
       {isBrandsListShown && (
         <ul className="brands-filter-list">
-          {Array.from(
-            new Set(searchResults.map((product) => product.brand.name))
-          ).map((brandName, index) => (
-            <li className="single-product-brand" key={index}>
-              <label>
-                <input type="checkbox" className="custom-checkbox" />
-                <span className="checkbox-custom"></span>
-                {brandName}
-              </label>
-            </li>
+          {brands?.map((brand, index) => (
+            <BrandItem key={index} brandName={brand.name} label={"brand"} />
           ))}
         </ul>
       )}
