@@ -137,6 +137,7 @@ const Header = () => {
                       stroke="none"
                       fill="#fffcfc"
                       fillRule="evenodd"
+                      className="bi-user-icon"
                     />
                     <path
                       d=""

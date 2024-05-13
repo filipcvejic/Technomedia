@@ -59,7 +59,7 @@
   font-size: 18px;
 }
 
-.user-profile:hover .bi-user-icon,
+.user-actions:hover .bi-user-icon,
 .cart-icon-button:hover .bi-cart-icon,
 .favourite-items:hover .bi-favourite-icon {
   fill: #501d00;
