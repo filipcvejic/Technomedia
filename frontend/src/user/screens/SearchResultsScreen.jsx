@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import ProductItem from "../components/ProductItem";
 
 import "./SearchResultsScreen.css";
 import { toast } from "react-toastify";
 import SpecificationsFilterList from "../components/SpecificationsFilterList";
 import BrandFilterList from "../components/BrandFilterList";
-import CategoryFilterList from "../components/CategoryFilterList";
+import GroupFilterList from "../components/GroupFilterList";
 import PriceRangeSlider from "../components/PriceRangeSlider";
+import SortButton from "../components/SortButton";
+import FilteredProductsList from "../components/FilteredProductsList";
 
 function SearchResultsScreen() {
-  const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  const location = useLocation();
-  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const searchTerm = searchParams.get("q").toString();
 
   const icon = (
     <svg
@@ -33,79 +35,65 @@ function SearchResultsScreen() {
   );
 
   useEffect(() => {
+    const currentParams = searchParams.toString();
+
     const getSearchResults = async () => {
       try {
-        const searchParams = new URLSearchParams(location.search);
-        const term = searchParams.get("search");
-        const searchTerm = term ? term.trim() : "";
-        setSearchTerm(searchTerm);
+        const response = await fetch(
+          `http://localhost:3000/api/search?${currentParams}`
+        );
 
-        if (searchTerm !== "") {
-          const response = await fetch(
-            `http://localhost:3000/api/search/?q=${searchTerm}`
-          );
+        const data = await response.json();
 
-          const data = await response.json();
-
-          if (!response.ok) {
-            throw new Error(data.message);
-          }
-
-          setSearchResults(data);
-        } else {
-          navigate("/");
+        if (!response.ok) {
+          throw new Error(data.message);
         }
+
+        setSearchResults(data);
       } catch (err) {
         toast.error(err.message);
       }
     };
 
     getSearchResults();
-  }, [location.search]);
+  }, [searchParams]);
 
   return (
     <>
-      {searchResults && searchResults.length > 0 ? (
+      {searchResults.products && searchResults.products.length > 0 ? (
         <div className="products-search-page">
-          <ul className="breacrumbs">
+          <ul className="breadcrumbs">
             <li>
               <Link to="/">Home</Link>
             </li>
+            <li>Search results for: "{searchTerm}"</li>
           </ul>
-
           <div className="search-products-container">
             <div className="search-info">
               <h2>
                 Search results for: <span>"{searchTerm}"</span>
                 <span className="number-of-results">
-                  {searchResults.length}{" "}
-                  {searchResults.length > 1 ? "products" : "product"}
+                  {searchResults.products.length}{" "}
+                  {searchResults.products.length > 1 ? "products" : "product"}
                 </span>
               </h2>
-              <div className="sort-container">
-                <span>Sort by:</span>
-                <select className="sort-button">
-                  <option value="">Popularnosti</option>
-                  <option value="">Ceni nanize</option>
-                  <option value="">Ceni navise</option>
-                </select>
-              </div>
+              <SortButton additionalOptions={["Closest to the search term"]} />
             </div>
             <div className="search-products">
               <div className="search-products-filter-container">
-                <CategoryFilterList searchResults={searchResults} icon={icon} />
-                <BrandFilterList searchResults={searchResults} icon={icon} />
-                <PriceRangeSlider products={searchResults} />
+                <GroupFilterList groups={searchResults?.groups} icon={icon} />
+                <BrandFilterList brands={searchResults?.brands} icon={icon} />
+                <PriceRangeSlider
+                  minPrice={searchResults?.minPrice}
+                  maxPrice={searchResults?.maxPrice}
+                  label={"price"}
+                />
                 <SpecificationsFilterList
-                  searchResults={searchResults}
+                  products={searchResults?.products}
                   icon={icon}
                 />
               </div>
-              <div className="filtered-products-list">
-                {searchResults?.map((product) => (
-                  <ProductItem data={product} key={product._id} />
-                ))}
-              </div>
+              <FilteredProductsList products={searchResults?.products} />
             </div>
           </div>
         </div>
