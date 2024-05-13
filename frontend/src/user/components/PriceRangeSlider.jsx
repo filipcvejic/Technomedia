@@ -26,12 +26,15 @@ function PriceRangeSlider({ minPrice, maxPrice, label }) {
 
   const updateSearchParams = (newValues) => {
     const [min, max] = newValues;
-    const priceRange = `from-${Math.ceil(min)}-to-${Math.ceil(max)}`;
-    setSearchParams((prevParams) => {
-      const newParams = new URLSearchParams(prevParams);
-      newParams.set(label, priceRange);
-      return newParams;
-    });
+
+    if (min !== max) {
+      const priceRange = `from-${Math.ceil(min)}-to-${Math.ceil(max)}`;
+      setSearchParams((prevParams) => {
+        const newParams = new URLSearchParams(prevParams);
+        newParams.set(label, priceRange);
+        return newParams;
+      });
+    }
   };
 
   return (
