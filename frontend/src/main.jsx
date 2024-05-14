@@ -25,54 +25,66 @@ import ProductsGroupScreen from "./user/screens/ProductsGroupScreen.jsx";
 import AdminUsersScreen from "./admin/screens/AdminUsersScreen.jsx";
 import AdminProductsScreen from "./admin/screens/AdminProductsScreen.jsx";
 import SearchResultsScreen from "./user/screens/SearchResultsScreen.jsx";
+import ProductsCategoryScreen from "./user/screens/ProductsCategoryScreen.jsx";
+import ProductsSubcategoryScreen from "./user/screens/ProductsSubcategoryScreen.jsx";
+
+const UserRoutes = () => (
+  <Routes>
+    <Route path="/" element={<App />}>
+      <Route path="/" element={<UniversalRouteWrapper />}>
+        <Route path="/" element={<HomeScreen />} />
+        <Route path="/cart" element={<CartScreen />} />
+        <Route path="/login" element={<LoginScreen />} />
+        <Route path="/register" element={<RegisterScreen />} />
+        <Route path="/search" element={<SearchResultsScreen />} />
+        <Route path="/forgotpassword" element={<ForgotPasswordScreen />} />
+        <Route
+          path="/resetpassword/:id/:token"
+          element={<ResetPasswordScreen />}
+        />
+        <Route path="/users/:id/verify/:token" element={<EmailVerify />} />
+        <Route
+          path="/:categoryName/:subcategoryName/:groupName/:productName"
+          element={<ProductScreen />}
+        />
+        <Route path="/:categoryName" element={<ProductsCategoryScreen />} />
+        <Route
+          path="/:categoryName/:subcategoryName"
+          element={<ProductsSubcategoryScreen />}
+        />
+        <Route
+          path="/:categoryName/:subcategoryName/:groupName"
+          element={<ProductsGroupScreen />}
+        />
+      </Route>
+      <Route path="" element={<PrivateRoute />}>
+        <Route path="/profile" element={<ProfileScreen />} />
+        <Route path="/SSO/success" element={<GoogleLoginSuccess />} />
+      </Route>
+    </Route>
+  </Routes>
+);
+
+const AdminRoutes = () => (
+  <Routes>
+    <Route path="/" element={<AdminApp />}>
+      <Route path="/" element={<AdminPrivateRoute />}>
+        <Route path="/" element={<AdminHomeScreen />} />
+        <Route path="/users" element={<AdminUsersScreen />} />
+        <Route path="/products" element={<AdminProductsScreen />} />
+      </Route>
+    </Route>
+    <Route path="/login" element={<AdminLoginScreen />} />
+  </Routes>
+);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>
       <Router>
         <Routes>
-          <Route path="/" element={<App />}>
-            <Route path="" element={<UniversalRouteWrapper />}>
-              <Route path="/" element={<HomeScreen />} />
-              <Route path="/cart" element={<CartScreen />} />
-              <Route path="/login" element={<LoginScreen />} />
-              <Route path="/register" element={<RegisterScreen />} />
-              <Route path="/search" element={<SearchResultsScreen />} />
-              <Route
-                path="/forgotpassword"
-                element={<ForgotPasswordScreen />}
-              />
-              <Route
-                path="/resetpassword/:id/:token"
-                element={<ResetPasswordScreen />}
-              />
-              <Route
-                path="/users/:id/verify/:token"
-                element={<EmailVerify />}
-              />
-              <Route
-                path="/:categoryName/:subcategoryName/:groupName/:productName"
-                element={<ProductScreen />}
-              />
-              <Route
-                path="/:categoryName/:subcategoryName/:groupName"
-                element={<ProductsGroupScreen />}
-              />
-            </Route>
-            <Route path="" element={<PrivateRoute />}>
-              <Route path="/profile" element={<ProfileScreen />} />
-              <Route path="/SSO/success" element={<GoogleLoginSuccess />} />
-            </Route>
-          </Route>
-
-          <Route path="/" element={<AdminApp />}>
-            <Route path="" element={<AdminPrivateRoute />}>
-              <Route path="/admin" element={<AdminHomeScreen />} />
-              <Route path="/admin/users" element={<AdminUsersScreen />} />
-              <Route path="/admin/products" element={<AdminProductsScreen />} />
-            </Route>
-          </Route>
-          <Route path="/admin/login" element={<AdminLoginScreen />} />
+          <Route path="/*" element={<UserRoutes />} />
+          <Route path="/admin/*" element={<AdminRoutes />} />
         </Routes>
       </Router>
     </Provider>
