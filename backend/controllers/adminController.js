@@ -210,32 +210,34 @@ const addProduct = asyncHandler(async (req, res, next) => {
     slug: slugify(name),
   });
 
-  const addedProduct = await newProduct.populate([
-    {
-      path: "category",
-      select: "name slug",
-    },
-    {
-      path: "subcategory",
-      select: "name slug",
-    },
-    {
-      path: "group",
-      select: "name slug",
-    },
-    {
-      path: "brand",
-      select: "name slug",
-    },
-    {
-      path: "images",
-      select: "url",
-    },
-    {
-      path: "specifications",
-      select: "type value",
-    },
-  ]);
+  const addedProduct = await Product.findById(newProduct._id)
+    .select("-__v -createdAt -updatedAt")
+    .populate([
+      {
+        path: "category",
+        select: "name slug",
+      },
+      {
+        path: "subcategory",
+        select: "name slug",
+      },
+      {
+        path: "group",
+        select: "name slug",
+      },
+      {
+        path: "brand",
+        select: "name slug",
+      },
+      {
+        path: "images",
+        select: "url",
+      },
+      {
+        path: "specifications",
+        select: "type value",
+      },
+    ]);
 
   res.status(200).json({
     product: addedProduct,
@@ -376,34 +378,34 @@ const editProduct = asyncHandler(async (req, res, next) => {
 
   await foundProduct.save();
 
-  const updatedProduct = await foundProduct.populate([
-    {
-      path: "category",
-      select: "name slug",
-    },
-    {
-      path: "subcategory",
-      select: "name slug",
-    },
-    {
-      path: "group",
-      select: "name slug",
-    },
-    {
-      path: "brand",
-      select: "name slug",
-    },
-    {
-      path: "images",
-      select: "url",
-    },
-    {
-      path: "specifications",
-      select: "type value",
-    },
-  ]);
-
-  console.log(updatedProduct);
+  const updatedProduct = await Product.findById(foundProduct._id)
+    .select("-__v -createdAt -updatedAt")
+    .populate([
+      {
+        path: "category",
+        select: "name slug",
+      },
+      {
+        path: "subcategory",
+        select: "name slug",
+      },
+      {
+        path: "group",
+        select: "name slug",
+      },
+      {
+        path: "brand",
+        select: "name slug",
+      },
+      {
+        path: "images",
+        select: "url",
+      },
+      {
+        path: "specifications",
+        select: "type value",
+      },
+    ]);
 
   res.status(200).json({
     product: updatedProduct,
@@ -635,8 +637,6 @@ const addGroup = asyncHandler(async (req, res, next) => {
 
 const addBrand = asyncHandler(async (req, res) => {
   const { groupId, brandName } = req.body;
-
-  console.log(groupId, brandName);
 
   const foundGroup = await Group.findById(groupId);
 
