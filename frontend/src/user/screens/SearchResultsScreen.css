@@ -141,31 +141,3 @@
 /* .single-product-specification .custom-checkbox:checked + .checkbox-custom  */ {
   background-color: black;
 }
-
-.filtered-products-list {
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  margin-top: 20px;
-}
-
-.filtered-products-list .product-item-info {
-  height: 320px;
-}
-
-.filtered-products-list .product-item-details .product-item-name {
-  padding-top: 0;
-}
-
-.filtered-products-list .product-item-details .price-container .price {
-  font-size: 24px;
-}
-
-.filtered-products-list
-  .product-item-details
-  .product-item-actions
-  .cart-button {
-  width: 45px;
-  height: 45px;
-}
