@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setCredentials, setLoading } from "../features/auth/userAuthSlice";
 import { syncCartProducts } from "../features/cart/cartApi";
 import { logout as adminLogout } from "../../admin/features/auth/adminAuthSlice";
 import { toast } from "react-toastify";
-
 import "./LoginScreen.css";
 
 const LoginScreen = () => {
@@ -13,17 +12,20 @@ const LoginScreen = () => {
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
 
   const { userInfo } = useSelector((state) => state.userAuth);
   const { cart } = useSelector((state) => state.userCart);
   const { adminInfo } = useSelector((state) => state.adminAuth);
 
+  const from = location.state?.from?.pathname || "/";
+
   useEffect(() => {
     if (userInfo) {
-      navigate("/");
+      navigate(from, { replace: true });
     }
-  }, [navigate, userInfo]);
+  }, [navigate, userInfo, from]);
 
   const googlePopupWindowHandler = async () => {
     window.open("http://localhost:5000/api/v1/login/google", "_self");
@@ -61,7 +63,7 @@ const LoginScreen = () => {
 
         dispatch(setCredentials({ ...data }));
         dispatch(setLoading(false));
-        navigate("/");
+        navigate(from, { replace: true });
       } catch (err) {
         toast.error(err?.message);
       }
