@@ -1,0 +1,26 @@
+.subcategory-filter-container {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #00000050;
+}
+
+.subcategories-filter-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0 0 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.single-subcategory-filter a {
+  text-decoration: none;
+  color: black;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.single-subcategory-filter .single-subcategory-filter-count {
+  color: #828282;
+}
