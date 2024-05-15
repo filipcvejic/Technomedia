@@ -1,23 +1,31 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 
 import "./ProductsGroupScreen.css";
 import PriceRangeSlider from "../components/PriceRangeSlider";
+import formatBreadcrumbHandler from "../utils/formatBreadcrumbElementHandler";
+import BrandFilterList from "../components/BrandFilterList";
+import SpecificationsFilterList from "../components/SpecificationsFilterList";
+import FilteredProductsList from "../components/FilteredProductsList";
+import SortButton from "../components/SortButton";
 
 function ProductsGroupScreen() {
   const [groupData, setGroupData] = useState(null);
-  const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(0);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const params = useParams();
 
-  useEffect(() => {
-    const getGroupData = async () => {
-      const { categoryName, subcategoryName, groupName } = params;
+  const { categoryName, subcategoryName, groupName } = params;
 
+  useEffect(() => {
+    const currentParams = searchParams.toString();
+
+    const getGroupData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/products/${categoryName}/${subcategoryName}/${groupName}`
+          `http://localhost:3000/api/search?category=${categoryName}&subcategory=${subcategoryName}&group=${groupName}${
+            currentParams ? `&${currentParams}` : ""
+          }`
         );
 
         const data = await response.json();
@@ -26,15 +34,6 @@ function ProductsGroupScreen() {
           throw new Error(data.message);
         }
 
-        const prices = data.map((product) => product.price);
-        const minPrice = Math.ceil(Math.min(...prices));
-        const maxPrice = Math.ceil(Math.max(...prices));
-
-        console.log(minPrice, maxPrice);
-
-        setMinPrice(minPrice);
-        setMaxPrice(maxPrice);
-
         setGroupData(data);
       } catch (err) {
         toast.error(err?.message);
@@ -42,57 +41,49 @@ function ProductsGroupScreen() {
     };
 
     getGroupData();
-  }, [params]);
+  }, [searchParams]);
+
   return (
     <>
-      {groupData && (
+      {groupData?.products && groupData?.products.length > 0 ? (
         <div className="products-group-page">
           <ul className="breadcrumbs">
             <li>
               <Link to="/">Home</Link>
             </li>
+            <li>
+              <Link to={`/${categoryName}`}>
+                {formatBreadcrumbHandler(categoryName)}
+              </Link>
+            </li>
+            <li>
+              <Link to={`/${subcategoryName}`}>
+                {formatBreadcrumbHandler(subcategoryName)}
+              </Link>
+            </li>
+            <li>{formatBreadcrumbHandler(groupName)}</li>
           </ul>
           <div className="group-products-container">
             <div className="group-info">
-              <h2>Laptopovi</h2>
-              <div className="sort-container">
-                <span>Sort by:</span>
-                <select className="sort-button">
-                  <option value="">Popularnosti</option>
-                  <option value="">Ceni nanize</option>
-                  <option value="">Ceni navise</option>
-                </select>
-              </div>
+              <h1>{formatBreadcrumbHandler(groupName)}</h1>
+              <SortButton additionalOptions={["Popularity"]} />
             </div>
             <div className="group-products">
               <div className="group-products-filter-container">
-                <div className="brand-filter-container">
-                  <span>Brand</span>
-                  <ul className="brands-filter-list">
-                    {Array.from(
-                      new Set(groupData.map((product) => product.brand.name))
-                    ).map((brandName, index) => (
-                      <li className="single-product-brand" key={index}>
-                        <label>
-                          <input type="checkbox" className="custom-checkbox" />
-                          <span className="checkbox-custom"></span>
-                          {brandName}
-                        </label>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="price-filter-container">
-                  <span>Price</span>
-                  <PriceRangeSlider minPrice={minPrice} maxPrice={maxPrice} />
-                </div>
-                <div className="specifications-filter-container">
-                  {/* {groupData.} */}
-                </div>
+                <BrandFilterList brands={groupData?.brands} />
+                <PriceRangeSlider
+                  minPrice={groupData?.minPrice}
+                  maxPrice={groupData?.maxPrice}
+                  label={"price"}
+                />
+                <SpecificationsFilterList products={groupData?.products} />
               </div>
+              <FilteredProductsList products={groupData?.products} />
             </div>
           </div>
         </div>
+      ) : (
+        <> </>
       )}
     </>
   );
