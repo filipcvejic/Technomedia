@@ -43,7 +43,21 @@ function AdminProductsScreen() {
   }, []);
 
   const onSubmitProductHandler = (product) => {
-    setProducts((prevProducts) => [...prevProducts, product]);
+    setProducts((prevProducts) => {
+      let updatedProducts = [...prevProducts];
+
+      const existingProductIndex = prevProducts.findIndex(
+        (prevProduct) => prevProduct._id === product._id
+      );
+
+      if (existingProductIndex !== -1) {
+        updatedProducts[existingProductIndex] = product;
+      } else {
+        updatedProducts.push(product);
+      }
+
+      return updatedProducts;
+    });
   };
 
   return (
