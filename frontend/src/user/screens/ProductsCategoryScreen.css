@@ -1,0 +1,117 @@
+.products-category-page {
+  max-width: 1340px;
+  margin: 30px auto;
+}
+
+.category-products-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.category-products-container .category-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #00000050;
+}
+
+.category-products {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+}
+
+.category-products .category-products-filter-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 250px;
+  width: 100%;
+}
+
+.brand-filter-container,
+.group-filter-container,
+.single-specification-filter-container {
+  border-bottom: 1px solid #00000050;
+}
+
+.brand-filter-container,
+.group-filter-container,
+.specifications-filter-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-filter-container .brand-filter-header,
+.subcategory-filter-container .subcategory-filter-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 20px;
+  cursor: pointer;
+}
+
+.brand-filter-container .brand-filter-header span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.brand-filter-container .brand-filter-header h3,
+.subcategory-filter-container .subcategory-filter-header h3 {
+  margin: 0;
+}
+
+.brand-filter-container .brands-filter-list,
+.group-filter-container .groups-filter-list,
+.specifications-filter-container .specifications-filter-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0 0 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.brands-filter-list .single-product-brand .custom-checkbox,
+.groups-filter-list .single-product-group .custom-checkbox,
+.specifications-filter-list .single-product-specification .custom-checkbox {
+  display: none;
+}
+
+.single-product-brand,
+.single-product-group {
+  list-style: none;
+}
+
+.brands-filter-list .single-product-brand .checkbox-custom,
+.groups-filter-list .single-product-group .checkbox-custom,
+.specifications-filter-list .single-product-specification .checkbox-custom {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  background-color: #e4e4e4;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.single-product-brand label,
+.single-product-group label,
+.single-product-specification label {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: center;
+  cursor: pointer;
+}
+
+.single-product-specification.active .checkbox-custom {
+  background-color: black;
+}
+
+.single-product-brand .custom-checkbox:checked + .checkbox-custom,
+.single-product-group .custom-checkbox:checked + .checkbox-custom
+/* .single-product-specification .custom-checkbox:checked + .checkbox-custom  */ {
+  background-color: black;
+}
