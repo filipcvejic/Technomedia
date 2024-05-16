@@ -1,0 +1,90 @@
+@keyframes checkmark {
+  0% {
+    stroke-dashoffset: 60;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes cross {
+  0% {
+    stroke-dashoffset: 40;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.order-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  z-index: 10000;
+  opacity: 0.7;
+}
+
+.modal-content {
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.checkmark-circle,
+.cross-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: inline-block;
+  background-color: #4caf50;
+  position: relative;
+}
+
+.cross-circle {
+  background-color: #f44336; /* Crvena pozadina za failed status */
+}
+
+.checkmark,
+.cross {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: white;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.checkmark-svg,
+.cross-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.checkmark-path {
+  fill: none;
+  stroke: #4caf50;
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 60;
+  stroke-dashoffset: 60;
+  animation: checkmark 1s ease-in-out forwards;
+}
+
+.cross-path {
+  fill: none;
+  stroke: #f44336;
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 40;
+  stroke-dashoffset: 40;
+  animation: cross 1s ease-in-out forwards;
+}
