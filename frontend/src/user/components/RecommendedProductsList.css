@@ -1,0 +1,10 @@
+.recommended-products-container {
+  max-width: 1340px;
+  margin: 80px auto;
+}
+
+.recommended-products {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px;
+}
