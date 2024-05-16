@@ -1,0 +1,11 @@
+.order-button {
+  width: 100%;
+  background-color: #ff7c32;
+  border: none;
+  cursor: pointer;
+  border-radius: 30px;
+  font-size: 30px;
+  color: #fff;
+  font-weight: bolder;
+  padding: 0;
+}
