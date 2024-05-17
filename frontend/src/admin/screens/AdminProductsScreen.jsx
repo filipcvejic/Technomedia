@@ -14,9 +14,11 @@ function AdminProductsScreen() {
     setIsAddProductFormShown(false);
   };
 
-  const onDeleteProductHandler = (product) => {
+  const onDeleteProductHandler = (productId) => {
     setProducts((prevProducts) =>
-      prevProducts.filter((singleProduct) => singleProduct._id !== product._id)
+      prevProducts.filter(
+        (singleProduct) => singleProduct._id.toString() !== productId.toString()
+      )
     );
   };
 
