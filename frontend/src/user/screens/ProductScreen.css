@@ -3,7 +3,7 @@
   margin: 20px auto;
 }
 
-.product-page .breadcrumbs {
+.breadcrumbs {
   list-style: none;
   display: flex;
   flex-direction: row;
@@ -11,13 +11,13 @@
   font-size: 12px;
 }
 
-.product-page .breadcrumbs li a {
+.breadcrumbs li a {
   text-decoration: none;
   color: black;
   position: relative;
 }
 
-.product-page .breadcrumbs li a::after {
+.breadcrumbs li a::after {
   content: "";
   position: absolute;
   bottom: -5px;
@@ -29,17 +29,17 @@
   transition: width 0.3s ease;
 }
 
-.product-page .breadcrumbs li a:hover::after,
-.product-page .breadcrumbs li a:focus::after {
+.breadcrumbs li a:hover::after,
+.breadcrumbs li a:focus::after {
   width: 100%;
 }
 
-.product-page .breadcrumbs li:not(:last-child)::after {
+.breadcrumbs li:not(:last-child)::after {
   content: ">";
   margin: 0 5px;
 }
 
-.product-page .breadcrumbs li:last-child {
+.breadcrumbs li:last-child {
   color: #a3a3a3;
   cursor: default;
   pointer-events: none;
@@ -193,35 +193,8 @@
 .product-actions {
   display: flex;
   flex-direction: row;
-  gap: 20px;
+  gap: 15px;
   width: 100%;
-}
-
-.product-actions .buy-now-button {
-  width: 470px;
-  background-color: #ff7c32;
-  border: none;
-  cursor: pointer;
-  border-radius: 30px;
-  font-size: 30px;
-  color: #fff;
-  font-weight: bolder;
-}
-
-.product-actions .add-to-cart-button {
-  cursor: pointer;
-  background-color: #ff7c32;
-  border-radius: 50%;
-  border: none;
-  width: 50px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.product-actions .add-to-cart-button svg {
-  margin-right: 2px;
 }
 
 .free-delivery-wrapper {

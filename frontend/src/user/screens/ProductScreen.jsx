@@ -8,6 +8,7 @@ import SpecificationsContainer from "../components/SpecificationsContainer";
 import AddToCartButton from "../components/AddToCartButton";
 import DeclarationContainer from "../components/DeclarationContainer";
 import DescriptionContainer from "../components/DescriptionContainer";
+import OrderButton from "../components/OrderButton";
 
 function ProductScreen() {
   const [product, setProduct] = useState("");
@@ -133,7 +134,7 @@ function ProductScreen() {
                 </div>
               </div>
               <div className="product-actions">
-                <button className="buy-now-button">BUY NOW</button>
+                <OrderButton data={product} label={"BUY NOW"} />
                 <AddToCartButton data={product} />
               </div>
             </div>
