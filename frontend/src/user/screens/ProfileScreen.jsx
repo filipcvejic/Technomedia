@@ -59,7 +59,7 @@ const ProfileScreen = () => {
             throw new Error(data.message);
           }
 
-          dispatch(setCredentials({ ...data }));
+          dispatch(setCredentials({ ...data.user }));
 
           setOldPassword("");
           setNewPassword("");
