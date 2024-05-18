@@ -3,6 +3,7 @@ import "./CartScreen.css";
 import QuantityInput from "../components/QuantityInput";
 
 import RemoveFromCartButton from "../components/RemoveFromCartButton";
+import OrderButton from "../components/OrderButton";
 
 function CartScreen() {
   const { cart } = useSelector((state) => state.userCart);
@@ -56,7 +57,7 @@ function CartScreen() {
             <p>Purchase amount:</p>
             <span>{totalAmount.toFixed(2)} EUR</span>
           </div>
-          <button className="order-button">Order</button>
+          <OrderButton data={cart} label={"BUY NOW"} />
         </div>
         <div className="promo-code-container">
           <h1 className="promo-code-title">Promo code</h1>
