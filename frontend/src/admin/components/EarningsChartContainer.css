@@ -1,0 +1,42 @@
+.earnings-chart-container {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 45px;
+  position: relative;
+}
+
+.earnings-chart-container h1 {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  opacity: 0.05;
+  font-size: 300px;
+  margin: 0;
+  user-select: none;
+  pointer-events: none;
+}
+
+.earnings-chart-navigation {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  pointer-events: none;
+}
+
+.earnings-chart-navigation button {
+  pointer-events: auto;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.earnings-chart-navigation button:disabled svg path {
+  stroke: #aaaaaa;
+}
