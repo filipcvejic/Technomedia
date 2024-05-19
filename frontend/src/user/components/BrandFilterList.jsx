@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import BrandItem from "./BrandItem";
+import ArrowIcon from "../svgs/ArrowIcon";
 
-function BrandFilterList({ icon, brands }) {
+function BrandFilterList({ brands }) {
   const [isBrandsListShown, setIsBrandsListShown] = useState(true);
 
   return (
@@ -17,7 +18,7 @@ function BrandFilterList({ icon, brands }) {
             transform: isBrandsListShown ? "rotate(180deg)" : "rotate(0)",
           }}
         >
-          {icon}
+          <ArrowIcon />
         </span>
       </div>
       {isBrandsListShown && (

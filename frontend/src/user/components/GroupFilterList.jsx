@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import GroupItem from "./GroupItem";
+import ArrowIcon from "../svgs/ArrowIcon";
 
-function GroupFilterList({ icon, groups }) {
+function GroupFilterList({ groups }) {
   const [isGroupsListShown, setIsGroupsListShown] = useState(true);
 
   return (
@@ -17,7 +18,7 @@ function GroupFilterList({ icon, groups }) {
             transform: isGroupsListShown ? "rotate(180deg)" : "rotate(0)",
           }}
         >
-          {icon}
+          <ArrowIcon />
         </span>
       </div>
       {isGroupsListShown && (

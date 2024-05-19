@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import BrandFilterList from "../components/BrandFilterList";
 import PriceRangeSlider from "../components/PriceRangeSlider";
 import "./ProductsCategoryScreen.css";
@@ -14,6 +19,7 @@ function ProductsCategoryScreen() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const params = useParams();
+  const navigate = useNavigate();
 
   const { categoryName } = params;
 
@@ -37,6 +43,7 @@ function ProductsCategoryScreen() {
         setCategoryData(data);
       } catch (err) {
         toast.error(err?.message);
+        navigate("/");
       }
     };
 

@@ -3,6 +3,7 @@ import QuantityInput from "./QuantityInput";
 import "./MiniCart.css";
 import { useRef } from "react";
 import RemoveFromCartButton from "./RemoveFromCartButton";
+import OrderButton from "./OrderButton";
 
 function MiniCart({ cart, onOutsideClick }) {
   const miniCartRef = useRef(null);
@@ -58,9 +59,7 @@ function MiniCart({ cart, onOutsideClick }) {
           </span>
         </div>
         <div className="mini-cart-actions">
-          <button className="payment-button" type="button">
-            Continue on payment
-          </button>
+          <OrderButton data={cart} label={"Continue on payment"} />
           <a href="/cart">View and edit cart</a>
         </div>
       </div>

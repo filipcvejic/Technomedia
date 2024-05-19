@@ -1,4 +1,9 @@
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 
 import "./ProductsGroupScreen.css";
@@ -8,12 +13,14 @@ import BrandFilterList from "../components/BrandFilterList";
 import SpecificationsFilterList from "../components/SpecificationsFilterList";
 import FilteredProductsList from "../components/FilteredProductsList";
 import SortButton from "../components/SortButton";
+import { toast } from "react-toastify";
 
 function ProductsGroupScreen() {
   const [groupData, setGroupData] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const params = useParams();
+  const navigate = useNavigate();
 
   const { categoryName, subcategoryName, groupName } = params;
 
@@ -37,6 +44,7 @@ function ProductsGroupScreen() {
         setGroupData(data);
       } catch (err) {
         toast.error(err?.message);
+        navigate("/");
       }
     };
 

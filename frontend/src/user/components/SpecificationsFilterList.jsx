@@ -1,7 +1,8 @@
 import React, { useState, useRef } from "react";
 import SpecificationsItem from "./SpecificationsItem";
+import ArrowIcon from "../svgs/ArrowIcon";
 
-function SpecificationsFilterList({ icon, products }) {
+function SpecificationsFilterList({ products }) {
   const [visibleTypes, setVisibleTypes] = useState({});
 
   const toggleVisibilityHandler = (specType) => {
@@ -39,7 +40,7 @@ function SpecificationsFilterList({ icon, products }) {
                   : "rotate(0)",
               }}
             >
-              {icon}
+              <ArrowIcon />
             </span>
           </div>
           {visibleTypes[specType] && (

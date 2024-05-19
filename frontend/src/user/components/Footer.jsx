@@ -19,7 +19,10 @@ function Footer() {
               <h4>Connect With Us</h4>
               <ul className="social-icons">
                 <li>
-                  <a href="https://www.instagram.com/vasprofil" target="_blank">
+                  <a
+                    href="https://www.instagram.com/filip.cvejic"
+                    target="_blank"
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="30"

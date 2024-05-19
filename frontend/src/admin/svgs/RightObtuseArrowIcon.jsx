@@ -12,9 +12,9 @@ function RightObtuseArrowIcon() {
       <path
         d="M1 1L7 11L1 21"
         stroke="black"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

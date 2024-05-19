@@ -10,6 +10,8 @@ function AddToCartButton({ data }) {
   const onAddProductToCartHandler = async (e) => {
     e.preventDefault();
 
+    console.log(data);
+
     addToCart(data);
 
     setIsAddedToCart(true);

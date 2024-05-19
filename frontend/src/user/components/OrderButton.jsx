@@ -46,9 +46,8 @@ function OrderButton({ data, label }) {
         setOrderStatus(response.ok ? "success" : "failed");
         setTimeout(() => {
           setOrderStatus("");
+          navigate("/");
         }, 1000);
-
-        navigate("/");
       }
     } else {
       navigate("/login", { state: { from: location } });
