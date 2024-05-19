@@ -1,0 +1,91 @@
+.best-selling-products-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  width: 100%;
+}
+
+.best-selling-products-header {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+}
+
+.best-selling-products-header h1 {
+  margin: 0;
+  user-select: none;
+}
+
+.best-selling-products-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  list-style: none;
+  padding: 0 0 0 10px;
+  margin-bottom: 0;
+}
+
+.products-labels {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  padding-left: 45px;
+}
+
+.best-selling-product-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+}
+
+.best-selling-product-item-rank {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+}
+
+.best-selling-product-item:first-child .best-selling-product-item-rank {
+  background-color: #983700;
+}
+
+.best-selling-product-item:nth-child(2) .best-selling-product-item-rank {
+  background-color: #d14b00;
+}
+
+.best-selling-product-item:last-child .best-selling-product-item-rank {
+  background-color: #ff6b18;
+}
+
+.best-selling-product-item-name,
+.name-label {
+  width: 125px;
+}
+
+.best-selling-product-item-price,
+.price-label {
+  width: 50px;
+  text-align: end;
+}
+
+.best-selling-product-item-order-id,
+.order-id-label {
+  width: 215px;
+  text-align: end;
+}
+
+.best-selling-product-item-sales,
+.sales-label {
+  width: 40px;
+  text-align: end;
+}
