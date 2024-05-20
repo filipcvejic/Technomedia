@@ -1,6 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
+import {
+  Route,
+  Routes,
+  BrowserRouter as Router,
+  Navigate,
+} from "react-router-dom";
 import store from "./app/store.js";
 import { Provider } from "react-redux";
 import App from "./user/App.jsx";
@@ -27,6 +32,8 @@ import AdminProductsScreen from "./admin/screens/AdminProductsScreen.jsx";
 import SearchResultsScreen from "./user/screens/SearchResultsScreen.jsx";
 import ProductsCategoryScreen from "./user/screens/ProductsCategoryScreen.jsx";
 import ProductsSubcategoryScreen from "./user/screens/ProductsSubcategoryScreen.jsx";
+import AdminEarningsScreen from "./admin/screens/AdminEarningsScreen.jsx";
+import WishListScreen from "./user/screens/WishListScreen.jsx";
 
 const UserRoutes = () => (
   <Routes>
@@ -34,6 +41,7 @@ const UserRoutes = () => (
       <Route path="/" element={<UniversalRouteWrapper />}>
         <Route path="/" element={<HomeScreen />} />
         <Route path="/cart" element={<CartScreen />} />
+        <Route path="/wish-list" element={<WishListScreen />} />
         <Route path="/login" element={<LoginScreen />} />
         <Route path="/register" element={<RegisterScreen />} />
         <Route path="/search" element={<SearchResultsScreen />} />
@@ -61,6 +69,7 @@ const UserRoutes = () => (
         <Route path="/profile" element={<ProfileScreen />} />
         <Route path="/SSO/success" element={<GoogleLoginSuccess />} />
       </Route>
+      <Route path="*" element={<Navigate to="/" />} />
     </Route>
   </Routes>
 );
@@ -70,8 +79,10 @@ const AdminRoutes = () => (
     <Route path="/" element={<AdminApp />}>
       <Route path="/" element={<AdminPrivateRoute />}>
         <Route path="/" element={<AdminHomeScreen />} />
+        <Route path="/earnings" element={<AdminEarningsScreen />} />
         <Route path="/users" element={<AdminUsersScreen />} />
         <Route path="/products" element={<AdminProductsScreen />} />
+        <Route path="*" element={<Navigate to="/admin/earnings" />} />
       </Route>
     </Route>
     <Route path="/login" element={<AdminLoginScreen />} />

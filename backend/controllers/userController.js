@@ -1,7 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
 const generateToken = require("../utils/generateToken");
-const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const Token = require("../models/tokenModel");
 const Cart = require("../models/cartModel");
@@ -12,6 +11,9 @@ const Category = require("../models/categoryModel");
 const Subcategory = require("../models/subcategoryModel");
 const Group = require("../models/groupModel");
 const Order = require("../models/orderModel");
+const Brand = require("../models/brandModel");
+const Specification = require("../models/specificationModel");
+const WishList = require("../models/wishListModel");
 const {
   calculatePriceRange,
   extractBrands,
@@ -64,6 +66,12 @@ const registerUser = asyncHandler(async (req, res) => {
     products: [],
   });
 
+  const wishList = await WishList.create({
+    user: user._id,
+    products: [],
+  });
+
+  user.wishList = wishList._id;
   user.cart = cart._id;
 
   await user.save();
@@ -138,6 +146,10 @@ const getUserProfile = asyncHandler(async (req, res) => {
     select: "-createdAt -updatedAt -__v",
     populate: [
       { path: "category subcategory group brand", select: "name slug" },
+      {
+        path: "specifications",
+        select: "type value",
+      },
       { path: "images", select: "url" },
     ],
   });
@@ -147,9 +159,23 @@ const getUserProfile = asyncHandler(async (req, res) => {
     quantity: item.quantity,
   }));
 
+  const wishList = await WishList.findOne({ user: user._id }).populate({
+    path: "products",
+    select: "-createdAt -updatedAt -__v",
+    populate: [
+      { path: "category subcategory group brand", select: "name slug" },
+      {
+        path: "specifications",
+        select: "type value",
+      },
+      { path: "images", select: "url" },
+    ],
+  });
+
   res.status(200).json({
     user: adjustedUser,
     cart: adjustedCartData,
+    wishList: wishList.products,
     isVerified: user.verified,
   });
 });
@@ -540,8 +566,14 @@ const getFilteredSearchProducts = asyncHandler(async (req, res, next) => {
   if (filterTerms.category) {
     const categoryFilter = filterTerms.category;
 
+    const foundCategory = await Category.findOne({ slug: categoryFilter });
+
+    if (!foundCategory) {
+      return res.status(400).json({ message: "Category not found" });
+    }
+
     filteredProducts = filteredProducts.filter(
-      (product) => categoryFilter === product.category.slug
+      (product) => foundCategory.slug === product.category.slug
     );
 
     subcategories = extractUniqueSubcategories(filteredProducts);
@@ -552,8 +584,17 @@ const getFilteredSearchProducts = asyncHandler(async (req, res, next) => {
 
   if (filterTerms.subcategory) {
     const subcategoryFilter = filterTerms.subcategory;
+
+    const foundSubcategory = await Subcategory.findOne({
+      slug: subcategoryFilter,
+    });
+
+    if (!foundSubcategory) {
+      return res.status(400).json({ message: "Subcategory not found" });
+    }
+
     filteredProducts = filteredProducts.filter(
-      (product) => subcategoryFilter === product.subcategory.slug
+      (product) => foundSubcategory.slug === product.subcategory.slug
     );
     groups = extractUniqueGroups(filteredProducts);
     ({ minPrice, maxPrice } = calculatePriceRange(filteredProducts));
@@ -561,6 +602,15 @@ const getFilteredSearchProducts = asyncHandler(async (req, res, next) => {
 
   if (filterTerms.group) {
     const groupTerms = filterTerms.group.split(",");
+
+    for (const term of groupTerms) {
+      const group = await Group.findOne({ slug: term });
+      if (!group) {
+        return res.status(404).json({
+          message: `Group '${term}' not found.`,
+        });
+      }
+    }
 
     filteredProducts = filteredProducts.filter(
       (product) =>
@@ -573,6 +623,14 @@ const getFilteredSearchProducts = asyncHandler(async (req, res, next) => {
 
   if (filterTerms.brand) {
     const brandTerms = filterTerms.brand.split(",");
+
+    for (const term of brandTerms) {
+      const brand = await Brand.findOne({ name: term });
+      if (!brand) {
+        throw new Error(`Brand '${term}' not found.`);
+      }
+    }
+
     filteredProducts = filteredProducts.filter((product) =>
       brandTerms.includes(product.brand.name)
     );
@@ -595,6 +653,18 @@ const getFilteredSearchProducts = asyncHandler(async (req, res, next) => {
       const specValues = filterTerms[key].split(",");
 
       if (specValues.length > 0) {
+        for (const value of specValues) {
+          const specification = await Specification.findOne({
+            type: specType,
+            value,
+          });
+          if (!specification) {
+            return res.status(404).json({
+              message: `Specification '${specType}: ${value}' not found.`,
+            });
+          }
+        }
+
         filteredProducts = filteredProducts.filter((product) =>
           product.specifications.some(
             (spec) => specValues.includes(spec.value) && spec.type === specType
@@ -926,6 +996,140 @@ const getRecommendedRecords = asyncHandler(async (req, res, next) => {
   res.status(200).json({ recommendedGroups, recommendedProducts });
 });
 
+const addProductToWishList = asyncHandler(async (req, res, next) => {
+  const { product } = req.body;
+
+  console.log(product);
+
+  let wishList = await WishList.findOne({ user: req.user._id });
+
+  if (!wishList) {
+    return res.status(404).json({ message: "Wish list not found" });
+  }
+
+  wishList.products.push(product);
+
+  await wishList.save();
+
+  const addedProduct = await Product.findById(product)
+    .select("-createdAt -updatedAt -__v")
+    .populate([
+      {
+        path: "category",
+        select: "name slug",
+      },
+      {
+        path: "subcategory",
+        select: "name slug",
+      },
+      {
+        path: "group",
+        select: "name slug",
+      },
+      {
+        path: "brand",
+        select: "name slug",
+      },
+      {
+        path: "images",
+        select: "url",
+      },
+    ]);
+
+  res.status(200).json(addedProduct);
+});
+
+const removeProductFromWishList = asyncHandler(async (req, res, next) => {
+  const productId = req.params.productId;
+
+  const wishList = await WishList.findOne({ user: req.user._id });
+
+  if (!wishList) {
+    return res.status(404).json({ message: "Wish list not found" });
+  }
+
+  console.log(wishList, productId);
+
+  wishList.products = wishList.products.filter(
+    (product) => product.toString() !== productId
+  );
+
+  const updatedWishList = await wishList.save();
+
+  res
+    .status(200)
+    .json({ message: "Product removed from wish list successfully" });
+});
+
+const addAllWishListProductsToCart = asyncHandler(async (req, res, next) => {
+  const products = req.body;
+
+  let wishList = await WishList.findOne({ user: req.user._id });
+
+  console.log(products, wishList);
+
+  if (!wishList) {
+    return res.status(404).json({ message: "Wish list not found" });
+  }
+
+  let cart = await Cart.findOne({ user: req.user._id });
+
+  if (!cart) {
+    return res.status(404).json({ message: "Cart not found" });
+  }
+
+  const productsToMove = wishList.products.filter((wishListProduct) =>
+    products.includes(wishListProduct._id.toString())
+  );
+
+  if (productsToMove.length === 0) {
+    return res
+      .status(400)
+      .json({ message: "No matching products found in wish list" });
+  }
+
+  productsToMove.forEach((product) => {
+    const existingCartItem = cart.products.find(
+      (cartProduct) => cartProduct.product.toString() === product._id.toString()
+    );
+
+    if (existingCartItem) {
+      existingCartItem.quantity += 1;
+    } else {
+      cart.products.push({ product: product._id, quantity: 1 });
+    }
+  });
+
+  wishList.products = wishList.products.filter(
+    (wishListProduct) => !products.includes(wishListProduct._id.toString())
+  );
+
+  await wishList.save();
+  await cart.save();
+
+  console.log(cart);
+
+  const updatedCart = await Cart.findById(cart._id).populate({
+    path: "products.product",
+    select: "-createdAt -updatedAt -__v",
+    populate: [
+      { path: "category subcategory group brand", select: "name slug" },
+      {
+        path: "specifications",
+        select: "type value",
+      },
+      { path: "images", select: "url" },
+    ],
+  });
+
+  const adjustedCartData = updatedCart.products.map((item) => ({
+    product: item.product,
+    quantity: item.quantity,
+  }));
+
+  res.status(200).json(adjustedCartData);
+});
+
 module.exports = {
   loginUser,
   registerUser,
@@ -948,4 +1152,7 @@ module.exports = {
   getGroupData,
   addOrder,
   getRecommendedRecords,
+  addProductToWishList,
+  removeProductFromWishList,
+  addAllWishListProductsToCart,
 };
