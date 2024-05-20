@@ -15,8 +15,6 @@ export function useCartActions() {
   const { userInfo } = useSelector((state) => state.userAuth);
 
   const addToCartHandler = (product) => {
-    console.log(product.slug);
-
     dispatch(
       userInfo
         ? addToCart({

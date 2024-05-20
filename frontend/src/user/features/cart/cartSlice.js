@@ -5,6 +5,7 @@ import {
   decreaseProductQuantity,
   syncCartProducts,
 } from "./cartApi";
+import { moveAllToCart } from "../wishList/wishListApi";
 
 const initialState = {
   cart: localStorage.getItem("cart")
@@ -133,6 +134,18 @@ const cartSlice = createSlice({
         localStorage.setItem("cart", JSON.stringify(state.cart));
       })
       .addCase(syncCartProducts.rejected, (state, action) => {
+        state.status = "idle";
+        state.error = action.payload;
+      })
+      .addCase(moveAllToCart.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(moveAllToCart.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.cart = action.payload;
+        localStorage.setItem("cart", JSON.stringify(state.cart));
+      })
+      .addCase(moveAllToCart.rejected, (state, action) => {
         state.status = "idle";
         state.error = action.payload;
       });
