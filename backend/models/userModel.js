@@ -24,6 +24,10 @@ const userSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Cart",
     },
+    wishList: {
+      type: Schema.Types.ObjectId,
+      ref: "WishList",
+    },
     verified: {
       type: Boolean,
       default: false,

@@ -20,6 +20,7 @@ const {
   getUsers,
   updateUserProfile,
   deleteProduct,
+  getAllChartInfo,
 } = require("../controllers/adminController");
 const { adminProtect } = require("../middleware/authMiddleware");
 
@@ -45,17 +46,6 @@ router.put(
   upload.array("images", 3),
   editProduct
 );
-router.post("/cart/add-product", adminProtect, addProductToCart);
-router.delete(
-  "/cart/remove-product/:productId",
-  adminProtect,
-  removeProductFromCart
-);
-router.put(
-  "/cart/decrease-quantity/:productId",
-  adminProtect,
-  decreaseProductQuantity
-);
 router.post("/add-category", adminProtect, addCategory);
 router.post("/add-subcategory", adminProtect, addSubcategory);
 router.post("/add-group", adminProtect, addGroup);
@@ -63,12 +53,7 @@ router.post("/add-brand", adminProtect, addBrand);
 router.delete("/:userId", adminProtect, deleteUser);
 router.get("/users", adminProtect, getUsers);
 router.get("/products", adminProtect, getAllProducts);
-router.get("/products/:category", adminProtect, getProductByCategory);
-router.get(
-  "/products/:category/:subcategory",
-  adminProtect,
-  getProductByCategoryAndSubcategory
-);
 router.get("/records/info", adminProtect, getInfoForAddingProduct);
+router.get("/chart-info/:year", adminProtect, getAllChartInfo);
 
 module.exports = router;

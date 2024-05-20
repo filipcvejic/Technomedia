@@ -18,6 +18,11 @@ const {
   getProductData,
   getRecords,
   getGroupData,
+  addOrder,
+  getRecommendedRecords,
+  removeProductFromWishList,
+  addProductToWishList,
+  addAllWishListProductsToCart,
 } = require("../controllers/userController");
 const { protect } = require("../middleware/authMiddleware");
 
@@ -52,6 +57,15 @@ router.put(
   "/cart/decrease-quantity/:productId",
   protect,
   decreaseProductQuantity
+);
+router.post("/order", protect, addOrder);
+router.get("/recommended-records", getRecommendedRecords);
+router.post("/wish-list/add-product", protect, addProductToWishList);
+router.post("/wish-list/move-all", protect, addAllWishListProductsToCart);
+router.delete(
+  "/wish-list/remove-product/:productId",
+  protect,
+  removeProductFromWishList
 );
 
 router.post("/cart/sync-products", protect, syncCartProducts);
