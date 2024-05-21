@@ -1,0 +1,21 @@
+.earnings-page-container {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  max-width: 1090px;
+  width: 100%;
+  height: 100%;
+  background-color: #ffede1;
+  border-radius: 10px;
+}
+
+.earnings-wrapper {
+  padding: 25px 25px 0 25px;
+}
+
+.top-selling-container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  padding: 0 25px 25px 25px;
+}
