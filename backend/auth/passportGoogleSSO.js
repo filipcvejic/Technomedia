@@ -3,6 +3,7 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const User = require("../models/userModel");
 const Cart = require("../models/cartModel");
 const bcrypt = require("bcryptjs");
+const WishList = require("../models/wishListModel");
 
 passport.use(
   new GoogleStrategy(
@@ -31,7 +32,13 @@ passport.use(
           });
 
           const cart = await Cart.create({ user: user._id, products: [] });
+          const wishList = await WishList.create({
+            user: user._id,
+            products: [],
+          });
+
           user.cart = cart._id;
+          user.wishList = wishList._id;
           await user.save();
         }
         return done(null, user);
