@@ -49,6 +49,7 @@ const LoginScreen = () => {
               "Content-Type": "application/json",
             },
             credentials: "include",
+            mode: "no-cors",
             body: JSON.stringify({ email, password }),
           }
         );
