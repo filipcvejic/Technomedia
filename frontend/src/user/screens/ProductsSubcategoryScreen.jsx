@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import GroupFilterList from "../components/GroupFilterList";
 import BrandFilterList from "../components/BrandFilterList";
 import PriceRangeSlider from "../components/PriceRangeSlider";
@@ -8,12 +13,14 @@ import "./ProductsSubcategoryScreen.css";
 import FilteredProductsList from "../components/FilteredProductsList";
 import SortButton from "../components/SortButton";
 import formatBreadcrumbHandler from "../utils/formatBreadcrumbElementHandler";
+import { toast } from "react-toastify";
 
 function ProductsSubcategoryScreen() {
   const [subcategoryData, setSubcategoryData] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const params = useParams();
+  const navigate = useNavigate();
 
   const { categoryName, subcategoryName } = params;
 
@@ -37,6 +44,7 @@ function ProductsSubcategoryScreen() {
         setSubcategoryData(data);
       } catch (err) {
         toast.error(err?.message);
+        navigate("/");
       }
     };
 

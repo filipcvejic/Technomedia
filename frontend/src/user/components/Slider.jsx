@@ -12,8 +12,8 @@ const Slider = ({ slides }) => {
       navigation
       pagination={{ clickable: true }}
       scrollbar={{ draggable: true }}
-      onSlideChange={() => console.log("slide change")}
-      onSwiper={(swiper) => console.log(swiper)}
+      onSlideChange={() => {}}
+      onSwiper={(swiper) => {}}
       effect={"cube"}
     >
       {slides.map((slide) => (

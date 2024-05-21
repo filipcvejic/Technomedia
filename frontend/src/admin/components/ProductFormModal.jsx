@@ -102,8 +102,6 @@ function ProductFormModal({ data, onSubmitProduct, onCloseModal }) {
       (singleCategory) => singleCategory._id === categoryInput._id
     );
 
-    console.log(selectedCategory);
-
     if (selectedCategory) {
       setSubcategories(selectedCategory.subcategories);
     }
@@ -262,7 +260,7 @@ function ProductFormModal({ data, onSubmitProduct, onCloseModal }) {
   };
 
   const submitProductHandler = async (e) => {
-    // e.preventDefault();
+    e.preventDefault();
 
     try {
       const formData = new FormData();
@@ -299,19 +297,6 @@ function ProductFormModal({ data, onSubmitProduct, onCloseModal }) {
 
       onSubmitProduct(responseData.product);
       onCloseModal();
-
-      // setName("");
-      // setDescription("");
-      // setPrice("");
-      // setImages([]);
-      // setBrand("");
-      // setCategory("");
-      // setSubcategory("");
-      // setGroup("");
-      // setGroups([]);
-      // setSpecifications([]);
-      // setSubcategories([]);
-      // setBrands([]);
       toast.success(responseData.message);
     } catch (err) {
       toast.error(err?.message);
@@ -414,7 +399,6 @@ function ProductFormModal({ data, onSubmitProduct, onCloseModal }) {
               {data ? "Edit product" : "Add product"}
             </button>
           </div>
-          <div className="product-specifications-container"></div>
         </div>
       </form>
     </div>,
