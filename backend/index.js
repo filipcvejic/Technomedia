@@ -19,14 +19,9 @@ const app = express();
 app.use(cookieParser());
 
 const corsOptions = {
-  origin: [
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:3000"
-      : "https://technomediashop.netlify.app",
-  ],
+  origin: "https://technomediashop.netlify.app",
   methods: ["GET", "POST", "PUT"],
   credentials: true,
-  headers: ["Content-Type", "Authorization"],
 };
 
 app.use(cors(corsOptions));
