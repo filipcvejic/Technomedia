@@ -87,7 +87,7 @@ function AdminProductsScreen() {
                   <span className="admin-product-image-container">
                     <img
                       className="admin-product-image-photo"
-                      src="http://localhost:5000/images/25ca10ea-1990-47ba-a876-e1d958f3fb32_.png"
+                      src="https://technomedia-5gpn.onrender.com/images/25ca10ea-1990-47ba-a876-e1d958f3fb32_.png"
                       alt="Candy Washing machine CS4 1172DE 1 S - White"
                     />
                   </span>
@@ -208,7 +208,7 @@ function AdminProductsScreen() {
                   <span className="admin-product-image-container">
                     <img
                       className="admin-product-image-photo"
-                      src="http://localhost:5000/images/25ca10ea-1990-47ba-a876-e1d958f3fb32_.png"
+                      src="https://technomedia-5gpn.onrender.com/images/25ca10ea-1990-47ba-a876-e1d958f3fb32_.png"
                       alt="Candy Washing machine CS4 1172DE 1 S - White"
                     />
                   </span>
@@ -329,7 +329,7 @@ function AdminProductsScreen() {
                   <span className="admin-product-image-container">
                     <img
                       className="admin-product-image-photo"
-                      src="http://localhost:5000/images/25ca10ea-1990-47ba-a876-e1d958f3fb32_.png"
+                      src="https://technomedia-5gpn.onrender.com/images/25ca10ea-1990-47ba-a876-e1d958f3fb32_.png"
                       alt="Candy Washing machine CS4 1172DE 1 S - White"
                     />
                   </span>

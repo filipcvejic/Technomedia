@@ -28,7 +28,7 @@ function MiniCart({ cart, onOutsideClick }) {
             return (
               <div className="single-mini-cart-item" key={item.product._id}>
                 <img
-                  src={`http://localhost:5000/images/${
+                  src={`https://technomedia-5gpn.onrender.com/images/${
                     item.product.images[0].url.split("\\")[2]
                   }`}
                   alt={item.product.name}

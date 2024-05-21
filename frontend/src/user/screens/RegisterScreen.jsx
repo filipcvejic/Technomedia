@@ -27,7 +27,10 @@ const RegisterScreen = () => {
   }, [navigate, userInfo]);
 
   const googlePopupWindowHandler = async () => {
-    window.open("http://localhost:5000/api/v1/login/google", "_self");
+    window.open(
+      "https://technomedia-5gpn.onrender.com/api/v1/login/google",
+      "_self"
+    );
   };
 
   const agreeHandler = () => {

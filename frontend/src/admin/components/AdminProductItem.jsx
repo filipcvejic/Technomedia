@@ -50,7 +50,7 @@ function AdminProductItem({ data, onDeleteProduct, onSubmitProduct }) {
           <span className="admin-product-image-container">
             <img
               className="admin-product-image-photo"
-              src={`http://localhost:5000/images/${
+              src={`https://technomedia-5gpn.onrender.com/images/${
                 data.images[0].url.split("\\")[2]
               }`}
               alt={data.name}

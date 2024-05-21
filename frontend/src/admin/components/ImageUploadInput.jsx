@@ -59,7 +59,7 @@ function ImageUploadInput({ onImageUpload, initialImages }) {
                 <img
                   src={
                     typeof initialImages[index] === "string"
-                      ? `http://localhost:5000/images/${
+                      ? `https://technomedia-5gpn.onrender.com/images/${
                           initialImages[index].split("\\")[2]
                         }`
                       : URL.createObjectURL(initialImages[index])

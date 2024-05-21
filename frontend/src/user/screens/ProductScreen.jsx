@@ -94,7 +94,7 @@ function ProductScreen() {
                       onClick={() => changeMainImageHandler(index)}
                     >
                       <img
-                        src={`http://localhost:5000/images/${
+                        src={`https://technomedia-5gpn.onrender.com/images/${
                           image.url.split("\\")[2]
                         }`}
                       />
@@ -104,7 +104,7 @@ function ProductScreen() {
               </div>
               <div className="main-image">
                 <img
-                  src={`http://localhost:5000/images/${
+                  src={`https://technomedia-5gpn.onrender.com/images/${
                     product.images[activeImageIndex].url.split("\\")[2]
                   }`}
                 />

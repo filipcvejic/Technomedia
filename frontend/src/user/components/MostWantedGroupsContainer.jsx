@@ -21,7 +21,7 @@ function MostWantedGroupsContainer({ recommendedGroups }) {
                 />
                 <div className="inner-category-image">
                   <img
-                    src={`http://localhost:5000/images/${
+                    src={`https://technomedia-5gpn.onrender.com/images/${
                       group.image.split("\\")[2]
                     }`}
                   />

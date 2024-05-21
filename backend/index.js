@@ -17,13 +17,17 @@ connectDB();
 
 const app = express();
 app.use(cookieParser());
-app.use(
-  cors({
-    origin: ["http://localhost:3000"],
-    methods: ["GET", "POST", "PUT"],
-    credentials: true,
-  })
-);
+
+const corsOptions = {
+  origin:
+    process.env.NODE_ENV === "development"
+      ? ["http://localhost:3000"]
+      : ["https://technomediashop.netlify.app"],
+  methods: ["GET", "POST", "PUT"],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
