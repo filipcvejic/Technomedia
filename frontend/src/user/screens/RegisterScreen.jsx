@@ -54,14 +54,17 @@ const RegisterScreen = () => {
         try {
           dispatch(setLoading(true));
 
-          const response = await fetch("http://localhost:3000/api/register", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-            body: JSON.stringify({ name, surname, email, password }),
-          });
+          const response = await fetch(
+            "https://technomedia-5gpn.onrender.com/api/register",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              credentials: "include",
+              body: JSON.stringify({ name, surname, email, password }),
+            }
+          );
 
           const data = await response.json();
 
