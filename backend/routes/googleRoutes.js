@@ -5,8 +5,8 @@ const generateToken = require("../utils/generateToken");
 
 const router = express.Router();
 
-const successLoginUrl = "https://technomedia-5gpn.onrender.com/SSO/success";
-const errorLoginUrl = "https://technomedia-5gpn.onrender.com/login/error";
+const successLoginUrl = "https://technomediashop.netlify.app/SSO/success";
+const errorLoginUrl = "https://technomediashop.netlify.app/login/error";
 
 router.get("/login/success", protect, (req, res) => {
   if (req.user) {
