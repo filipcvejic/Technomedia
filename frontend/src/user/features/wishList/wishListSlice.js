@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   addToWishList,
-  removeFromWishList,
   moveAllToCart,
+  removeFromWishList,
 } from "./wishListApi";
 
 const initialState = {

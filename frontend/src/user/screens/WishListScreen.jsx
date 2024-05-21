@@ -9,11 +9,11 @@ import "./WishListScreen.css";
 
 function WishListScreen() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [filteredItems, setFilteredItems] = useState([]);
   const { wishList } = useSelector((state) => state.userWishList);
-
   const { moveAllToCart } = useWishListActions();
   const navigate = useNavigate();
+
+  const [filteredItems, setFilteredItems] = useState([]);
 
   const sortWishListByPriceHandler = (items, sortOrder) => {
     switch (sortOrder) {
@@ -38,7 +38,11 @@ function WishListScreen() {
         setFilteredItems(sortedItems);
       }
     }
-  }, [searchParams, wishList]);
+  }, [wishList, searchParams]);
+
+  useEffect(() => {
+    setFilteredItems(wishList);
+  }, [wishList]);
 
   const moveAllToCartHandler = (event) => {
     event.preventDefault();
