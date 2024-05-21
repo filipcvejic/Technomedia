@@ -82,7 +82,7 @@ const registerUser = asyncHandler(async (req, res) => {
     expiresAt: new Date(new Date().getTime() + 3600 * 1000),
   });
 
-  const link = `https://technomedia-5gpn.onrender.com/users/${user._id}/verify/${token.token}`;
+  const link = `https://technomediashop.netlify.app//users/${user._id}/verify/${token.token}`;
 
   const subject = "Verify your email";
 
@@ -235,7 +235,7 @@ const forgotPassword = asyncHandler(async (req, res, next) => {
 
   const subject = "Reset your password";
 
-  const content = `https://technomedia-5gpn.onrender.com/resetpassword/${user._id}/${token.token}`;
+  const content = `https://technomediashop.netlify.app/resetpassword/${user._id}/${token.token}`;
 
   await sendEmail(res, user.email, subject, content);
 
