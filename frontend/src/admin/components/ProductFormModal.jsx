@@ -68,7 +68,7 @@ function ProductFormModal({ data, onSubmitProduct, onCloseModal }) {
   const getRecords = async () => {
     try {
       const response = await fetch(
-        "http://localhost:3000/api/admin/records/info"
+        "https://technomedia-5gpn.onrender.com/api/admin/records/info"
       );
 
       const data = await response.json();
@@ -279,7 +279,7 @@ function ProductFormModal({ data, onSubmitProduct, onCloseModal }) {
       formData.append("specifications", JSON.stringify(specifications) || []);
 
       const response = await fetch(
-        `http://localhost:3000/api/admin/${
+        `https://technomedia-5gpn.onrender.com/api/admin/${
           data ? `edit-product/${data._id}` : "add-product"
         }`,
         {

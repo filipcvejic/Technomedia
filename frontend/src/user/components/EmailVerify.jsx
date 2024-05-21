@@ -13,7 +13,7 @@ function EmailVerify() {
         if (verified) return;
 
         const response = await fetch(
-          `http://localhost:3000/api/users/${params.id}/verify/${params.token}`,
+          `https://technomedia-5gpn.onrender.com/api/users/${params.id}/verify/${params.token}`,
           {
             credentials: "include",
           }

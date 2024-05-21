@@ -13,7 +13,9 @@ function AdminUsersScreen() {
   useEffect(() => {
     const getUsersData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/admin/users");
+        const response = await fetch(
+          "https://technomedia-5gpn.onrender.com/api/admin/users"
+        );
 
         const data = await response.json();
 
@@ -64,7 +66,7 @@ function AdminUsersScreen() {
   const onDeleteUserHandler = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/admin/delete-user/${selectedUser._id}`,
+        `https://technomedia-5gpn.onrender.com/api/admin/delete-user/${selectedUser._id}`,
         {
           method: "DELETE",
           credentials: "include",

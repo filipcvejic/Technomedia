@@ -14,7 +14,7 @@ function ResetPasswordScreen() {
     const checkToken = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/check-token/${id}/${token}`
+          `https://technomedia-5gpn.onrender.com/api/check-token/${id}/${token}`
         );
 
         if (!response.ok) {
@@ -38,7 +38,7 @@ function ResetPasswordScreen() {
     } else {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/reset-password/${id}/${token}`,
+          `https://technomedia-5gpn.onrender.com/api/reset-password/${id}/${token}`,
           {
             method: "POST",
             headers: {

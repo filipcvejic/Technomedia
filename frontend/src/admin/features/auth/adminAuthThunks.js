@@ -12,14 +12,17 @@ export const adminLogin = createAsyncThunk(
   async ({ email, password }, { dispatch }) => {
     try {
       dispatch(setLoading(true));
-      const response = await fetch("http://localhost:3000/api/admin/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await fetch(
+        "https://technomedia-5gpn.onrender.com/api/admin/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ email, password }),
+        }
+      );
 
       const data = await response.json();
 

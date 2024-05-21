@@ -8,7 +8,9 @@ function Subheader() {
   const [records, setRecords] = useState([]);
 
   const fetchRecords = async () => {
-    const response = await fetch("http://localhost:3000/api/records");
+    const response = await fetch(
+      "https://technomedia-5gpn.onrender.com/api/records"
+    );
     const data = await response.json();
     setRecords(data);
   };

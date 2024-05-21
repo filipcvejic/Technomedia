@@ -5,8 +5,8 @@ const generateToken = require("../utils/generateToken");
 
 const router = express.Router();
 
-const successLoginUrl = "http://localhost:3000/SSO/success";
-const errorLoginUrl = "http://localhost:3000/login/error";
+const successLoginUrl = "https://technomedia-5gpn.onrender.com/SSO/success";
+const errorLoginUrl = "https://technomedia-5gpn.onrender.com/login/error";
 
 router.get("/login/success", protect, (req, res) => {
   if (req.user) {

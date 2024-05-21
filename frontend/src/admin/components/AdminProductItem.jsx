@@ -11,7 +11,7 @@ function AdminProductItem({ data, onDeleteProduct, onSubmitProduct }) {
   const deleteProductHandler = async (productId) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/admin/delete-product/${productId}`,
+        `https://technomedia-5gpn.onrender.com/api/admin/delete-product/${productId}`,
         {
           method: "DELETE",
           credentials: "include",

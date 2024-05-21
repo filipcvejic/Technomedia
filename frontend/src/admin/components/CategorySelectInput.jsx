@@ -24,7 +24,7 @@ function CategorySelectInput({
   const createCategoryHandler = async (inputValue) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/admin/add-category`,
+        `https://technomedia-5gpn.onrender.com/api/admin/add-category`,
         {
           method: "POST",
           headers: {

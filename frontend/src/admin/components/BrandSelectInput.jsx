@@ -15,7 +15,7 @@ function BrandSelectInput({
   const createBrandHandler = async (inputValue) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/admin/add-brand`,
+        `https://technomedia-5gpn.onrender.com/api/admin/add-brand`,
         {
           method: "POST",
           headers: {

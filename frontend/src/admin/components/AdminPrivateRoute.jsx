@@ -11,7 +11,9 @@ const AdminPrivateRoute = () => {
   useEffect(() => {
     const checkUser = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/admin/profile");
+        const response = await fetch(
+          "https://technomedia-5gpn.onrender.com/api/admin/profile"
+        );
 
         const data = await response.json();
 

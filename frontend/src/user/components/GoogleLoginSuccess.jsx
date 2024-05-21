@@ -17,7 +17,7 @@ function GoogleLoginSuccess() {
     const checkUser = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3000/api/v1/login/success",
+          "https://technomedia-5gpn.onrender.com/api/v1/login/success",
           {
             credentials: "include",
           }

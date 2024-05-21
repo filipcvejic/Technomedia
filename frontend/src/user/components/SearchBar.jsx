@@ -42,7 +42,7 @@ function SearchBar() {
     try {
       if (searchTerm.trim() !== "") {
         const response = await fetch(
-          `http://localhost:3000/api/search/?q=${searchTerm}`
+          `https://technomedia-5gpn.onrender.com/api/search/?q=${searchTerm}`
         );
 
         const data = await response.json();

@@ -26,7 +26,7 @@ function AdminProductsScreen() {
     try {
       const getAllProductsData = async () => {
         const response = await fetch(
-          "http://localhost:3000/api/admin/products"
+          "https://technomedia-5gpn.onrender.com/api/admin/products"
         );
 
         const data = await response.json();

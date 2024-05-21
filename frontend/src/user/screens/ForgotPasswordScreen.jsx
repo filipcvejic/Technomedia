@@ -13,7 +13,7 @@ function ForgotPasswordScreen() {
 
     try {
       const response = await fetch(
-        "http://localhost:3000/api/forgot-password",
+        "https://technomedia-5gpn.onrender.com/api/forgot-password",
         {
           method: "POST",
           headers: {

@@ -32,7 +32,7 @@ function UpdateProfileForm({ user, onUpdateUserInfo }) {
       } else {
         try {
           const response = await fetch(
-            `http://localhost:3000/api/admin/update-user/${user._id}`,
+            `https://technomedia-5gpn.onrender.com/api/admin/update-user/${user._id}`,
             {
               method: "PUT",
               headers: {

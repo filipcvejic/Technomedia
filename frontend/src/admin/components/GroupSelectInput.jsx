@@ -22,7 +22,7 @@ function GroupSelectInput({
   const createGroupHandler = async (inputValue) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/admin/add-group`,
+        `https://technomedia-5gpn.onrender.com/api/admin/add-group`,
         {
           method: "POST",
           headers: {

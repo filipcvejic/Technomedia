@@ -13,13 +13,16 @@ const AdminHeader = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:3000/api/admin/logout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
+      const response = await fetch(
+        "https://technomedia-5gpn.onrender.com/api/admin/logout",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
 
       const data = await response.json();
 

@@ -23,7 +23,7 @@ function SubcategorySelectInput({
   const createSubcategoryHandler = async (inputValue) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/admin/add-subcategory`,
+        `https://technomedia-5gpn.onrender.com/api/admin/add-subcategory`,
         {
           method: "POST",
           headers: {

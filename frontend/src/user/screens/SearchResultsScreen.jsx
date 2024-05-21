@@ -23,7 +23,7 @@ function SearchResultsScreen() {
     const getSearchResults = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/search?${currentParams}`
+          `https://technomedia-5gpn.onrender.com/api/search?${currentParams}`
         );
 
         const data = await response.json();

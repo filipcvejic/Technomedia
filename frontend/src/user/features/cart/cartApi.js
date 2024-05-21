@@ -5,7 +5,7 @@ export const addToCart = createAsyncThunk(
   async (itemData, { rejectWithValue }) => {
     try {
       const response = await fetch(
-        "http://localhost:3000/api/cart/add-product",
+        "https://technomedia-5gpn.onrender.com/api/cart/add-product",
         {
           method: "POST",
           headers: {
@@ -30,7 +30,7 @@ export const removeFromCart = createAsyncThunk(
   async ({ productId }, { rejectWithValue }) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/cart/remove-product/${productId}`,
+        `https://technomedia-5gpn.onrender.com/api/cart/remove-product/${productId}`,
         {
           method: "DELETE",
           headers: {
@@ -56,7 +56,7 @@ export const decreaseProductQuantity = createAsyncThunk(
   async ({ productId }, { rejectWithValue }) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/cart/decrease-quantity/${productId}`,
+        `https://technomedia-5gpn.onrender.com/api/cart/decrease-quantity/${productId}`,
         {
           method: "PUT",
           headers: {
@@ -82,7 +82,7 @@ export const syncCartProducts = createAsyncThunk(
   async ({ cartProducts }, { rejectWithValue }) => {
     try {
       const response = await fetch(
-        "http://localhost:3000/api/cart/sync-products",
+        "https://technomedia-5gpn.onrender.com/api/cart/sync-products",
         {
           method: "POST",
           headers: {

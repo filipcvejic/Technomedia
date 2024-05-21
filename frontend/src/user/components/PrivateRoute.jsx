@@ -11,7 +11,9 @@ const PrivateRoute = () => {
 
   useEffect(() => {
     const checkUser = async () => {
-      const res = await fetch("http://localhost:3000/api/profile");
+      const res = await fetch(
+        "https://technomedia-5gpn.onrender.com/api/profile"
+      );
 
       const resData = await res.json();
 

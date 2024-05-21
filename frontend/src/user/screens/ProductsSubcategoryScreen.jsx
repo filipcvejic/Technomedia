@@ -30,7 +30,7 @@ function ProductsSubcategoryScreen() {
     const getSubcategoryData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/search?category=${categoryName}&subcategory=${subcategoryName}${
+          `https://technomedia-5gpn.onrender.com/api/search?category=${categoryName}&subcategory=${subcategoryName}${
             currentParams ? `&${currentParams}` : ""
           }`
         );
