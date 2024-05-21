@@ -82,7 +82,7 @@ const registerUser = asyncHandler(async (req, res) => {
     expiresAt: new Date(new Date().getTime() + 3600 * 1000),
   });
 
-  const link = `https://technomediashop.netlify.app//users/${user._id}/verify/${token.token}`;
+  const link = `https://technomediashop.netlify.app/users/${user._id}/verify/${token.token}`;
 
   const subject = "Verify your email";
 
