@@ -1,5 +1,4 @@
 [[redirects]]
-from = "/api/*"
-to = "https://technomedia-5gpn.onrender.com/:splat"
+from = "/*"
+to = "/index.html"
 status = 200
-force = true
