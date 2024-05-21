@@ -53,7 +53,7 @@ const HomeScreen = () => {
     const getRecommendedRecords = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3000/api/recommended-records"
+          "https://technomedia-5gpn.onrender.com/api/recommended-records"
         );
 
         const data = await response.json();
