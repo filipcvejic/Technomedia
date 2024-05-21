@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./ProductsMenu.css";
 
-function ProductsMenu() {
+function ProductsMenu({ records, fetchRecords }) {
   const [isProductsMenuExpanded, setIsProductsMenuExpanded] = useState(false);
-  const [records, setRecords] = useState([]);
   const [activeCategory, setActiveCategory] = useState(null);
   const buttonRef = useRef(null);
   const menuRef = useRef(null);
@@ -30,10 +29,8 @@ function ProductsMenu() {
 
   const onClickProductsMenuHandler = async (event) => {
     event.preventDefault();
-    if (!isProductsMenuExpanded) {
-      const response = await fetch("http://localhost:3000/api/records");
-      const data = await response.json();
-      setRecords(data);
+    if (!isProductsMenuExpanded && records.length === 0) {
+      fetchRecords();
     }
     setIsProductsMenuExpanded((prevValue) => !prevValue);
   };
