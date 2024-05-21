@@ -1,11 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const Admin = require("../models/adminModel");
 const generateToken = require("../utils/generateToken");
-const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const Token = require("../models/tokenModel");
-const crypto = require("crypto");
-const sendEmail = require("../utils/sendEmail");
 const Product = require("../models/productModel");
 const Cart = require("../models/cartModel");
 const Category = require("../models/categoryModel");
@@ -15,7 +11,10 @@ const User = require("../models/userModel");
 const Brand = require("../models/brandModel");
 const Image = require("../models/imageModel");
 const Specification = require("../models/specificationModel");
+const Order = require("../models/orderModel");
 const slugify = require("../utils/slugify");
+const fs = require("fs");
+const path = require("path");
 
 const loginAdmin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -181,11 +180,13 @@ const addProduct = asyncHandler(async (req, res, next) => {
   const newSpecifications = [];
 
   for (const specification of JSON.parse(specifications)) {
-    const newSpecification = await Specification.create({
-      type: specification.type,
-      value: specification.value,
-    });
-    newSpecifications.push(newSpecification._id);
+    if ((specification.type !== "") & (specification.value !== "")) {
+      const newSpecification = await Specification.create({
+        type: specification.type,
+        value: specification.value,
+      });
+      newSpecifications.push(newSpecification._id);
+    }
   }
 
   await foundCategory.save();
@@ -267,18 +268,20 @@ const editProduct = asyncHandler(async (req, res, next) => {
   const updatedSpecifications = [];
   for (const specification of JSON.parse(specifications)) {
     let updatedSpecification;
-    if (specification._id) {
-      updatedSpecification = await Specification.findByIdAndUpdate(
-        specification._id,
-        { type: specification.type, value: specification.value }
-      );
-    } else {
-      updatedSpecification = await Specification.create({
-        type: specification.type,
-        value: specification.value,
-      });
+    if (specification.type !== "" && specification.value !== "") {
+      if (specification._id) {
+        updatedSpecification = await Specification.findByIdAndUpdate(
+          specification._id,
+          { type: specification.type, value: specification.value }
+        );
+      } else {
+        updatedSpecification = await Specification.create({
+          type: specification.type,
+          value: specification.value,
+        });
+      }
+      updatedSpecifications.push(updatedSpecification._id);
     }
-    updatedSpecifications.push(updatedSpecification._id);
   }
 
   if (
@@ -416,16 +419,33 @@ const editProduct = asyncHandler(async (req, res, next) => {
 const deleteProduct = asyncHandler(async (req, res, next) => {
   const { productId } = req.params;
 
-  const carts = await Cart.find({ "products.product": productId });
+  const product = await Product.findById(productId).populate("images", "url");
+
+  if (!product) {
+    return res.status(404).json({ message: "Product not found" });
+  }
+
+  await Specification.deleteMany({ _id: { $in: product.specifications } });
+
+  await Image.deleteMany({ _id: { $in: product.images } });
+
+  await Product.findByIdAndDelete(productId);
+
+  const carts = await Cart.find({ "products.product": product._id });
 
   carts.forEach(async (cart) => {
     cart.products = cart.products.filter(
-      (item) => item.product.toString() !== productId
+      (item) => item.product.toString() !== product._id
     );
     await cart.save();
   });
 
-  await Product.findByIdAndDelete(productId);
+  product.images.forEach((image) => {
+    const imagePath = path.join(image.url);
+    fs.unlinkSync(imagePath);
+  });
+
+  await Product.findByIdAndDelete(product._id);
 
   res.status(200).json("Product has successfully deleted");
 });
@@ -500,54 +520,6 @@ const getInfoForAddingProduct = asyncHandler(async (req, res, next) => {
     });
 
   res.status(200).json({ records });
-});
-
-const getProductByCategory = asyncHandler(async (req, res, next) => {
-  const categoryName = req.params.category;
-
-  const category = await Category.findOne({ name: categoryName });
-  if (!category) {
-    return res.status(404).json({ message: "Kategorija nije pronađena" });
-  }
-
-  const products = await Product.find({ category: category._id }).select(
-    "name description price image"
-  );
-  if (!products) {
-    return res.status(404).json({ message: "Products not found" });
-  }
-
-  res.status(200).json({ products });
-});
-
-const getProductByCategoryAndSubcategory = asyncHandler(async (req, res) => {
-  const categoryName = req.params.category;
-  const subcategoryName = req.params.subcategory;
-
-  const category = await Category.findOne({ name: categoryName });
-  if (!category) {
-    return res.status(404).json({ message: "Category not found" });
-  }
-
-  let filter = { category: category._id };
-
-  const subcategory = await Subcategory.findOne({
-    name: subcategoryName,
-  });
-  if (!subcategory) {
-    return res.status(404).json({ message: "Subcategory not found" });
-  }
-  filter.subcategory = subcategory._id;
-
-  const products = await Product.find(filter).select(
-    "name description price image"
-  );
-
-  if (!products) {
-    return res.status(404).json({ message: "Products not found" });
-  }
-
-  res.status(200).json({ products });
 });
 
 const addCategory = asyncHandler(async (req, res) => {
@@ -669,127 +641,76 @@ const addBrand = asyncHandler(async (req, res) => {
   res.status(200).json({ newBrand, message: "Brand has created successfuly" });
 });
 
-const addProductToCart = asyncHandler(async (req, res, next) => {
-  const { product, quantity } = req.body;
+const getAllChartInfo = asyncHandler(async (req, res, next) => {
+  const { year } = req.params;
 
-  let cart = await Cart.findOne({ admin: req.admin._id });
+  const orders = await Order.find();
 
-  if (!cart) {
-    return res.status(404).json({ message: "Cart not found" });
-  }
-
-  const existingProductIndex = cart.products.findIndex(
-    (item) => item.product.toString() === product
-  );
-
-  if (existingProductIndex !== -1) {
-    cart.products[existingProductIndex].quantity += quantity || 1;
-  } else {
-    cart.products.push({ product, quantity: 1 });
-  }
-
-  await cart.save();
-
-  const addedProduct = await Product.findById(product)
-    .select("-createdAt -updatedAt -__v")
-    .populate({
-      path: "brand",
-      select: "name",
-    })
-    .populate({
-      path: "category",
-      select: "name",
-    })
-    .populate({
-      path: "subcategory",
-      select: "name",
-    });
-
-  const adjustedProduct = {
-    product: {
-      _id: addedProduct._id,
-      name: addedProduct.name,
-      description: addedProduct.description,
-      price: addedProduct.price,
-      image: addedProduct.image,
-      brand: addProduct.brand,
-      category: addedProduct.category,
-      subcategory: addedProduct.subcategory,
-    },
-    quantity: quantity || 1,
-  };
-
-  res.status(200).json({ addedProduct: adjustedProduct });
-});
-
-const removeProductFromCart = asyncHandler(async (req, res, next) => {
-  const productId = req.params.productId;
-
-  const cart = await Cart.findOne({ admin: req.admin._id });
-
-  if (!cart) {
-    return res.status(404).json({ message: "Cart not found" });
-  }
-
-  cart.products = cart.products.filter((item) => {
-    return item.product.toString() !== productId;
+  // Filtriraj narudžbine prema godini
+  const filteredOrders = orders.filter((order) => {
+    return new Date(order.createdAt).getFullYear() === parseInt(year, 10);
   });
 
-  await cart.save();
+  // Mesecne zarade, kategorije proizvoda i top 3 proizvoda
+  const monthlyEarnings = Array(12).fill(0);
+  const categoryCount = {};
+  const productCount = {};
 
-  res.status(200).json({ message: "Product removed from cart successfully" });
-});
+  for (const order of filteredOrders) {
+    const month = new Date(order.createdAt).getMonth();
+    monthlyEarnings[month] += order.amount;
 
-const decreaseProductQuantity = asyncHandler(async (req, res, next) => {
-  const { productId } = req.params;
-  const { quantity } = req.body;
+    for (const item of order.products) {
+      const product = await Product.findById(item.product).populate("category");
 
-  const cart = await Cart.findOne({ admin: req.admin._id });
+      // Dodaj cenu proizvoda
+      const price = Math.ceil(product.price);
 
-  if (!cart) {
-    return res.status(404).json({ message: "Cart not found" });
+      // Azuriraj kategoriju proizvoda
+      const category = product.category.name;
+      if (categoryCount[category]) {
+        categoryCount[category] += item.quantity;
+      } else {
+        categoryCount[category] = item.quantity;
+      }
+
+      // Azuriraj top 3 proizvoda
+      if (productCount[product.name]) {
+        productCount[product.name].quantity += item.quantity;
+      } else {
+        productCount[product.name] = {
+          quantity: item.quantity,
+          productId: product._id,
+          price,
+        };
+      }
+    }
   }
 
-  const productIndex = cart.products.findIndex(
-    (item) => item.product.toString() === productId
+  const categoryLabels = Object.keys(categoryCount);
+  const categoryData = Object.values(categoryCount);
+
+  const sortedProductCount = Object.entries(productCount).sort(
+    (a, b) => b[1].quantity - a[1].quantity
   );
+  const topProductsData = sortedProductCount
+    .slice(0, 3)
+    .map(([name, { quantity, productId, price }]) => ({
+      name,
+      quantity,
+      productId,
+      price,
+    }));
 
-  if (productIndex === -1) {
-    return res.status(404).json({ message: "Product not found in cart" });
-  }
-
-  cart.products[productIndex].quantity -= +quantity || 1;
-
-  if (cart.products[productIndex].quantity <= 0) {
-    cart.products.splice(productIndex, 1);
-  }
-
-  await cart.save();
-
-  res.status(200).json({ message: "Product quantity decreased successfully" });
+  res.json({
+    monthlyEarnings,
+    categories: {
+      labels: categoryLabels,
+      data: categoryData,
+    },
+    topProducts: topProductsData,
+  });
 });
-
-// const increaseProductQuantity = asyncHandler(async (req, res, next) => {
-//   const { productId, quantity } = req.body;
-
-//   const cart = await Cart.findOne({ admin: req.admin._id });
-
-//   if (!cart) {
-//     return res.status(404).json({ message: "Cart not found" });
-//   }
-
-//   const existingProductIndex = cart.products.findIndex(
-//     (product) => product._id === productId
-//   );
-
-//   if (existingProductIndex !== -1) {
-//     cart.products[existingProductIndex].quantity += quantity;
-//   } else {
-//     cart.products.push({ productId, quantity });
-//   }
-
-//   await cart.save();
-// });
 
 module.exports = {
   loginAdmin,
@@ -802,14 +723,10 @@ module.exports = {
   editProduct,
   deleteProduct,
   getAllProducts,
-  getProductByCategory,
-  getProductByCategoryAndSubcategory,
   addCategory,
   addSubcategory,
   addGroup,
   addBrand,
-  addProductToCart,
-  removeProductFromCart,
-  decreaseProductQuantity,
   getInfoForAddingProduct,
+  getAllChartInfo,
 };
