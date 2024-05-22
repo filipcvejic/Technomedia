@@ -51,7 +51,7 @@ function AdminProductItem({ data, onDeleteProduct, onSubmitProduct }) {
             <img
               className="admin-product-image-photo"
               src={`https://technomedia-5gpn.onrender.com/images/${
-                data.images[0].url.split("\\")[2]
+                data.images[0]?.url?.split("\\")[2]
               }`}
               alt={data.name}
             />
