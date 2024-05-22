@@ -18,10 +18,10 @@ function AdminProductItem({ data, onDeleteProduct, onSubmitProduct }) {
         }
       );
 
-      const data = await response.json();
+      const responseData = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message);
+        throw new Error(responseData.message);
       }
 
       onDeleteProduct(productId);
@@ -51,7 +51,7 @@ function AdminProductItem({ data, onDeleteProduct, onSubmitProduct }) {
             <img
               className="admin-product-image-photo"
               src={`https://technomedia-5gpn.onrender.com/images/${
-                data.images[0].url.split("\\")[2]
+                data.images[0]?.url?.split("\\")[2]
               }`}
               alt={data.name}
             />
