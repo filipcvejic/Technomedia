@@ -23,7 +23,10 @@ function ProductScreen() {
 
       try {
         const response = await fetch(
-          `/api/product/${categoryName}/${subcategoryName}/${groupName}/${productName}`
+          `https://technomedia-5gpn.onrender.com/api/product/${categoryName}/${subcategoryName}/${groupName}/${productName}`,
+          {
+            credentials: "include",
+          }
         );
 
         const data = await response.json();
