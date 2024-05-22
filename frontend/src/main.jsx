@@ -20,7 +20,6 @@ import ForgotPasswordScreen from "./user/screens/ForgotPasswordScreen.jsx";
 import ResetPasswordScreen from "./user/screens/ResetPasswordScreen.jsx";
 import EmailVerify from "./user/components/EmailVerify.jsx";
 import AdminLoginScreen from "./admin/screens/AdminLoginScreen.jsx";
-import AdminHomeScreen from "./admin/screens/AdminHomeScreen.jsx";
 import AdminApp from "./admin/AdminApp.jsx";
 import AdminPrivateRoute from "./admin/components/AdminPrivateRoute.jsx";
 import UniversalRouteWrapper from "./user/components/UniversalRouteWrapper.jsx";
@@ -78,7 +77,6 @@ const AdminRoutes = () => (
   <Routes>
     <Route path="/" element={<AdminApp />}>
       <Route path="/" element={<AdminPrivateRoute />}>
-        <Route path="/" element={<AdminHomeScreen />} />
         <Route path="/earnings" element={<AdminEarningsScreen />} />
         <Route path="/users" element={<AdminUsersScreen />} />
         <Route path="/products" element={<AdminProductsScreen />} />

@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { Outlet } from "react-router-dom";
 import { logout, setCredentials } from "../features/auth/userAuthSlice";
 import { setCart } from "../features/cart/cartSlice";
-import { setWishList } from "../features/wishList/wishListSlice";
+import { clearWishList, setWishList } from "../features/wishList/wishListSlice";
 
 function UniversalRouteWrapper() {
   const dispatch = useDispatch();
@@ -25,6 +25,7 @@ function UniversalRouteWrapper() {
         dispatch(setWishList(resData.wishList));
       } else {
         dispatch(logout());
+        dispatch(clearWishList());
       }
     };
 

@@ -22,7 +22,7 @@ const loginAdmin = asyncHandler(async (req, res) => {
   const admin = await Admin.findOne({ email });
 
   if (!admin || !(await admin.matchPassword(password))) {
-    return res.status(404).json({ message: "Invalid email or password" });
+    return res.status(401).json({ message: "Invalid email or password" });
   }
 
   generateToken(res, admin._id);

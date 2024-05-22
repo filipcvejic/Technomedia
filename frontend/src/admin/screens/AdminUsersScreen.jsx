@@ -14,7 +14,10 @@ function AdminUsersScreen() {
     const getUsersData = async () => {
       try {
         const response = await fetch(
-          "https://technomedia-5gpn.onrender.com/api/admin/users"
+          "https://technomedia-5gpn.onrender.com/api/admin/users",
+          {
+            credentials: "include",
+          }
         );
 
         const data = await response.json();

@@ -12,7 +12,10 @@ const AdminPrivateRoute = () => {
     const checkUser = async () => {
       try {
         const response = await fetch(
-          "https://technomedia-5gpn.onrender.com/api/admin/profile"
+          "https://technomedia-5gpn.onrender.com/api/admin/profile",
+          {
+            credentials: "include",
+          }
         );
 
         const data = await response.json();

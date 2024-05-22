@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { logout, setCredentials } from "../features/auth/userAuthSlice";
 import { toast } from "react-toastify";
 import { setCart } from "../features/cart/cartSlice";
-import { setWishList } from "../features/wishList/wishListSlice";
+import { clearWishList, setWishList } from "../features/wishList/wishListSlice";
 
 const PrivateRoute = () => {
   const dispatch = useDispatch();
@@ -23,6 +23,7 @@ const PrivateRoute = () => {
 
       if (!resData.user) {
         dispatch(logout());
+        dispatch(clearWishList());
         navigate("/login");
       } else if (!resData.isVerified) {
         toast.warn(

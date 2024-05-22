@@ -26,7 +26,10 @@ function AdminProductsScreen() {
     try {
       const getAllProductsData = async () => {
         const response = await fetch(
-          "https://technomedia-5gpn.onrender.com/api/admin/products"
+          "https://technomedia-5gpn.onrender.com/api/admin/products",
+          {
+            credentials: "include",
+          }
         );
 
         const data = await response.json();
