@@ -18,10 +18,10 @@ function AdminProductItem({ data, onDeleteProduct, onSubmitProduct }) {
         }
       );
 
-      const data = await response.json();
+      const responseData = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message);
+        throw new Error(responseData.message);
       }
 
       onDeleteProduct(productId);
