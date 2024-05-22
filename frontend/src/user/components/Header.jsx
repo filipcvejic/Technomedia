@@ -12,6 +12,7 @@ import UserIcon from "../svgs/UserIcon";
 import WishListIcon from "../svgs/WishListIcon";
 import CartIcon from "../svgs/CartIcon";
 import Logo from "../svgs/Logo";
+import { setWishList } from "../features/wishList/wishListSlice";
 
 const Header = () => {
   const { userInfo } = useSelector((state) => state.userAuth);
@@ -56,7 +57,7 @@ const Header = () => {
 
       dispatch(logout());
       dispatch(clearGuestCart());
-
+      dispatch(setWishList([]));
       navigate("/");
     } catch (err) {
       toast.error(err?.message);

@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { logout, setCredentials } from "../features/auth/userAuthSlice";
 import { toast } from "react-toastify";
 import { setCart } from "../features/cart/cartSlice";
+import { setWishList } from "../features/wishList/wishListSlice";
 
 const PrivateRoute = () => {
   const dispatch = useDispatch();
@@ -31,6 +32,7 @@ const PrivateRoute = () => {
       } else {
         dispatch(setCredentials({ ...resData.user }));
         dispatch(setCart(resData.cart));
+        dispatch(setWishList(resData.wishList));
       }
     };
 

@@ -177,7 +177,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
   res.status(200).json({
     user: adjustedUser,
     cart: adjustedCartData,
-    wishList: wishList.products,
+    wishList: wishList.products || [],
     isVerified: user.verified,
   });
 });
