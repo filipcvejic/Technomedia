@@ -174,10 +174,12 @@ const getUserProfile = asyncHandler(async (req, res) => {
     ],
   });
 
+  const adjustedWishListData = wishList ? wishList.products || [] : [];
+
   res.status(200).json({
     user: adjustedUser,
     cart: adjustedCartData,
-    wishList: wishList.products || [],
+    wishList: adjustedWishListData,
     isVerified: user.verified,
   });
 });
