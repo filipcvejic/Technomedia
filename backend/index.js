@@ -20,7 +20,7 @@ app.use(cookieParser());
 
 const corsOptions = {
   origin: "https://technomediashop.netlify.app",
-  methods: ["GET", "POST", "PUT"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 };
 
