@@ -48,6 +48,7 @@ function ImageUploadInput({ onImageUpload, initialImages }) {
           multiple
           ref={fileInputRef}
           onChange={fileSelectHandler}
+          required
           hidden
         />
       </div>

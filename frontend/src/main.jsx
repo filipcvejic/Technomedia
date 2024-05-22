@@ -88,14 +88,14 @@ const AdminRoutes = () => (
 );
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <Router>
-        <Routes>
-          <Route path="/*" element={<UserRoutes />} />
-          <Route path="/admin/*" element={<AdminRoutes />} />
-        </Routes>
-      </Router>
-    </Provider>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <Provider store={store}>
+    <Router>
+      <Routes>
+        <Route path="/*" element={<UserRoutes />} />
+        <Route path="/admin/*" element={<AdminRoutes />} />
+      </Routes>
+    </Router>
+  </Provider>
+  // </React.StrictMode>
 );
