@@ -13,6 +13,7 @@ import SortButton from "../components/SortButton";
 import formatBreadcrumbHandler from "../utils/formatBreadcrumbElementHandler";
 import SubcategoryListContainer from "../components/SubcategoryListContainer";
 import { toast } from "react-toastify";
+import SpecificationsFilterList from "../components/SpecificationsFilterList";
 
 function ProductsCategoryScreen() {
   const [categoryData, setCategoryData] = useState(null);
@@ -76,6 +77,7 @@ function ProductsCategoryScreen() {
                   maxPrice={categoryData?.maxPrice}
                   label={"price"}
                 />
+                <SpecificationsFilterList products={categoryData?.products} />
               </div>
               <FilteredProductsList products={categoryData?.products} />
             </div>
