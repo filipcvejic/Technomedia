@@ -4,8 +4,6 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const isProduction = process.env.ENVIRONMENT === "production";
-
 export default defineConfig({
   plugins: [react()],
   server: {
@@ -14,7 +12,7 @@ export default defineConfig({
       "/api": {
         target: process.env.VITE_API_URL,
         changeOrigin: true,
-        secure: isProduction,
+        secure: process.env.ENVIRONMENT === "production",
       },
     },
   },
