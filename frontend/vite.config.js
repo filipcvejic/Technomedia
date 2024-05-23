@@ -1,10 +1,8 @@
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-import dotenv from "dotenv";
+// import dotenv from "dotenv";
 
-dotenv.config();
-
-const isProduction = process.env.ENVIRONMENT === "production";
+// dotenv.config();
 
 export default defineConfig({
   plugins: [react()],
@@ -12,9 +10,9 @@ export default defineConfig({
     port: 3000,
     proxy: {
       "/api": {
-        target: process.env.VITE_API_URL,
+        target: "https://technomedia-5gpn.onrender.com",
         changeOrigin: true,
-        secure: isProduction,
+        secure: true,
       },
     },
   },

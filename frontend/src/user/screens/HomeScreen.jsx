@@ -52,9 +52,7 @@ const HomeScreen = () => {
   useEffect(() => {
     const getRecommendedRecords = async () => {
       try {
-        const response = await fetch(
-          `https://technomedia-5gpn.onrender.com/api/recommended-records`
-        );
+        const response = await fetch(`/api/recommended-records`);
 
         const data = await response.json();
 
