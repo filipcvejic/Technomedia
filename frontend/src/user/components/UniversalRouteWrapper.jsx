@@ -10,12 +10,9 @@ function UniversalRouteWrapper() {
 
   useEffect(() => {
     const checkUser = async () => {
-      const res = await fetch(
-        "https://technomedia-5gpn.onrender.com/api/profile",
-        {
-          credentials: "include",
-        }
-      );
+      const res = await fetch("/api/profile", {
+        credentials: "include",
+      });
 
       const resData = await res.json();
 

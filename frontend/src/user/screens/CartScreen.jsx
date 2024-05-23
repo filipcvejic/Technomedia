@@ -24,7 +24,7 @@ function CartScreen() {
                   href={`/${item.product.category.slug}/${item.product.subcategory.slug}/${item.product.group.slug}/${item.product.slug}`}
                 >
                   <img
-                    src={`https://technomedia-5gpn.onrender.com/images/${
+                    src={`${import.meta.env.VITE_API_URL}/images/${
                       item.product?.images[0].url.split("\\")[2]
                     }`}
                   />

@@ -31,23 +31,20 @@ function UpdateProfileForm({ user, onUpdateUserInfo }) {
         toast.error("Passwords do not match");
       } else {
         try {
-          const response = await fetch(
-            `https://technomedia-5gpn.onrender.com/api/admin/update-user/${user._id}`,
-            {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              credentials: "include",
-              body: JSON.stringify({
-                name,
-                surname,
-                email,
-                password,
-                confirmedPassword,
-              }),
-            }
-          );
+          const response = await fetch(`/api/admin/update-user/${user._id}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify({
+              name,
+              surname,
+              email,
+              password,
+              confirmedPassword,
+            }),
+          });
 
           const data = await response.json();
 

@@ -30,7 +30,9 @@ function ProductsGroupScreen() {
     const getGroupData = async () => {
       try {
         const response = await fetch(
-          `https://technomedia-5gpn.onrender.com/api/search?category=${categoryName}&subcategory=${subcategoryName}&group=${groupName}${
+          `${
+            import.meta.env.VITE_API_URL
+          }/api/search?category=${categoryName}&subcategory=${subcategoryName}&group=${groupName}${
             currentParams ? `&${currentParams}` : ""
           }`
         );

@@ -38,16 +38,13 @@ const Header = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(
-        "https://technomedia-5gpn.onrender.com/api/logout",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        }
-      );
+      const response = await fetch("/api/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
 
       const data = await response.json();
 

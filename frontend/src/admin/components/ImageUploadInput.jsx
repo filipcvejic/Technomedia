@@ -60,7 +60,7 @@ function ImageUploadInput({ onImageUpload, initialImages }) {
                 <img
                   src={
                     typeof initialImages[index] === "string"
-                      ? `https://technomedia-5gpn.onrender.com/images/${
+                      ? `${import.meta.env.VITE_API_URL}/images/${
                           initialImages[index].split("\\")[2]
                         }`
                       : URL.createObjectURL(initialImages[index])

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import "./AdminProductItem.css";
 import { toast } from "react-toastify";
 import ProductFormModal from "./ProductFormModal";
+import { normalizePath } from "../../shared/utils/normalizePath";
 
 function AdminProductItem({ data, onDeleteProduct, onSubmitProduct }) {
   const [areProductActionsShown, setAreProductActionsShown] = useState(false);
@@ -10,13 +11,10 @@ function AdminProductItem({ data, onDeleteProduct, onSubmitProduct }) {
 
   const deleteProductHandler = async (productId) => {
     try {
-      const response = await fetch(
-        `https://technomedia-5gpn.onrender.com/api/admin/delete-product/${productId}`,
-        {
-          method: "DELETE",
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`/api/admin/delete-product/${productId}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
 
       const responseData = await response.json();
 
@@ -41,6 +39,8 @@ function AdminProductItem({ data, onDeleteProduct, onSubmitProduct }) {
     setAreProductActionsShown(false);
   };
 
+  console.log(normalizePath(data.images[0].url));
+
   return (
     <div
       className={`admin-product-item ${areProductActionsShown ? "active" : ""}`}
@@ -50,9 +50,9 @@ function AdminProductItem({ data, onDeleteProduct, onSubmitProduct }) {
           <span className="admin-product-image-container">
             <img
               className="admin-product-image-photo"
-              src={`https://technomedia-5gpn.onrender.com/images/${
-                data.images[0].url.split("\\")[2]
-              }`}
+              src={`${import.meta.env.VITE_API_URL}/images/${normalizePath(
+                data.images[0].url
+              )}`}
               alt={data.name}
             />
           </span>

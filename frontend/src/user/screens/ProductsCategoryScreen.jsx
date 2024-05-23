@@ -30,7 +30,7 @@ function ProductsCategoryScreen() {
     const getCategoryData = async () => {
       try {
         const response = await fetch(
-          `https://technomedia-5gpn.onrender.com/api/search?category=${categoryName}${
+          `/api/search?category=${categoryName}${
             currentParams ? `&${currentParams}` : ""
           }`
         );

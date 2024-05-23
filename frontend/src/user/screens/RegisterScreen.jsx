@@ -27,10 +27,7 @@ const RegisterScreen = () => {
   }, [navigate, userInfo]);
 
   const googlePopupWindowHandler = async () => {
-    window.open(
-      "https://technomedia-5gpn.onrender.com/api/v1/login/google",
-      "_self"
-    );
+    window.open(`${import.meta.env.VITE_API_URL}/api/v1/login/google`, "_self");
   };
 
   const agreeHandler = () => {
@@ -54,17 +51,14 @@ const RegisterScreen = () => {
         try {
           dispatch(setLoading(true));
 
-          const response = await fetch(
-            "https://technomedia-5gpn.onrender.com/api/register",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              credentials: "include",
-              body: JSON.stringify({ name, surname, email, password }),
-            }
-          );
+          const response = await fetch("/api/register", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify({ name, surname, email, password }),
+          });
 
           const data = await response.json();
 

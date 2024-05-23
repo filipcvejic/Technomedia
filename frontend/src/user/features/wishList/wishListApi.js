@@ -4,17 +4,14 @@ export const addToWishList = createAsyncThunk(
   "wishList/addToWishList",
   async (itemData, { rejectWihValue }) => {
     try {
-      const response = await fetch(
-        "https://technomedia-5gpn.onrender.com/api/wish-list/add-product",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify(itemData),
-        }
-      );
+      const response = await fetch("/api/wish-list/add-product", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(itemData),
+      });
 
       const data = await response.json();
 
@@ -29,17 +26,14 @@ export const moveAllToCart = createAsyncThunk(
   "wishList/moveAllToCart",
   async (itemData, { rejectWihValue }) => {
     try {
-      const response = await fetch(
-        "https://technomedia-5gpn.onrender.com/api/wish-list/move-all",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify(itemData),
-        }
-      );
+      const response = await fetch("/api/wish-list/move-all", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(itemData),
+      });
 
       const data = await response.json();
 
@@ -55,7 +49,7 @@ export const removeFromWishList = createAsyncThunk(
   async ({ productId }, { rejectWithValue }) => {
     try {
       const response = await fetch(
-        `https://technomedia-5gpn.onrender.com/api/wish-list/remove-product/${productId}`,
+        `/api/wish-list/remove-product/${productId}`,
         {
           method: "DELETE",
           headers: {

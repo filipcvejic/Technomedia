@@ -19,7 +19,7 @@ const app = express();
 app.use(cookieParser());
 
 const corsOptions = {
-  origin: "https://technomediashop.netlify.app",
+  origin: `${process.env.CLIENT_API_BASE_URL}`,
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 };

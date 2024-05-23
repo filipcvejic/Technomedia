@@ -18,12 +18,9 @@ function AdminEarningsScreen() {
   useEffect(() => {
     const getChartInfo = async () => {
       try {
-        const response = await fetch(
-          `https://technomedia-5gpn.onrender.com/api/admin/chart-info/${year}`,
-          {
-            credentials: "include",
-          }
-        );
+        const response = await fetch(`/api/admin/chart-info/${year}`, {
+          credentials: "include",
+        });
 
         const responseData = await response.json();
 

@@ -38,23 +38,20 @@ const ProfileScreen = () => {
       } else {
         try {
           setLoading(true);
-          const response = await fetch(
-            "https://technomedia-5gpn.onrender.com/api/profile",
-            {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              credentials: "include",
-              body: JSON.stringify({
-                name,
-                email,
-                surname,
-                oldPassword,
-                newPassword,
-              }),
-            }
-          );
+          const response = await fetch("/api/profile", {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify({
+              name,
+              email,
+              surname,
+              oldPassword,
+              newPassword,
+            }),
+          });
 
           const data = await response.json();
 

@@ -28,10 +28,7 @@ const LoginScreen = () => {
   }, [navigate, userInfo, from]);
 
   const googlePopupWindowHandler = async () => {
-    window.open(
-      "https://technomedia-5gpn.onrender.com/api/v1/login/google",
-      "_self"
-    );
+    window.open(`${import.meta.env.VITE_API_URL}/api/v1/login/google`, "_self");
   };
 
   const loginHandler = async (e) => {
@@ -41,17 +38,14 @@ const LoginScreen = () => {
       try {
         dispatch(setLoading(true));
 
-        const response = await fetch(
-          "https://technomedia-5gpn.onrender.com/api/auth",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-            body: JSON.stringify({ email, password }),
-          }
-        );
+        const response = await fetch("/api/auth", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ email, password }),
+        });
 
         const data = await response.json();
 

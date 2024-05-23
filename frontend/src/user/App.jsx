@@ -8,6 +8,7 @@ import Subheader from "./components/Subheader";
 import "./App.css";
 
 function App() {
+  console.log(import.meta.env.VITE_API_URL);
   return (
     <div className="content">
       <div className="headers">

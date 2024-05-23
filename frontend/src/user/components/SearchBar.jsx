@@ -41,9 +41,7 @@ function SearchBar() {
   const filterProducts = async (searchTerm) => {
     try {
       if (searchTerm.trim() !== "") {
-        const response = await fetch(
-          `https://technomedia-5gpn.onrender.com/api/search/?q=${searchTerm}`
-        );
+        const response = await fetch(`/api/search/?q=${searchTerm}`);
 
         const data = await response.json();
 

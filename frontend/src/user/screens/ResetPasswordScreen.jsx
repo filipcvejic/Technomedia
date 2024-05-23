@@ -13,9 +13,7 @@ function ResetPasswordScreen() {
   useEffect(() => {
     const checkToken = async () => {
       try {
-        const response = await fetch(
-          `https://technomedia-5gpn.onrender.com/api/check-token/${id}/${token}`
-        );
+        const response = await fetch(`/api/check-token/${id}/${token}`);
 
         if (!response.ok) {
           navigate("/login");
@@ -37,17 +35,14 @@ function ResetPasswordScreen() {
       toast.error("Passwords do not match");
     } else {
       try {
-        const response = await fetch(
-          `https://technomedia-5gpn.onrender.com/api/reset-password/${id}/${token}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ password }),
-            credentials: "include",
-          }
-        );
+        const response = await fetch(`/api/reset-password/${id}/${token}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ password }),
+          credentials: "include",
+        });
 
         const data = await response.json();
 

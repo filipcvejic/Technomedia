@@ -23,7 +23,7 @@ function ProductScreen() {
 
       try {
         const response = await fetch(
-          `https://technomedia-5gpn.onrender.com/api/product/${categoryName}/${subcategoryName}/${groupName}/${productName}`,
+          `/api/product/${categoryName}/${subcategoryName}/${groupName}/${productName}`,
           {
             credentials: "include",
           }
@@ -97,7 +97,7 @@ function ProductScreen() {
                       onClick={() => changeMainImageHandler(index)}
                     >
                       <img
-                        src={`https://technomedia-5gpn.onrender.com/images/${
+                        src={`${import.meta.env.VITE_API_URL}/images/${
                           image.url.split("\\")[2]
                         }`}
                       />
@@ -107,7 +107,7 @@ function ProductScreen() {
               </div>
               <div className="main-image">
                 <img
-                  src={`https://technomedia-5gpn.onrender.com/images/${
+                  src={`${import.meta.env.VITE_API_URL}/images/${
                     product.images[activeImageIndex].url.split("\\")[2]
                   }`}
                 />

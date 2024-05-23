@@ -21,21 +21,18 @@ function GroupSelectInput({
 
   const createGroupHandler = async (inputValue) => {
     try {
-      const response = await fetch(
-        `https://technomedia-5gpn.onrender.com/api/admin/add-group`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({
-            categoryId: selectedCategory._id,
-            subcategoryId: selectedSubcategory._id,
-            groupName: inputValue,
-          }),
-        }
-      );
+      const response = await fetch(`/api/admin/add-group`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          categoryId: selectedCategory._id,
+          subcategoryId: selectedSubcategory._id,
+          groupName: inputValue,
+        }),
+      });
 
       const data = await response.json();
 

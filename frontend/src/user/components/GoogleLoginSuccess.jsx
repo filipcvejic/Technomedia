@@ -16,12 +16,9 @@ function GoogleLoginSuccess() {
   useEffect(() => {
     const checkUser = async () => {
       try {
-        const response = await fetch(
-          "https://technomedia-5gpn.onrender.com/api/v1/login/success",
-          {
-            credentials: "include",
-          }
-        );
+        const response = await fetch("/api/v1/login/success", {
+          credentials: "include",
+        });
         const data = await response.json();
 
         if (!response.ok) {

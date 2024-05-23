@@ -52,7 +52,7 @@ export default function SearchItem({ data, searchTerm }) {
         <span className="search-product-image-container">
           <img
             className="search-product-image-photo"
-            src={`https://technomedia-5gpn.onrender.com/images/${
+            src={`${import.meta.env.VITE_API_URL}/images/${
               data.images[0].url.split("\\")[2]
             }`}
             alt={data.name}

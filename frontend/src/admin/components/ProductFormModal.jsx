@@ -67,12 +67,9 @@ function ProductFormModal({ data, onSubmitProduct, onCloseModal }) {
 
   const getRecords = async () => {
     try {
-      const response = await fetch(
-        "https://technomedia-5gpn.onrender.com/api/admin/records/info",
-        {
-          credentials: "include",
-        }
-      );
+      const response = await fetch("/api/admin/records/info", {
+        credentials: "include",
+      });
 
       const data = await response.json();
 
@@ -282,9 +279,7 @@ function ProductFormModal({ data, onSubmitProduct, onCloseModal }) {
       formData.append("specifications", JSON.stringify(specifications) || []);
 
       const response = await fetch(
-        `https://technomedia-5gpn.onrender.com/api/admin/${
-          data ? `edit-product/${data._id}` : "add-product"
-        }`,
+        `/api/admin/${data ? `edit-product/${data._id}` : "add-product"}`,
         {
           method: `${data ? "PUT" : "POST"}`,
           credentials: "include",

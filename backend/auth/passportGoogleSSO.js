@@ -10,8 +10,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL:
-        "https://technomedia-5gpn.onrender.com/api/v1/auth/google/callback",
+      callbackURL: `${process.env.SERVER_API_BASE_URL}/api/v1/auth/google/callback`,
       passReqToCallback: true,
     },
     async (req, _accessToken, _refreshToken, profile, done) => {

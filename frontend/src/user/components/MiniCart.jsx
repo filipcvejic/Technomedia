@@ -4,6 +4,7 @@ import "./MiniCart.css";
 import { useRef } from "react";
 import RemoveFromCartButton from "./RemoveFromCartButton";
 import OrderButton from "./OrderButton";
+import { normalizePath } from "../../shared/utils/normalizePath";
 
 function MiniCart({ cart, onOutsideClick }) {
   const miniCartRef = useRef(null);
@@ -28,9 +29,9 @@ function MiniCart({ cart, onOutsideClick }) {
             return (
               <div className="single-mini-cart-item" key={item.product._id}>
                 <img
-                  src={`https://technomedia-5gpn.onrender.com/images/${
-                    item.product.images[0].url.split("\\")[2]
-                  }`}
+                  src={`${import.meta.env.VITE_API_URL}/images/${normalizePath(
+                    item.product.images[0].url
+                  )}`}
                   alt={item.product.name}
                 />
                 <div className="single-item-details">
