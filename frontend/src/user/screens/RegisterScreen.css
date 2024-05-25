@@ -1,14 +1,17 @@
 .register-container {
   max-width: 500px;
   margin: 50px auto;
+}
+
+.register-section {
+  padding: 40px;
   background-color: #ffede1;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.register-section {
-  margin-inline: 15px;
-  padding: 30px;
+.register-heading {
+  margin-top: 0;
 }
 
 .register-section .form-group {
@@ -100,4 +103,11 @@
 
 .external-register-container svg {
   margin-inline: 10px;
+}
+
+@media screen and (max-width: 520px) {
+  .register-container {
+    margin-inline: 0;
+    padding-inline: 15px;
+  }
 }

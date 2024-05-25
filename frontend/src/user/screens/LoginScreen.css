@@ -1,14 +1,17 @@
 .login-container {
   max-width: 500px;
   margin: 50px auto;
+}
+
+.login-section {
+  padding: 40px;
   background-color: #ffede1;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.login-section {
-  margin-inline: 15px;
-  padding: 30px;
+.login-title {
+  margin-top: 0;
 }
 
 .login-section .form-group {
@@ -103,4 +106,11 @@
 
 .external-login-container svg {
   margin-inline: 10px;
+}
+
+@media screen and (max-width: 520px) {
+  .login-container {
+    margin-inline: 0;
+    padding-inline: 15px;
+  }
 }
