@@ -59,41 +59,43 @@ function ResetPasswordScreen() {
 
   return (
     <div className="reset-password-container">
-      <h1 className="reset-password-heading">Reset password</h1>
-      <form className="reset-password-form">
-        <div className="form-group">
-          <label htmlFor="password">
-            <span>New password</span>
-          </label>
-          <input
-            type="password"
-            id="password"
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-            required
-          ></input>
+      <div className="reset-password-section">
+        <h1 className="reset-password-heading">Reset password</h1>
+        <form className="reset-password-form">
+          <div className="form-group">
+            <label htmlFor="password">
+              <span>New password</span>
+            </label>
+            <input
+              type="password"
+              id="password"
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+              required
+            ></input>
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">
+              <span>Confirm new password</span>
+            </label>
+            <input
+              type="password"
+              id="confirm-password"
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              value={confirmPassword}
+              required
+            ></input>
+          </div>
+        </form>
+        <div>
+          <button
+            type="button"
+            className="reset-button"
+            onClick={resetPasswordHandler}
+          >
+            Set a new password
+          </button>
         </div>
-        <div className="form-group">
-          <label htmlFor="password">
-            <span>Confirm new password</span>
-          </label>
-          <input
-            type="password"
-            id="confirm-password"
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            value={confirmPassword}
-            required
-          ></input>
-        </div>
-      </form>
-      <div>
-        <button
-          type="button"
-          className="reset-button"
-          onClick={resetPasswordHandler}
-        >
-          Set a new password
-        </button>
       </div>
     </div>
   );
