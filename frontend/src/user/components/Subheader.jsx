@@ -1,22 +1,9 @@
 import "../components/ProductsMenu";
 import ProductsMenu from "../components/ProductsMenu";
-import { useEffect, useState } from "react";
 
 import "./Subheader.css";
 
-function Subheader() {
-  const [records, setRecords] = useState([]);
-
-  const fetchRecords = async () => {
-    const response = await fetch("/api/records");
-    const data = await response.json();
-    setRecords(data);
-  };
-
-  useEffect(() => {
-    fetchRecords();
-  }, []);
-
+function Subheader({ records, fetchRecords }) {
   return (
     <div className="subheader">
       <div className="wrapperr">

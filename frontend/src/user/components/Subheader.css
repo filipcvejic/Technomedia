@@ -11,16 +11,6 @@
   align-items: center;
 }
 
-/* .productss button {
-  background-color: transparent;
-  border: none;
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  font-size: 18px;
-  cursor: pointer;
-} */
-
 .nav-menu {
   display: flex;
   flex-direction: row;
@@ -54,4 +44,10 @@
 .nav-menu li a:hover::after,
 .nav-menu li a:focus::after {
   width: 100%;
+}
+
+@media screen and (max-width: 1380px) {
+  .subheader {
+    display: none;
+  }
 }
