@@ -4,6 +4,7 @@ import QuantityInput from "../components/QuantityInput";
 
 import RemoveFromCartButton from "../components/RemoveFromCartButton";
 import OrderButton from "../components/OrderButton";
+import { Link } from "react-router-dom";
 
 function CartScreen() {
   const { cart } = useSelector((state) => state.userCart);
@@ -19,20 +20,29 @@ function CartScreen() {
             totalAmount += item.product?.price * item.quantity;
             return (
               <div className="cart-item" key={item.product?._id}>
-                <a
+                <Link
                   className="cart-item-link"
-                  href={`/${item.product.category.slug}/${item.product.subcategory.slug}/${item.product.group.slug}/${item.product.slug}`}
+                  to={`/${item.product.category.slug}/${item.product.subcategory.slug}/${item.product.group.slug}/${item.product.slug}`}
                 >
                   <img
                     src={`${import.meta.env.VITE_API_URL}/images/${
                       item.product?.images[0].url.split("\\")[2]
                     }`}
                   />
-                  <p className="cart-item-name">{item.product.name}</p>
-                </a>
+                </Link>
                 <div className="cart-item-details">
-                  <QuantityInput item={item} />
-                  <span>{item.product?.price} EUR</span>
+                  <Link
+                    to={`/${item.product.category.slug}/${item.product.subcategory.slug}/${item.product.group.slug}/${item.product.slug}`}
+                    className="cart-item-name"
+                  >
+                    {item.product.name}
+                  </Link>
+                  <div className="cart-item-quantity">
+                    <QuantityInput item={item} />
+                    <span className="cart-item-price">
+                      {item.product?.price} EUR
+                    </span>
+                  </div>
                 </div>
                 <RemoveFromCartButton item={item} />
               </div>
@@ -43,7 +53,7 @@ function CartScreen() {
       <div className="order-informations">
         <div className="order-review">
           <h1 className="order-review-title">Order review</h1>
-          <div className="orded-price-details">
+          <div className="order-price-details">
             <div className="online-price">
               <p>Price for online payment:</p>
               <span>{totalAmount.toFixed(2)} EUR</span>
