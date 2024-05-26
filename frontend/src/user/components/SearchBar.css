@@ -3,8 +3,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  max-width: 670px;
-  width: 100%;
+  /* max-width: 670px;
+  width: 100%; */
   margin: 20px 30px;
   position: relative;
 }
@@ -113,4 +113,38 @@
   background-color: #fafafa;
   width: 100%;
   font-size: 24px;
+}
+
+@media screen and (max-width: 1380px) {
+  .search-form {
+    margin-inline: 0;
+  }
+
+  .search-results {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+@media screen and (max-width: 1060px) {
+  .search-results {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media screen and (max-width: 860px) {
+  .search-results {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (max-width: 660px) {
+  .search-results {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 470px) {
+  .search-results {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
