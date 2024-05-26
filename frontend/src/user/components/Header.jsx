@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import "./Header.css";
 import { toast } from "react-toastify";
 import { logout } from "../features/auth/userAuthSlice";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { clearGuestCart } from "../features/cart/cartSlice";
 import { Link, useNavigate } from "react-router-dom";
 import MiniCart from "./MiniCart";
@@ -13,18 +13,38 @@ import WishListIcon from "../svgs/WishListIcon";
 import CartIcon from "../svgs/CartIcon";
 import Logo from "../svgs/Logo";
 import { clearWishList } from "../features/wishList/wishListSlice";
+import HamburgerMenuIcon from "../svgs/HamburgerMenuIcon";
+import HamburgerContent from "./HamburgerContent";
 
-const Header = () => {
+const Header = ({ records, fetchRecords }) => {
   const { userInfo } = useSelector((state) => state.userAuth);
   const { cart } = useSelector((state) => state.userCart);
 
   const [isUserMenuExpanded, setIsUserMenuExpanded] = useState(false);
   const [isCartExpanded, setIsCartExpanded] = useState(false);
+  const [isMobileMenuExpanded, setIsMobileMenuExpanded] = useState(false);
+
   const userMenuRef = useRef(null);
   const cartButtonRef = useRef(null);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const mediaQuery = window.matchMedia("(min-width: 1380px)");
+
+  const handleMediaQueryChange = (e) => {
+    if (e.matches) {
+      setIsMobileMenuExpanded(false);
+    }
+  };
+
+  useEffect(() => {
+    mediaQuery.addEventListener("change", handleMediaQueryChange);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handleMediaQueryChange);
+    };
+  }, []);
 
   outsideClickHandler(userMenuRef, () => setIsUserMenuExpanded(false));
 
@@ -32,6 +52,10 @@ const Header = () => {
     outsideClickHandler([cartRef, cartButtonRef], () =>
       setIsCartExpanded(false)
     );
+  };
+
+  const closeHamburgerMenuHandler = () => {
+    setIsMobileMenuExpanded(false);
   };
 
   const logoutHandler = async (e) => {
@@ -61,16 +85,30 @@ const Header = () => {
     }
   };
 
+  const hamburgerMenuClickHandler = () => {
+    if (!isMobileMenuExpanded && records.length === 0) {
+      fetchRecords();
+    }
+
+    setIsMobileMenuExpanded(true);
+  };
+
   return (
     <>
       <header className="header">
         <div className="main-header">
-          <div>
-            <a className="logo" href="/">
-              <Logo />
-            </a>
+          <div
+            className="header-hamburger-menu"
+            onClick={hamburgerMenuClickHandler}
+          >
+            <HamburgerMenuIcon />
           </div>
-          <SearchBar />
+          <a className="logo" href="/">
+            <Logo />
+          </a>
+          <div className="search-bar-wrapper">
+            <SearchBar />
+          </div>
           <div className="header-links">
             <div
               className="user-actions"
@@ -130,6 +168,14 @@ const Header = () => {
               )}
             </div>
           </div>
+          {isMobileMenuExpanded && (
+            <div className="hamburger-menu-container">
+              <HamburgerContent
+                records={records}
+                onCloseMenu={closeHamburgerMenuHandler}
+              />
+            </div>
+          )}
         </div>
       </header>
     </>

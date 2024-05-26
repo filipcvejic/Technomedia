@@ -9,6 +9,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 50px;
+}
+
+.header-hamburger-menu {
+  display: none;
 }
 
 .home-link {
@@ -23,6 +28,10 @@
   font-size: 24px;
 }
 
+.search-bar-wrapper {
+  width: 100%;
+}
+
 .category-menu {
   display: flex;
   align-items: center;
@@ -34,9 +43,7 @@
 .header-links {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 25px;
-  margin-left: 50px;
 }
 
 .user-actions {
@@ -145,46 +152,98 @@
   font-size: 14px;
 }
 
-/* .user-dropdown-menu {
-  border-radius: 10px;
-  background-color: #2c3e50;
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+@media screen and (max-width: 1380px) {
+  .main-header {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    padding: 20px;
+  }
+
+  .main-header .logo {
+    justify-self: center;
+    margin: 0 auto;
+  }
+
+  .search-bar-wrapper {
+    grid-row: 2;
+    grid-column: 1/4;
+  }
+
+  .main-header .header-hamburger-menu {
+    display: block;
+  }
+
+  .header-links {
+    justify-content: flex-end;
+  }
 }
 
-.user-dropdown-menu ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+@media screen and (max-width: 769px) {
+  .main-header {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .main-header .logo {
+    grid-column: 2/6;
+  }
+
+  .search-bar-wrapper {
+    grid-column: 1/7;
+  }
+
+  .main-header .logo svg {
+    width: 200px;
+  }
+
+  .header-links {
+    gap: 15px;
+  }
+
+  .user-actions svg,
+  .favourite-items a svg,
+  .shopping-cart .cart-icon-button svg {
+    width: 25px;
+    height: 25px;
+  }
 }
 
-.user-dropdown-menu li {
-  text-align: center;
-  border-bottom: 1px solid #eee;
+@media screen and (max-width: 480px) {
+  .header-links {
+    gap: 8px;
+  }
+
+  .main-header .logo svg {
+    width: 160px;
+  }
 }
 
-.user-dropdown-menu a {
-  text-decoration: none;
-  color: #ffffff;
-  padding: 12px 20px 8px;
-  display: block;
-  text-align: left;
-  white-space: nowrap;
-}
+@media screen and (max-width: 360px) {
+  .main-header {
+    grid-template-columns: repeat(7, 1fr);
+  }
 
-.logout-button {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  color: #ffffff;
-  padding: 12px 20px 8px;
-}
+  .main-header .logo {
+    grid-column: 2/6;
+  }
 
-.logout-button span {
-  font-size: 18px;
-} */
+  .header-links {
+    grid-column: 6/8;
+  }
+
+  .search-bar-wrapper {
+    grid-column: 1/8;
+  }
+
+  .user-actions svg,
+  .favourite-items a svg,
+  .shopping-cart .cart-icon-button svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .header-hamburger-menu svg {
+    width: 27px;
+    height: 27px;
+  }
+}
