@@ -2,8 +2,8 @@
   margin: 50px auto;
   display: flex;
   flex-direction: row;
-  max-width: 1280px;
-  gap: 20px;
+  max-width: 1340px;
+  gap: 50px;
 }
 
 .profile-section {
@@ -25,6 +25,9 @@
   gap: 15px;
   font-size: 26px;
 }
+.profile-section .mini-logo svg {
+  max-width: 80%;
+}
 
 .user-info .user-name span,
 .user-info .user-surname span,
@@ -40,11 +43,10 @@
 .update-section,
 .profile-section {
   background-color: #ffede1;
-  margin-inline: 15px;
   padding: 40px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
-  width: 100%;
+  flex: 1;
 }
 
 .update-description {
@@ -90,4 +92,26 @@
   border-radius: 8px;
   cursor: pointer;
   font-size: 18px;
+}
+
+@media screen and (max-width: 1380px) {
+  .profile-container {
+    padding-inline: 20px;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .user-info span {
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .profile-container {
+    flex-direction: column;
+  }
+
+  .user-info span {
+    font-size: 22px;
+  }
 }
