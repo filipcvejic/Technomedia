@@ -87,23 +87,21 @@ function ProductScreen() {
           <div className="product-info-container">
             <div className="product-images">
               <div className="image-thumbnails">
-                <div className="image-thumbnails">
-                  {product.images.map((image, index) => (
-                    <div
-                      key={index}
-                      className={`image-thumbnail ${
-                        index === activeImageIndex ? "active" : ""
+                {product.images.map((image, index) => (
+                  <div
+                    key={index}
+                    className={`image-thumbnail ${
+                      index === activeImageIndex ? "active" : ""
+                    }`}
+                    onClick={() => changeMainImageHandler(index)}
+                  >
+                    <img
+                      src={`${import.meta.env.VITE_API_URL}/images/${
+                        image.url.split("\\")[2]
                       }`}
-                      onClick={() => changeMainImageHandler(index)}
-                    >
-                      <img
-                        src={`${import.meta.env.VITE_API_URL}/images/${
-                          image.url.split("\\")[2]
-                        }`}
-                      />
-                    </div>
-                  ))}
-                </div>
+                    />
+                  </div>
+                ))}
               </div>
               <div className="main-image">
                 <img

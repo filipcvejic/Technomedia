@@ -46,33 +46,36 @@
 }
 
 .product-info-container {
+  width: 100%;
   margin-top: 50px;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   align-items: center;
-  gap: 70px;
 }
 
 .product-images {
   display: flex;
   flex-direction: row;
-  max-width: 750px;
-  max-height: 515px;
+  flex: 1;
+  /* max-width: 750px; */
 }
 
 .product-images .image-thumbnails {
   display: flex;
   flex-direction: column;
   gap: 32.5px;
-  height: 100%;
-  position: relative;
+  /* height: 100%; */
 }
 
 .product-images .image-thumbnails .image-thumbnail {
-  width: 150px;
-  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 150px;
   opacity: 0.5;
   transition: opacity 0.5s ease;
+  position: relative;
 }
 
 .product-images .image-thumbnails .image-thumbnail.active {
@@ -82,28 +85,31 @@
 .product-images .image-thumbnails .image-thumbnail.active::before {
   content: "";
   position: absolute;
+  left: 0;
+  top: 0;
   width: 4px;
-  height: 150px;
+  height: 100%;
   border-radius: 10px;
   background-color: orange;
 }
 
 .product-images .image-thumbnails img {
   width: 100%;
-  height: 100%;
   cursor: pointer;
 }
 
+.product-images .main-image {
+  max-width: 515px;
+}
+
 .product-images .main-image img {
-  height: 515px;
-  width: 530px;
+  width: 100%;
 }
 
 .product-overview {
+  flex: 1;
   background-color: #ffede1;
-  max-height: 465px;
   max-width: 540px;
-  width: 100%;
   display: flex;
   flex-direction: column;
   padding: 25px;
@@ -259,4 +265,125 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
+}
+
+@media screen and (max-width: 1380px) {
+  .product-page {
+    padding-inline: 20px;
+  }
+
+  /* .product-info-container {
+    flex-direction: column;
+  } */
+}
+
+@media screen and (max-width: 1220px) {
+  .similar-products-container .similar-products {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (max-width: 1120px) {
+  .product-overview .product-name,
+  .price-value .main-price {
+    font-size: 35px;
+  }
+
+  .price-value .monthly-payment .monthly-price {
+    font-size: 30px;
+  }
+
+  .price-value .monthly-payment .monthly-price span {
+    font-size: 20px;
+  }
+
+  .product-price .price-note {
+    font-size: 16px;
+  }
+
+  .product-overview .product-actions .order-button {
+    font-size: 24px;
+  }
+}
+
+@media screen and (max-width: 950px) {
+  .product-info-container {
+    flex-direction: column;
+  }
+
+  .product-images {
+    flex-direction: column-reverse;
+    margin-bottom: 25px;
+  }
+
+  .product-images .image-thumbnails {
+    flex-direction: row;
+  }
+
+  .product-overview {
+    max-width: 100%;
+  }
+
+  .product-images .image-thumbnails .image-thumbnail.active::before {
+    top: 100%;
+    height: 4px;
+    width: 100%;
+    bottom: 0;
+  }
+
+  .similar-products-container .similar-products {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .similar-products-container .similar-products .product-item-info {
+    height: 420px;
+  }
+
+  .similar-products-container .similar-products .product-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 280px;
+  }
+
+  .similar-products-container .similar-products .product-image-container img {
+    height: 300px;
+  }
+}
+@media screen and (max-width: 880px) {
+  .product-details-container {
+    flex-direction: column;
+  }
+
+  .product-details-container .product-main-specifications {
+    max-width: 100%;
+    width: auto;
+  }
+}
+
+@media screen and (max-width: 620px) {
+  .similar-products-container .similar-products {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .similar-products-container .similar-products .product-item-info {
+    height: 500px;
+  }
+
+  .similar-products-container .similar-products .product-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 370px;
+  }
+
+  .similar-products-container .similar-products .product-image-container img {
+    height: 350px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .breadcrumbs {
+    font-size: 9px;
+  }
 }
