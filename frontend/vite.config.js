@@ -12,7 +12,8 @@ export default defineConfig({
       "/api": {
         target: import.meta.env.VITE_API_URL,
         changeOrigin: true,
-        secure: import.meta.env.VITE_ENVIRONMENT === "production",
+
+        secure: import.meta.env.ENVIRONMENT === "production",
       },
     },
   },
