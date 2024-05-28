@@ -1,8 +1,8 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import dotenv from "dotenv";
 
-console.log("VITE_API_URL:", import.meta.env.VITE_API_URL);
-console.log("ENVIRONMENT:", import.meta.env.VITE_ENVIRONMENT);
+dotenv.config();
 
 export default defineConfig({
   plugins: [react()],
@@ -10,9 +10,9 @@ export default defineConfig({
     port: 3000,
     proxy: {
       "/api": {
-        target: import.meta.env.VITE_API_URL,
+        target: process.env.VITE_API_URL,
         changeOrigin: true,
-        secure: import.meta.env.VITE_ENVIRONMENT === "production",
+        secure: process.env.ENVIRONMENT === "production",
       },
     },
   },
