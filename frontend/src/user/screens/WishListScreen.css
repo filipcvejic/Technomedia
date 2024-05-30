@@ -40,6 +40,10 @@
   gap: 20px;
 }
 
+.mobile-wish-list-sort-button-wrapper {
+  display: none;
+}
+
 .wish-list-actions .move-products-to-cart-button,
 .wish-list-actions .update-wish-list-button {
   background-color: #ff7c32;
@@ -68,6 +72,18 @@
 @media screen and (max-width: 1260px) {
   .wish-list-products {
     grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (max-width: 1050px) {
+  .desktop-wish-list-sort-button-wrapper {
+    display: none;
+  }
+
+  .mobile-wish-list-sort-button-wrapper {
+    display: block;
+    max-width: 150px;
+    width: 100%;
   }
 }
 

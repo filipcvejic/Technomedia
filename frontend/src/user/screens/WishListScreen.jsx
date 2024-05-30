@@ -63,7 +63,12 @@ function WishListScreen() {
       </ul>
       <div className="wish-list-header">
         <h1>Wish list</h1>
-        <SortButton additionalOptions={["Popularity"]} />
+        <div className="desktop-wish-list-sort-button-wrapper">
+          <SortButton additionalOptions={["Popularity"]} />
+        </div>
+        <div className="mobile-wish-list-sort-button-wrapper">
+          <SortButton additionalOptions={["Popularity"]} isMobile={true} />
+        </div>
       </div>
       <div className="wish-list-products">
         {filteredItems.length > 0 ? (
