@@ -141,3 +141,21 @@
 /* .single-product-specification .custom-checkbox:checked + .checkbox-custom  */ {
   background-color: black;
 }
+
+@media screen and (max-width: 1380px) {
+  .products-group-page {
+    padding-inline: 20px;
+  }
+}
+
+@media screen and (max-width: 1050px) {
+  .group-products-filter-container {
+    display: none !important;
+  }
+
+  .group-products-container .group-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

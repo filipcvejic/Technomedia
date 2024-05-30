@@ -14,6 +14,7 @@ import formatBreadcrumbHandler from "../utils/formatBreadcrumbElementHandler";
 import SubcategoryListContainer from "../components/SubcategoryListContainer";
 import { toast } from "react-toastify";
 import SpecificationsFilterList from "../components/SpecificationsFilterList";
+import FilterProductsButton from "../components/FilterProductsButton";
 
 function ProductsCategoryScreen() {
   const [categoryData, setCategoryData] = useState(null);
@@ -49,7 +50,20 @@ function ProductsCategoryScreen() {
     };
 
     getCategoryData();
-  }, [searchParams]);
+  }, [searchParams, params]);
+
+  const categoryFilters = (
+    <>
+      <SubcategoryListContainer subcategories={categoryData?.subcategories} />
+      <BrandFilterList brands={categoryData?.brands} />
+      <PriceRangeSlider
+        minPrice={categoryData?.minPrice}
+        maxPrice={categoryData?.maxPrice}
+        label={"price"}
+      />
+      <SpecificationsFilterList products={categoryData?.products} />
+    </>
+  );
 
   return (
     <>
@@ -64,20 +78,24 @@ function ProductsCategoryScreen() {
           <div className="category-products-container">
             <div className="category-info">
               <h1>{formatBreadcrumbHandler(categoryName)}</h1>
-              <SortButton additionalOptions={["Popularity"]} />
+              <div className="desktop-sort-button-wrapper">
+                <SortButton additionalOptions={["Popularity"]} />
+              </div>
+              <div className="mobile-products-actions">
+                <div className="mobile-filter-button-wrapper">
+                  <FilterProductsButton filters={categoryFilters} />
+                </div>
+                <div className="mobile-sort-button-wrapper">
+                  <SortButton
+                    additionalOptions={["Popularity"]}
+                    isMobile={true}
+                  />
+                </div>
+              </div>
             </div>
             <div className="category-products">
               <div className="category-products-filter-container">
-                <SubcategoryListContainer
-                  subcategories={categoryData?.subcategories}
-                />
-                <BrandFilterList brands={categoryData?.brands} />
-                <PriceRangeSlider
-                  minPrice={categoryData?.minPrice}
-                  maxPrice={categoryData?.maxPrice}
-                  label={"price"}
-                />
-                <SpecificationsFilterList products={categoryData?.products} />
+                {categoryFilters}
               </div>
               <FilteredProductsList products={categoryData?.products} />
             </div>

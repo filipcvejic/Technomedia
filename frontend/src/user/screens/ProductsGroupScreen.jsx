@@ -14,6 +14,7 @@ import SpecificationsFilterList from "../components/SpecificationsFilterList";
 import FilteredProductsList from "../components/FilteredProductsList";
 import SortButton from "../components/SortButton";
 import { toast } from "react-toastify";
+import FilterProductsButton from "../components/FilterProductsButton";
 
 function ProductsGroupScreen() {
   const [groupData, setGroupData] = useState(null);
@@ -51,7 +52,19 @@ function ProductsGroupScreen() {
     };
 
     getGroupData();
-  }, [searchParams]);
+  }, [searchParams, params]);
+
+  const groupFilters = (
+    <>
+      <BrandFilterList brands={groupData?.brands} />
+      <PriceRangeSlider
+        minPrice={groupData?.minPrice}
+        maxPrice={groupData?.maxPrice}
+        label={"price"}
+      />
+      <SpecificationsFilterList products={groupData?.products} />
+    </>
+  );
 
   return (
     <>
@@ -76,17 +89,27 @@ function ProductsGroupScreen() {
           <div className="group-products-container">
             <div className="group-info">
               <h1>{formatBreadcrumbHandler(groupName)}</h1>
-              <SortButton additionalOptions={["Popularity"]} />
+              <div className="desktop-sort-button-wrapper">
+                <SortButton additionalOptions={["Popularity"]} />
+              </div>
+              <div className="mobile-products-actions">
+                <div className="mobile-filter-button-wrapper">
+                  <FilterProductsButton
+                    data={groupData}
+                    filters={groupFilters}
+                  />
+                </div>
+                <div className="mobile-sort-button-wrapper">
+                  <SortButton
+                    additionalOptions={["Popularity"]}
+                    isMobile={true}
+                  />
+                </div>
+              </div>
             </div>
             <div className="group-products">
               <div className="group-products-filter-container">
-                <BrandFilterList brands={groupData?.brands} />
-                <PriceRangeSlider
-                  minPrice={groupData?.minPrice}
-                  maxPrice={groupData?.maxPrice}
-                  label={"price"}
-                />
-                <SpecificationsFilterList products={groupData?.products} />
+                {groupFilters}
               </div>
               <FilteredProductsList products={groupData?.products} />
             </div>
