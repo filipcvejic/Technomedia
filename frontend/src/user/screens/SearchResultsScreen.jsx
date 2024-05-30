@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import ProductItem from "../components/ProductItem";
-
 import "./SearchResultsScreen.css";
 import { toast } from "react-toastify";
 import SpecificationsFilterList from "../components/SpecificationsFilterList";
@@ -10,6 +8,7 @@ import GroupFilterList from "../components/GroupFilterList";
 import PriceRangeSlider from "../components/PriceRangeSlider";
 import SortButton from "../components/SortButton";
 import FilteredProductsList from "../components/FilteredProductsList";
+import FilterProductsButton from "../components/FilterProductsButton";
 
 function SearchResultsScreen() {
   const [searchResults, setSearchResults] = useState([]);
@@ -39,6 +38,19 @@ function SearchResultsScreen() {
     getSearchResults();
   }, [searchParams]);
 
+  const searchFilters = (
+    <>
+      <GroupFilterList groups={searchResults?.groups} />
+      <BrandFilterList brands={searchResults?.brands} />
+      <PriceRangeSlider
+        minPrice={searchResults?.minPrice}
+        maxPrice={searchResults?.maxPrice}
+        label={"price"}
+      />
+      <SpecificationsFilterList products={searchResults?.products} />
+    </>
+  );
+
   return (
     <>
       {searchResults.products && searchResults.products.length > 0 ? (
@@ -58,18 +70,24 @@ function SearchResultsScreen() {
                   {searchResults.products.length > 1 ? "products" : "product"}
                 </span>
               </h2>
-              <SortButton additionalOptions={["Closest to the search term"]} />
+              <div className="desktop-sort-button-wrapper">
+                <SortButton additionalOptions={["Popularity"]} />
+              </div>
+              <div className="mobile-products-actions">
+                <div className="mobile-filter-button-wrapper">
+                  <FilterProductsButton filters={searchFilters} />
+                </div>
+                <div className="mobile-sort-button-wrapper">
+                  <SortButton
+                    additionalOptions={["Popularity"]}
+                    isMobile={true}
+                  />
+                </div>
+              </div>
             </div>
             <div className="search-products">
               <div className="search-products-filter-container">
-                <GroupFilterList groups={searchResults?.groups} />
-                <BrandFilterList brands={searchResults?.brands} />
-                <PriceRangeSlider
-                  minPrice={searchResults?.minPrice}
-                  maxPrice={searchResults?.maxPrice}
-                  label={"price"}
-                />
-                <SpecificationsFilterList products={searchResults?.products} />
+                {searchFilters}
               </div>
               <FilteredProductsList products={searchResults?.products} />
             </div>
