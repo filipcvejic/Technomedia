@@ -1,0 +1,99 @@
+.mobile-filter-list-overlay {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  z-index: 1000;
+}
+
+.mobile-filter-list-container {
+  max-width: 350px;
+  width: 100%;
+  max-height: 100vh;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  animation: slideInLeft 0.5s ease forwards;
+  transform: translateX(-100%);
+  position: relative;
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.mobile-filter-list-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 30px;
+  border-bottom: 1px solid #00000050;
+}
+
+.mobile-filter-list-header h2 {
+  margin: 0;
+}
+
+.mobile-filter-list {
+  display: flex;
+  flex-direction: column;
+  padding: 0 30px;
+  list-style: none;
+  margin: 0;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.close-mobile-filter-list-button {
+  border: none;
+  background-color: transparent;
+}
+
+.close-mobile-filter-list-button svg {
+  width: 15px;
+  height: 15px;
+}
+
+.mobile-filter-list-actions-wrapper {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: #fff;
+  border-top: 2px solid #00000050;
+  z-index: 1000;
+}
+
+.mobile-filter-list-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  padding: 20px 30px;
+}
+
+.mobile-filter-list-actions button {
+  flex: 1;
+  border: 1px solid black;
+  border-radius: 20px;
+  height: 40px;
+  font-size: 18px;
+}
+
+.mobile-filter-list-actions .delete-all-filters-button {
+  background-color: #fff;
+}
+
+.mobile-filter-list-actions .show-selected-filters-button {
+  background-color: black;
+  color: #fff;
+}

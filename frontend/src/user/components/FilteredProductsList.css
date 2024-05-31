@@ -46,11 +46,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 300px;
+    height: 280px;
   }
 
   .filtered-products-list .product-image-container img {
-    object-fit: cover;
     height: 250px;
   }
 }
@@ -64,6 +63,18 @@
 @media screen and (max-width: 840px) {
   .filtered-products-list {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .filtered-products-list .product-item-info {
+    height: 350px;
+  }
+
+  .filtered-products-list .product-image-container {
+    height: 230px;
+  }
+
+  .filtered-products-list .product-image-container img {
+    height: 270px;
   }
 }
 
@@ -81,7 +92,6 @@
   }
 
   .filtered-products-list .product-image-container img {
-    object-fit: cover;
     height: 300px;
   }
 }
