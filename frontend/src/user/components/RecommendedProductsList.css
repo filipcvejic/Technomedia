@@ -8,3 +8,116 @@
   grid-template-columns: repeat(4, 1fr);
   gap: 28px;
 }
+
+.mobile-recommended-products {
+  display: none;
+}
+
+@media screen and (max-width: 1280px) {
+  .recommended-products {
+    display: none;
+  }
+
+  .mobile-recommended-products {
+    display: block;
+    width: 100%;
+    /* width: 100%; */
+    /* max-width: 1340px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 28px; */
+  }
+  .mobile-recommended-products .swiper-wrapper {
+    display: flex;
+    flex-direction: row;
+    /* gap: 28px; */
+  }
+
+  .mobile-recommended-products .swiper-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: auto !important;
+  }
+
+  .mobile-recommended-products .swiper-slide > div {
+    width: 300px;
+  }
+  /* .mobile-recommended-products .slick-list {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .mobile-recommended-products .slick-track {
+    display: flex;
+    flex-direction: row;
+    gap: 28px;
+  } */
+}
+
+@media screen and (max-width: 1300px) {
+  /* .recommended-products {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .recommended-products .product-item-info {
+    height: 380px;
+  }
+
+  .recommended-products .product-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 240px;
+  }
+
+  .recommended-products .product-image-container img {
+    height: 350px;
+  } */
+}
+
+@media screen and (max-width: 960px) {
+  .mobile-recommended-products .swiper-slide > div {
+    width: 280px;
+  }
+  /* .recommended-products {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .recommended-products .product-item-info {
+    height: 400px;
+  }
+
+  .recommended-products .product-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 270px;
+  }
+
+  .recommended-products .product-image-container img {
+    height: 250px;
+  } */
+}
+
+@media screen and (max-width: 660px) {
+  /* .recommended-products {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .recommended-products .product-item-info {
+    height: 500px;
+  }
+
+  .recommended-products .product-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 370px;
+  }
+
+  .recommended-products .product-image-container img {
+    height: 340px;
+  } */
+}
