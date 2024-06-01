@@ -23,6 +23,8 @@
   border: none;
   border-top-left-radius: 25px;
   border-bottom-left-radius: 25px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
   box-sizing: border-box;
 }
 
@@ -40,14 +42,6 @@
   color: #fff;
   cursor: pointer;
   padding: 0 15px;
-}
-
-.search-bar.expanded button {
-  border-bottom-right-radius: 0px;
-}
-
-.search-bar.expanded input {
-  border-bottom-left-radius: 0px;
 }
 
 .search-menu-container {

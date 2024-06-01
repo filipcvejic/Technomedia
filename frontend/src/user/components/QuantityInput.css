@@ -25,12 +25,10 @@
   margin: 0;
 }
 
-.quantity-count-minus {
-  border: none;
-}
-
+.quantity-count-minus,
 .quantity-count-plus {
   border: none;
+  color: black;
 }
 
 .item-quantity {
