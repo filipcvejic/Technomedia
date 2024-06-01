@@ -34,3 +34,21 @@
   img {
   max-width: 500px;
 }
+
+@media screen and (max-width: 1380px) {
+  .most-wanted-groups {
+    overflow-x: scroll;
+    overflow-y: hidden;
+  }
+
+  /* .most-wanted-groups:last-child {
+    display: none;
+  } */
+}
+/* 
+@media screen and (max-width: 780px) {
+  .most-wanted-groups img {
+    width: 100%;
+    object-fit: cover;
+  }
+} */
