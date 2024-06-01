@@ -51,6 +51,7 @@
 .back-hamburger-menu-button {
   gap: 5px;
   font-size: 18px;
+  color: black;
 }
 
 .hamburger-menu-list {
