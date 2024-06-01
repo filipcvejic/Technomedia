@@ -173,7 +173,6 @@
 }
 
 .promo-code-container {
-  height: 100%;
   background-color: #ffede1;
   border-radius: 10px;
   padding: 20px;
@@ -242,6 +241,11 @@
   .cart-item-quantity .quantity-input button,
   .cart-item-quantity .cart-item-price {
     font-size: 18px;
+  }
+
+  .cart-item-details,
+  .cart-item-quantity {
+    align-items: center;
   }
 
   .remove-item-button svg {
