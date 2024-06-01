@@ -10,25 +10,29 @@ const AdminPrivateRoute = () => {
 
   useEffect(() => {
     const checkUser = async () => {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/admin/profile`,
-        {
-          credentials: "include",
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/admin/profile`,
+          {
+            credentials: "include",
+          }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          dispatch(logout());
+          navigate("/admin/login");
         }
-      );
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        dispatch(logout());
-        navigate("/admin/login");
+        dispatch(setCredentials({ ...data.admin }));
+      } catch (err) {
+        toast.error(err?.message);
       }
-
-      dispatch(setCredentials({ ...data.admin }));
     };
 
     checkUser();
-  }, []);
+  }, [dispatch, navigate]);
 
   return <Outlet />;
 };
