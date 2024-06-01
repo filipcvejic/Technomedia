@@ -38,14 +38,17 @@ const LoginScreen = () => {
       try {
         dispatch(setLoading(true));
 
-        const response = await fetch("/api/auth", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({ email, password }),
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/auth`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify({ email, password }),
+          }
+        );
 
         const data = await response.json();
 
