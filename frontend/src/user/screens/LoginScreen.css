@@ -104,6 +104,10 @@
   cursor: pointer;
 }
 
+.external-login-button span {
+  color: black;
+}
+
 .external-login-container svg {
   margin-inline: 10px;
 }

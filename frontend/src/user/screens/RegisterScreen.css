@@ -105,6 +105,10 @@
   margin-inline: 10px;
 }
 
+.external-register-button span {
+  color: black;
+}
+
 @media screen and (max-width: 520px) {
   .register-container {
     margin-inline: 0;

@@ -1,10 +1,6 @@
 import ReactDOM from "react-dom";
 import "./MobileFilterListContent.css";
 import { useRef } from "react";
-import SubcategoryListContainer from "./SubcategoryListContainer";
-import BrandFilterList from "./BrandFilterList";
-import PriceRangeSlider from "./PriceRangeSlider";
-import SpecificationsFilterList from "./SpecificationsFilterList";
 import { useSearchParams } from "react-router-dom";
 
 import "./MobileFilterListContent.css";

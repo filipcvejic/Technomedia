@@ -243,13 +243,13 @@
     font-size: 18px;
   }
 
-  .cart-item-name {
-    text-align: center;
-  }
-
   .cart-item-details,
   .cart-item-quantity {
     align-items: center;
+  }
+
+  .cart-item-details .cart-item-name {
+    text-align: center;
   }
 
   .remove-item-button svg {
