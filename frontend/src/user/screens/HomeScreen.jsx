@@ -58,7 +58,7 @@ const HomeScreen = () => {
     const getRecommendedRecords = async () => {
       try {
         const response = await fetch(
-          `https://technomedia-5gpn.onrender.com/api/recommended-records`
+          `${import.meta.env.VITE_API_URL}/api/recommended-records`
         );
 
         const data = await response.json();

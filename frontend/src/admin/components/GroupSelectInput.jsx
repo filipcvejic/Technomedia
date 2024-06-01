@@ -21,18 +21,21 @@ function GroupSelectInput({
 
   const createGroupHandler = async (inputValue) => {
     try {
-      const response = await fetch(`/api/admin/add-group`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          categoryId: selectedCategory._id,
-          subcategoryId: selectedSubcategory._id,
-          groupName: inputValue,
-        }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/admin/add-group`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            categoryId: selectedCategory._id,
+            subcategoryId: selectedSubcategory._id,
+            groupName: inputValue,
+          }),
+        }
+      );
 
       const data = await response.json();
 

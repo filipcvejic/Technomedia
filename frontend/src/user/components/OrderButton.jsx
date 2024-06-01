@@ -30,14 +30,17 @@ function OrderButton({ data, label }) {
       }
 
       if (requestData.length > 0) {
-        const response = await fetch("/api/order", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({ products: requestData }),
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/order`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify({ products: requestData }),
+          }
+        );
 
         const responseData = await response.json();
 

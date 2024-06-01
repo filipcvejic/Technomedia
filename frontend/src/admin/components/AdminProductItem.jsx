@@ -11,10 +11,13 @@ function AdminProductItem({ data, onDeleteProduct, onSubmitProduct }) {
 
   const deleteProductHandler = async (productId) => {
     try {
-      const response = await fetch(`/api/admin/delete-product/${productId}`, {
-        method: "DELETE",
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/admin/delete-product/${productId}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
 
       const responseData = await response.json();
 

@@ -14,17 +14,20 @@ function BrandSelectInput({
 
   const createBrandHandler = async (inputValue) => {
     try {
-      const response = await fetch(`/api/admin/add-brand`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          brandName: inputValue,
-          groupId: selectedGroup._id,
-        }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/admin/add-brand`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            brandName: inputValue,
+            groupId: selectedGroup._id,
+          }),
+        }
+      );
 
       const data = await response.json();
 

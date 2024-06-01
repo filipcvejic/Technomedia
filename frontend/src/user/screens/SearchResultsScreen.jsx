@@ -21,7 +21,9 @@ function SearchResultsScreen() {
 
     const getSearchResults = async () => {
       try {
-        const response = await fetch(`/api/search?${currentParams}`);
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/search?${currentParams}`
+        );
 
         const data = await response.json();
 

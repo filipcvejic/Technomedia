@@ -22,17 +22,20 @@ function SubcategorySelectInput({
 
   const createSubcategoryHandler = async (inputValue) => {
     try {
-      const response = await fetch(`/api/admin/add-subcategory`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          subcategoryName: inputValue,
-          categoryId: selectedCategory._id,
-        }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/admin/add-subcategory`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            subcategoryName: inputValue,
+            categoryId: selectedCategory._id,
+          }),
+        }
+      );
 
       const data = await response.json();
 

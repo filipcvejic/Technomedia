@@ -23,7 +23,9 @@ function ProductScreen() {
 
       try {
         const response = await fetch(
-          `/api/product/${categoryName}/${subcategoryName}/${groupName}/${productName}`,
+          `${
+            import.meta.env.VITE_API_URL
+          }/api/product/${categoryName}/${subcategoryName}/${groupName}/${productName}`,
           {
             credentials: "include",
           }

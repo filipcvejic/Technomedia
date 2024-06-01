@@ -13,13 +13,16 @@ const AdminHeader = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("/api/admin/logout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/admin/logout`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
 
       const data = await response.json();
 

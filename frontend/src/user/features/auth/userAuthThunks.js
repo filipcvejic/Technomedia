@@ -9,7 +9,7 @@ export const userLogin = createAsyncThunk(
     try {
       dispatch(setLoading(true));
 
-      const response = await fetch("/api/auth", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

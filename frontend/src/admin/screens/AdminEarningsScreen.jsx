@@ -18,9 +18,12 @@ function AdminEarningsScreen() {
   useEffect(() => {
     const getChartInfo = async () => {
       try {
-        const response = await fetch(`/api/admin/chart-info/${year}`, {
-          credentials: "include",
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/admin/chart-info/${year}`,
+          {
+            credentials: "include",
+          }
+        );
 
         const responseData = await response.json();
 

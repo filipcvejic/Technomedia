@@ -4,14 +4,17 @@ export const addToCart = createAsyncThunk(
   "cart/addToCart",
   async (itemData, { rejectWithValue }) => {
     try {
-      const response = await fetch("/api/cart/add-product", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(itemData),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/cart/add-product`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(itemData),
+        }
+      );
 
       const data = await response.json();
 
@@ -26,13 +29,16 @@ export const removeFromCart = createAsyncThunk(
   "cart/removeFromCart",
   async ({ productId }, { rejectWithValue }) => {
     try {
-      const response = await fetch(`/api/cart/remove-product/${productId}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/cart/remove-product/${productId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to remove product from cart");
@@ -49,13 +55,18 @@ export const decreaseProductQuantity = createAsyncThunk(
   "cart/decreaseProductQuantity",
   async ({ productId }, { rejectWithValue }) => {
     try {
-      const response = await fetch(`/api/cart/decrease-quantity/${productId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${
+          import.meta.env.VITE_API_URL
+        }/api/cart/decrease-quantity/${productId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to decrease product quantity in cart");
@@ -72,14 +83,17 @@ export const syncCartProducts = createAsyncThunk(
   "cart/syncCartProducts",
   async ({ cartProducts }, { rejectWithValue }) => {
     try {
-      const response = await fetch("/api/cart/sync-products", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ cartProducts }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/cart/sync-products`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ cartProducts }),
+        }
+      );
 
       const data = await response.json();
 

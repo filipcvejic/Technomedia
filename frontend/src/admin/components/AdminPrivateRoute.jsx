@@ -11,9 +11,12 @@ const AdminPrivateRoute = () => {
   useEffect(() => {
     const checkUser = async () => {
       try {
-        const response = await fetch("/api/admin/profile", {
-          credentials: "include",
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/admin/profile`,
+          {
+            credentials: "include",
+          }
+        );
 
         const data = await response.json();
 

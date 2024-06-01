@@ -12,7 +12,7 @@ const PrivateRoute = () => {
 
   useEffect(() => {
     const checkUser = async () => {
-      const res = await fetch("/api/profile", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/profile`, {
         credentials: "include",
       });
 

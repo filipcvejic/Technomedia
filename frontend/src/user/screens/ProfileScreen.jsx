@@ -38,20 +38,23 @@ const ProfileScreen = () => {
       } else {
         try {
           setLoading(true);
-          const response = await fetch("/api/profile", {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-            body: JSON.stringify({
-              name,
-              email,
-              surname,
-              oldPassword,
-              newPassword,
-            }),
-          });
+          const response = await fetch(
+            `${import.meta.env.VITE_API_URL}/api/profile`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              credentials: "include",
+              body: JSON.stringify({
+                name,
+                email,
+                surname,
+                oldPassword,
+                newPassword,
+              }),
+            }
+          );
 
           const data = await response.json();
 

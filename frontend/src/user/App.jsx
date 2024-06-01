@@ -12,7 +12,7 @@ function App() {
   const [records, setRecords] = useState([]);
 
   const fetchRecords = async () => {
-    const response = await fetch("/api/records");
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/records`);
     const data = await response.json();
     setRecords(data);
   };

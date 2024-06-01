@@ -31,7 +31,7 @@ function ProductsCategoryScreen() {
     const getCategoryData = async () => {
       try {
         const response = await fetch(
-          `/api/search?category=${categoryName}${
+          `${import.meta.env.VITE_API_URL}/api/search?category=${categoryName}${
             currentParams ? `&${currentParams}` : ""
           }`
         );

@@ -23,14 +23,17 @@ function CategorySelectInput({
 
   const createCategoryHandler = async (inputValue) => {
     try {
-      const response = await fetch(`/api/admin/add-category`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ categoryName: inputValue }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/admin/add-category`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ categoryName: inputValue }),
+        }
+      );
 
       const data = await response.json();
 

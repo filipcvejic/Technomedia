@@ -31,7 +31,9 @@ function ProductsSubcategoryScreen() {
     const getSubcategoryData = async () => {
       try {
         const response = await fetch(
-          `/api/search?category=${categoryName}&subcategory=${subcategoryName}${
+          `${
+            import.meta.env.VITE_API_URL
+          }/api/search?category=${categoryName}&subcategory=${subcategoryName}${
             currentParams ? `&${currentParams}` : ""
           }`
         );

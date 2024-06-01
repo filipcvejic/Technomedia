@@ -42,7 +42,9 @@ function SearchBar() {
   const filterProducts = async (searchTerm) => {
     try {
       if (searchTerm.trim() !== "") {
-        const response = await fetch(`/api/search/?q=${searchTerm}`);
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/search/?q=${searchTerm}`
+        );
 
         const data = await response.json();
 

@@ -13,9 +13,12 @@ function AdminUsersScreen() {
   useEffect(() => {
     const getUsersData = async () => {
       try {
-        const response = await fetch("/api/admin/users", {
-          credentials: "include",
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/admin/users`,
+          {
+            credentials: "include",
+          }
+        );
 
         const data = await response.json();
 
@@ -66,7 +69,9 @@ function AdminUsersScreen() {
   const onDeleteUserHandler = async () => {
     try {
       const response = await fetch(
-        `/api/admin/delete-user/${selectedUser._id}`,
+        `${import.meta.env.VITE_API_URL}/api/admin/delete-user/${
+          selectedUser._id
+        }`,
         {
           method: "DELETE",
           credentials: "include",

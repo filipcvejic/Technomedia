@@ -4,14 +4,17 @@ export const addToWishList = createAsyncThunk(
   "wishList/addToWishList",
   async (itemData, { rejectWihValue }) => {
     try {
-      const response = await fetch("/api/wish-list/add-product", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(itemData),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/wish-list/add-product`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(itemData),
+        }
+      );
 
       const data = await response.json();
 
@@ -26,14 +29,17 @@ export const moveAllToCart = createAsyncThunk(
   "wishList/moveAllToCart",
   async (itemData, { rejectWihValue }) => {
     try {
-      const response = await fetch("/api/wish-list/move-all", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(itemData),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/wish-list/move-all`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(itemData),
+        }
+      );
 
       const data = await response.json();
 
@@ -49,7 +55,9 @@ export const removeFromWishList = createAsyncThunk(
   async ({ productId }, { rejectWithValue }) => {
     try {
       const response = await fetch(
-        `/api/wish-list/remove-product/${productId}`,
+        `${
+          import.meta.env.VITE_API_URL
+        }/api/wish-list/remove-product/${productId}`,
         {
           method: "DELETE",
           headers: {

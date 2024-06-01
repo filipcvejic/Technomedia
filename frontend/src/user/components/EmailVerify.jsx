@@ -13,7 +13,9 @@ function EmailVerify() {
         if (verified) return;
 
         const response = await fetch(
-          `/api/users/${params.id}/verify/${params.token}`,
+          `${import.meta.env.VITE_API_URL}/api/users/${params.id}/verify/${
+            params.token
+          }`,
           {
             credentials: "include",
           }
