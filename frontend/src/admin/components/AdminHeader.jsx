@@ -9,33 +9,6 @@ const AdminHeader = () => {
 
   const dispatch = useDispatch();
 
-  const logoutHandler = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/admin/logout`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message);
-      }
-
-      dispatch(logout());
-    } catch (err) {
-      toast.error(err?.message);
-    }
-  };
-
   return (
     <div className="admin-header-wrapper">
       <div className="admin-header">

@@ -23,6 +23,7 @@ const AdminPrivateRoute = () => {
         if (!response.ok) {
           dispatch(logout());
           navigate("/admin/login");
+          throw new Error(data.message);
         }
 
         dispatch(setCredentials({ ...data.admin }));
