@@ -46,19 +46,21 @@ const logoutAdmin = asyncHandler(async (req, res) => {
 });
 
 const getAdminProfile = asyncHandler(async (req, res) => {
-  const admin = await Admin.findById(req.admin._id);
+  const foundAdmin = await Admin.findById(req.admin._id);
 
-  if (!admin) {
+  console.log(foundAdmin);
+
+  if (!foundAdmin) {
     res.status(404).json({ message: "Admin not found" });
   }
   const adjustedAdminData = {
-    _id: admin._id,
-    name: admin.name,
-    surname: admin.surname ? admin.surname : null,
-    email: admin.email,
+    _id: foundAdmin._id,
+    name: foundAdmin.name,
+    surname: foundAdmin.surname ? foundAdmin.surname : null,
+    email: foundAdmin.email,
   };
 
-  const cart = await Cart.findOne({ admin: req.admin._id }).populate({
+  const cart = await Cart.findOne({ admin: foundAdmin._id }).populate({
     path: "products.product",
     select: "-createdAt -updatedAt -__v ",
     populate: {

@@ -18,10 +18,14 @@ const AdminPrivateRoute = () => {
 
       const data = await response.json();
 
+      console.log(data);
+
       if (!data.admin) {
         dispatch(logout());
         navigate("/admin/login");
       }
+
+      console.log(data.admin);
 
       dispatch(setCredentials({ ...data.admin }));
     };
