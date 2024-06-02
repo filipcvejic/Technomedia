@@ -8,7 +8,7 @@ const AdminPrivateRoute = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const checkUser = async () => {
+    const checkAdmin = async () => {
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/api/admin/profile`,
         {
@@ -18,7 +18,7 @@ const AdminPrivateRoute = () => {
 
       const data = await response.json();
 
-      if (!response.ok) {
+      if (!data.admin) {
         dispatch(logout());
         navigate("/admin/login");
       }
@@ -26,7 +26,7 @@ const AdminPrivateRoute = () => {
       dispatch(setCredentials({ ...data.admin }));
     };
 
-    checkUser();
+    checkAdmin();
   }, [dispatch]);
 
   return <Outlet />;

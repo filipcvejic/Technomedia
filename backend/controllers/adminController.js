@@ -29,6 +29,7 @@ const loginAdmin = asyncHandler(async (req, res) => {
   res.status(200).json({
     _id: admin._id,
     name: admin.name,
+    surname: admin.surname ? admin.surname : null,
     email: admin.email,
   });
 });

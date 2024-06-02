@@ -80,9 +80,9 @@ const AdminRoutes = () => (
         <Route path="/earnings" element={<AdminEarningsScreen />} />
         <Route path="/users" element={<AdminUsersScreen />} />
         <Route path="/products" element={<AdminProductsScreen />} />
-        <Route path="*" element={<Navigate to="/admin/earnings" />} />
       </Route>
     </Route>
+    <Route path="*" element={<Navigate to="/admin/earnings" />} />
     <Route path="/login" element={<AdminLoginScreen />} />
   </Routes>
 );
