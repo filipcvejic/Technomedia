@@ -87,7 +87,7 @@ const HomeScreen = () => {
             autoplay={{ delay: 3000, disableOnInteraction: false }}
             slidesPerView={1}
           >
-            {leftImages.map((image, index) => (
+            {leftImages?.map((image, index) => (
               <SwiperSlide key={index}>
                 <img src={image} alt={image} />
               </SwiperSlide>
@@ -102,7 +102,7 @@ const HomeScreen = () => {
             autoplay={{ delay: 3000, disableOnInteraction: false }}
             slidesPerView={1}
           >
-            {mobileLeftImages.map((image, index) => (
+            {mobileLeftImages?.map((image, index) => (
               <SwiperSlide key={index}>
                 <img src={image} alt={image} />
               </SwiperSlide>
@@ -229,7 +229,7 @@ const HomeScreen = () => {
             autoplay={{ delay: 3000, disableOnInteraction: false }}
             slidesPerView={1}
           >
-            {bottomImages.map((image, index) => (
+            {bottomImages?.map((image, index) => (
               <SwiperSlide key={index}>
                 <img src={image} alt={image} />
               </SwiperSlide>
@@ -244,7 +244,7 @@ const HomeScreen = () => {
             autoplay={{ delay: 3000, disableOnInteraction: false }}
             slidesPerView={1}
           >
-            {mobileBottomImages.map((image, index) => (
+            {mobileBottomImages?.map((image, index) => (
               <SwiperSlide key={index}>
                 <img src={image} alt={image} />
               </SwiperSlide>
