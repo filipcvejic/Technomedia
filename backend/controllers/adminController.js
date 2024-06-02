@@ -45,11 +45,16 @@ const logoutAdmin = asyncHandler(async (req, res) => {
 });
 
 const getAdminProfile = asyncHandler(async (req, res) => {
-  const admin = {
-    _id: req.admin._id,
-    name: req.admin.name,
-    surname: req.admin.surname ? req.admin.surname : null,
-    email: req.admin.email,
+  const admin = await Admin.findById(req.admin._id);
+
+  if (!admin) {
+    res.status(404).json({ message: "Admin not found" });
+  }
+  const adjustedAdminData = {
+    _id: admin._id,
+    name: admin.name,
+    surname: admin.surname ? admin.surname : null,
+    email: admin.email,
   };
 
   const cart = await Cart.findOne({ admin: req.admin._id }).populate({
@@ -66,7 +71,7 @@ const getAdminProfile = asyncHandler(async (req, res) => {
     quantity: item.quantity,
   }));
 
-  res.status(200).json({ admin, cart: adjustedCartData });
+  res.status(200).json({ admin: adjustedAdminData, cart: adjustedCartData });
 });
 
 const getUsers = asyncHandler(async (req, res, next) => {
