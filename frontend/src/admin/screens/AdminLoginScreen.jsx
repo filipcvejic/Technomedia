@@ -16,13 +16,12 @@ function AdminLoginScreen() {
 
   const { adminInfo } = useSelector((state) => state.adminAuth);
   const { userInfo } = useSelector((state) => state.userAuth);
-  const { isLoading } = useSelector((state) => state.adminAuth);
 
   useEffect(() => {
     if (adminInfo) {
       navigate("/admin");
     }
-  }, [adminInfo]);
+  }, [navigate, adminInfo]);
 
   const loginHandler = async (e) => {
     e.preventDefault();

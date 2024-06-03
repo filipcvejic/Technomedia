@@ -26,18 +26,6 @@ function RecommendedProductsList({ recommendedProducts }) {
                   </SwiperSlide>
                 ))}
               </Swiper>
-              {/* <Slider {...sliderSettings}>
-                {recommendedProducts?.map((product, index) => (
-                  <ProductItem data={product} key={product._id} />
-                  // <div key={index} className="recommended-products-slider-item">
-                  //   <img
-                  //     src={`${import.meta.env.VITE_API_URL}/images/${
-                  //       product.images[0].url.split("\\")[2]
-                  //     }`}
-                  //   />
-                  // </div>
-                ))}
-              </Slider> */}
             </div>
           </>
         ) : (

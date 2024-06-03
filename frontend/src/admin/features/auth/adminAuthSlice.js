@@ -1,5 +1,3 @@
-// slices/adminAuthSlice.js
-
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
