@@ -28,7 +28,7 @@ passport.use(
             surname: surname || "",
             email: profile.emails[0].value,
             password,
-            verified: profile.emails[0].verified,
+            verified: true,
           });
 
           const cart = await Cart.create({ user: user._id, products: [] });
