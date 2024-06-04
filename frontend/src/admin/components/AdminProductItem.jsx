@@ -53,10 +53,9 @@ function AdminProductItem({ data, onDeleteProduct, onSubmitProduct }) {
           <span className="admin-product-image-container">
             <img
               className="admin-product-image-photo"
-              src={`${import.meta.env.VITE_API_URL}/images/${normalizePath(
-                data.images[0].url
-              )}`}
-              alt={data.name}
+              src={`${import.meta.env.VITE_API_URL}/images/${
+                data.images[0].url.split("\\")[2]
+              }`}
             />
           </span>
           <div className="admin-product-item-details">
