@@ -1,6 +1,7 @@
 import { useRef } from "react";
 
 import "./ImageUploadInput.css";
+import { normalizePath } from "../../shared/utils/normalizePath";
 
 function ImageUploadInput({ onImageUpload, initialImages }) {
   const fileInputRef = useRef(null);
@@ -61,7 +62,8 @@ function ImageUploadInput({ onImageUpload, initialImages }) {
                   src={
                     typeof initialImages[index] === "string"
                       ? `${import.meta.env.VITE_API_URL}/images/${
-                          initialImages[index].split("\\")[2]
+                          normalizePath(initialImages[index])
+                          // initialImages[index].split("\\")[2]
                         }`
                       : URL.createObjectURL(initialImages[index])
                   }
