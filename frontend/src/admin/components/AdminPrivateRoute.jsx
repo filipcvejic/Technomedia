@@ -18,9 +18,9 @@ const AdminPrivateRoute = () => {
 
       const data = await response.json();
 
-      if (!data.admin) {
+      if (!response.ok) {
         dispatch(logout());
-        navigate("/admin/login");
+        return navigate("/admin/login");
       }
 
       dispatch(setCredentials({ ...data.admin }));
