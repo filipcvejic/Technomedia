@@ -20,10 +20,10 @@ const AdminPrivateRoute = () => {
 
       if (!response.ok) {
         dispatch(logout());
-        return navigate("/admin/login");
+        navigate("/admin/login");
+      } else {
+        dispatch(setCredentials({ ...data.admin }));
       }
-
-      dispatch(setCredentials({ ...data.admin }));
     };
 
     checkUser();
