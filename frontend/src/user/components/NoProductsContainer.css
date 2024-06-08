@@ -1,0 +1,13 @@
+.no-products-wrapper {
+  max-width: 1340px;
+  height: 100%;
+  margin: 50px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.no-products-content {
+  text-align: center;
+  font-size: 25px;
+}

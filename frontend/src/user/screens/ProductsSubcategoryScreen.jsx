@@ -15,6 +15,7 @@ import SortButton from "../components/SortButton";
 import formatBreadcrumbHandler from "../utils/formatBreadcrumbElementHandler";
 import { toast } from "react-toastify";
 import FilterProductsButton from "../components/FilterProductsButton";
+import NoProductsContainer from "../components/NoProductsContainer";
 
 function ProductsSubcategoryScreen() {
   const [subcategoryData, setSubcategoryData] = useState(null);
@@ -109,7 +110,7 @@ function ProductsSubcategoryScreen() {
           </div>
         </div>
       ) : (
-        <> </>
+        <NoProductsContainer label={"subcategory"} />
       )}
     </>
   );

@@ -9,6 +9,7 @@ import PriceRangeSlider from "../components/PriceRangeSlider";
 import SortButton from "../components/SortButton";
 import FilteredProductsList from "../components/FilteredProductsList";
 import FilterProductsButton from "../components/FilterProductsButton";
+import NoProductsContainer from "../components/NoProductsContainer";
 
 function SearchResultsScreen() {
   const [searchResults, setSearchResults] = useState([]);
@@ -96,7 +97,7 @@ function SearchResultsScreen() {
           </div>
         </div>
       ) : (
-        <> </>
+        <NoProductsContainer label={"search results"} />
       )}
     </>
   );

@@ -15,6 +15,7 @@ import FilteredProductsList from "../components/FilteredProductsList";
 import SortButton from "../components/SortButton";
 import { toast } from "react-toastify";
 import FilterProductsButton from "../components/FilterProductsButton";
+import NoProductsContainer from "../components/NoProductsContainer";
 
 function ProductsGroupScreen() {
   const [groupData, setGroupData] = useState(null);
@@ -116,7 +117,7 @@ function ProductsGroupScreen() {
           </div>
         </div>
       ) : (
-        <> </>
+        <NoProductsContainer label={"group"} />
       )}
     </>
   );

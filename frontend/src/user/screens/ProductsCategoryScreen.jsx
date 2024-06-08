@@ -15,6 +15,7 @@ import SubcategoryListContainer from "../components/SubcategoryListContainer";
 import { toast } from "react-toastify";
 import SpecificationsFilterList from "../components/SpecificationsFilterList";
 import FilterProductsButton from "../components/FilterProductsButton";
+import NoProductsContainer from "../components/NoProductsContainer";
 
 function ProductsCategoryScreen() {
   const [categoryData, setCategoryData] = useState(null);
@@ -102,7 +103,7 @@ function ProductsCategoryScreen() {
           </div>
         </div>
       ) : (
-        <> </>
+        <NoProductsContainer label={"category"} />
       )}
     </>
   );
