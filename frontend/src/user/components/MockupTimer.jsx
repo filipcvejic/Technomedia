@@ -2,44 +2,28 @@ import React, { useEffect, useState } from "react";
 import "./MockupTimer.css";
 
 function MockupTimer() {
-  const [timer, setTimer] = useState({
-    hours: 24,
-    minutes: 0,
-    seconds: 0,
-  });
+  const calculateRemainingTime = () => {
+    const now = new Date();
+    const endOfDay = new Date();
+    endOfDay.setHours(24, 0, 0, 0);
+    const remainingTimeInSeconds = Math.floor((endOfDay - now) / 1000);
+
+    const hours = Math.floor(remainingTimeInSeconds / 3600);
+    const minutes = Math.floor((remainingTimeInSeconds % 3600) / 60);
+    const seconds = remainingTimeInSeconds % 60;
+
+    return { hours, minutes, seconds };
+  };
+
+  const [timer, setTimer] = useState(calculateRemainingTime());
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (timer.hours === 0 && timer.minutes === 0 && timer.seconds === 0) {
-        setTimer({
-          hours: 24,
-          minutes: 0,
-          seconds: 0,
-        });
-      } else {
-        setTimer((prevTimer) => {
-          let { hours, minutes, seconds } = prevTimer;
-
-          if (seconds === 0) {
-            if (minutes === 0) {
-              hours -= 1;
-              minutes = 59;
-              seconds = 59;
-            } else {
-              minutes -= 1;
-              seconds = 59;
-            }
-          } else {
-            seconds -= 1;
-          }
-
-          return { hours, minutes, seconds };
-        });
-      }
+      setTimer(calculateRemainingTime());
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [timer]);
+  }, []);
 
   return (
     <div className="timer">
