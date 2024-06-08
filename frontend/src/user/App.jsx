@@ -28,7 +28,7 @@ function App() {
         <Subheader records={records} fetchRecords={fetchRecords} />
       </div>
       <ToastContainer />
-      <div>
+      <div className="outlet">
         <Outlet />
       </div>
       <Footer />
