@@ -608,7 +608,7 @@ const getFilteredSearchProducts = asyncHandler(async (req, res, next) => {
     const groupTerms = filterTerms.group.split(",");
 
     for (const term of groupTerms) {
-      const group = await Group.findOne({ slug: term });
+      const group = await Group.findOne({ name: term });
       if (!group) {
         return res.status(404).json({
           message: `Group '${term}' not found.`,
