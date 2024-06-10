@@ -81,7 +81,7 @@ function ProductsGroupScreen() {
               </Link>
             </li>
             <li>
-              <Link to={`/${subcategoryName}`}>
+              <Link to={`/${categoryName}/${subcategoryName}`}>
                 {formatBreadcrumbHandler(subcategoryName)}
               </Link>
             </li>
