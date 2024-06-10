@@ -20,6 +20,7 @@ const {
   extractUniqueSubcategories,
   extractUniqueGroups,
 } = require("../utils/getProductsInfoActions");
+const slugify = require("../utils/slugify");
 
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -605,10 +606,12 @@ const getFilteredSearchProducts = asyncHandler(async (req, res, next) => {
   }
 
   if (filterTerms.group) {
-    const groupTerms = filterTerms.group.split(",");
+    const groupTerms = filterTerms.group
+      .split(",")
+      .map((term) => slugify(term));
 
     for (const term of groupTerms) {
-      const group = await Group.findOne({ name: term });
+      const group = await Group.findOne({ slug: term });
       if (!group) {
         return res.status(404).json({
           message: `Group '${term}' not found.`,
@@ -616,10 +619,8 @@ const getFilteredSearchProducts = asyncHandler(async (req, res, next) => {
       }
     }
 
-    filteredProducts = filteredProducts.filter(
-      (product) =>
-        groupTerms.includes(product.group.name) ||
-        groupTerms.some((term) => term === product.group.slug)
+    filteredProducts = filteredProducts.filter((product) =>
+      groupTerms.some((term) => term === product.group.slug)
     );
     brands = extractBrands(filteredProducts);
     ({ minPrice, maxPrice } = calculatePriceRange(filteredProducts));
