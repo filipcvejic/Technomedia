@@ -49,7 +49,7 @@ function ImageUploadInput({ onImageUpload, initialImages }) {
           multiple
           ref={fileInputRef}
           onChange={fileSelectHandler}
-          required
+          // required
           hidden
         />
       </div>
@@ -71,6 +71,7 @@ function ImageUploadInput({ onImageUpload, initialImages }) {
                 />
                 <button
                   className="remove-image-button"
+                  type="button"
                   onClick={() => removeImageHandler(index)}
                 >
                   <div className="remove-circle">
