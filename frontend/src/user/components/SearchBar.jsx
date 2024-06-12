@@ -75,6 +75,10 @@ function SearchBar() {
     }
   };
 
+  const closeSearchBarHandler = () => {
+    setIsSearchResultsMenuShown(false);
+  }
+
   return (
     <div className="search-form" ref={searcFormRef}>
       <div className="search-bar">
@@ -111,6 +115,7 @@ function SearchBar() {
                     data={product}
                     searchTerm={searchTerm}
                     key={product._id}
+                    onClose={closeSearchBarHandler}
                   />
                 ))}
               </div>

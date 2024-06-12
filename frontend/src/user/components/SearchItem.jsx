@@ -3,7 +3,7 @@ import "./SearchItem.css";
 import WishListButton from "./WishListButton";
 import { useSelector } from "react-redux";
 
-export default function SearchItem({ data, searchTerm }) {
+export default function SearchItem({ data, searchTerm, onClose }) {
   const { wishList } = useSelector((state) => state.userWishList);
 
   const isProductExistsInWishList = wishList.some(
@@ -36,7 +36,11 @@ export default function SearchItem({ data, searchTerm }) {
   return (
     <div className="search-product-item" key={data._id}>
       <div className="search-product-wish-list-action">
-        <WishListButton exists={isProductExistsInWishList} product={data} />
+        <WishListButton
+          exists={isProductExistsInWishList}
+          product={data}
+          onCloseSearch={onClose}
+        />
       </div>
       <a
         href={`/${data.category.slug}/${data.subcategory.slug}/${data.group.slug}/${data.slug}`}

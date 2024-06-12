@@ -4,7 +4,7 @@ import { useWishListActions } from "../hooks/useWishListActions";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-function WishListButton({ exists, product }) {
+function WishListButton({ exists, product, onCloseSearch }) {
   const { addToWishList, removeFromWishList } = useWishListActions();
 
   const navigate = useNavigate();
@@ -15,7 +15,11 @@ function WishListButton({ exists, product }) {
     event.preventDefault();
 
     if (!userInfo) {
-      return navigate("/login");
+      if (onCloseSearch) {
+        onCloseSearch();
+      }
+      navigate("/login");
+      return;
     }
 
     if (exists) {
