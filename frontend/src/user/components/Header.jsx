@@ -106,9 +106,9 @@ const Header = ({ records, fetchRecords }) => {
           >
             <HamburgerMenuIcon />
           </div>
-          <a className="logo" href="/">
+          <Link to="/" className="logo">
             <Logo />
-          </a>
+          </Link>
           <div className="search-bar-wrapper">
             <SearchBar />
           </div>
