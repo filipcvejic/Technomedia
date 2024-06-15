@@ -656,12 +656,10 @@ const getAllChartInfo = asyncHandler(async (req, res, next) => {
 
   const orders = await Order.find();
 
-  // Filtriraj narudžbine prema godini
   const filteredOrders = orders.filter((order) => {
     return new Date(order.createdAt).getFullYear() === parseInt(year, 10);
   });
 
-  // Mesecne zarade, kategorije proizvoda i top 3 proizvoda
   const monthlyEarnings = Array(12).fill(0);
   const categoryCount = {};
   const productCount = {};
@@ -673,10 +671,8 @@ const getAllChartInfo = asyncHandler(async (req, res, next) => {
     for (const item of order.products) {
       const product = await Product.findById(item.product).populate("category");
 
-      // Dodaj cenu proizvoda
       const price = Math.ceil(product.price);
 
-      // Azuriraj kategoriju proizvoda
       const category = product.category.name;
       if (categoryCount[category]) {
         categoryCount[category] += item.quantity;
@@ -684,7 +680,6 @@ const getAllChartInfo = asyncHandler(async (req, res, next) => {
         categoryCount[category] = item.quantity;
       }
 
-      // Azuriraj top 3 proizvoda
       if (productCount[product.name]) {
         productCount[product.name].quantity += item.quantity;
       } else {
