@@ -911,93 +911,125 @@ const addOrder = asyncHandler(async (req, res, next) => {
 });
 
 const getRecommendedRecords = asyncHandler(async (req, res, next) => {
-  const orders = await Order.find().select("-__v -createdAt -updatedAt -user");
+  // const orders = await Order.find().select("-__v -createdAt -updatedAt -user");
 
-  const groupCounts = {};
+  // const groupCounts = {};
 
-  const groupProducts = {};
+  // const groupProducts = {};
 
-  for (const order of orders) {
-    const orderGroups = new Set();
-    for (const item of order.products) {
-      const productId = item.product.toString();
-      const product = await Product.findById(productId).populate("group");
-      const group = product.group;
-      if (group) {
-        orderGroups.add(group._id.toString());
-        if (!groupProducts[group._id.toString()]) {
-          groupProducts[group._id.toString()] = product;
-        }
-      }
-    }
+  // for (const order of orders) {
+  //   const orderGroups = new Set();
+  //   for (const item of order.products) {
+  //     const productId = item.product.toString();
+  //     const product = await Product.findById(productId).populate("group");
+  //     const group = product.group;
+  //     if (group) {
+  //       orderGroups.add(group._id.toString());
+  //       if (!groupProducts[group._id.toString()]) {
+  //         groupProducts[group._id.toString()] = product;
+  //       }
+  //     }
+  //   }
 
-    orderGroups.forEach((groupId) => {
-      groupCounts[groupId] = (groupCounts[groupId] || 0) + 1;
-    });
-  }
+  //   orderGroups.forEach((groupId) => {
+  //     groupCounts[groupId] = (groupCounts[groupId] || 0) + 1;
+  //   });
+  // }
 
-  const sortedGroups = Object.entries(groupCounts).sort((a, b) => b[1] - a[1]);
+  // const sortedGroups = Object.entries(groupCounts).sort((a, b) => b[1] - a[1]);
 
-  const top4Groups = sortedGroups.slice(0, 4);
+  // const top4Groups = sortedGroups.slice(0, 4);
 
-  const recommendedGroups = [];
-  for (const [groupId, count] of top4Groups) {
-    const group = await Group.findById(groupId)
-      .select("name slug category subcategory")
-      .populate("category", "slug")
-      .populate("subcategory", "slug")
-      .lean();
+  // const recommendedGroups = [];
+  // for (const [groupId, count] of top4Groups) {
+  //   const group = await Group.findById(groupId)
+  //     .select("name slug category subcategory")
+  //     .populate("category", "slug")
+  //     .populate("subcategory", "slug")
+  //     .lean();
 
-    recommendedGroups.push(group);
-  }
+  //   recommendedGroups.push(group);
+  // }
 
-  for (const recommendedGroup of recommendedGroups) {
-    const groupProducts = await Product.find({
-      group: recommendedGroup._id,
-    })
-      .select("images")
+  // for (const recommendedGroup of recommendedGroups) {
+  //   const groupProducts = await Product.find({
+  //     group: recommendedGroup._id,
+  //   })
+  //     .select("images")
+  //     .populate({
+  //       path: "images",
+  //       select: "url",
+  //     });
+
+  //   if (groupProducts.length > 0 && groupProducts[0].images.length > 0) {
+  //     const productImage = groupProducts[0].images[0].url;
+  //     recommendedGroup.image = productImage;
+  //   }
+  // }
+
+  // const productCounts = {};
+
+  // for (const order of orders) {
+  //   for (const item of order.products) {
+  //     const productId = item.product.toString();
+  //     productCounts[productId] =
+  //       (productCounts[productId] || 0) + item.quantity;
+  //   }
+  // }
+
+  // const sortedProducts = Object.entries(productCounts).sort(
+  //   (a, b) => b[1] - a[1]
+  // );
+
+  // const top4Products = sortedProducts.slice(0, 4);
+
+  // const recommendedProducts = [];
+  // for (const [productId, quantity] of top4Products) {
+  //   const product = await Product.findById(productId)
+  //     .select("-__v -createdAt -updatedAt")
+  //     .populate([
+  //       { path: "category", select: "name slug" },
+  //       { path: "subcategory", select: "name slug" },
+  //       { path: "group", select: "name slug" },
+  //       { path: "brand", select: "name slug" },
+  //       { path: "images", select: "url" },
+  //       { path: "specifications", select: "type value" },
+  //     ]);
+  //   recommendedProducts.push(product);
+  // }
+
+  // res.status(200).json({ recommendedGroups, recommendedProducts });
+  const recommendedProducts = await Product.find()
+    .limit(4)
+    .populate([
+      { path: "category", select: "name slug" },
+      { path: "subcategory", select: "name slug" },
+      { path: "group", select: "name slug" },
+      { path: "brand", select: "name slug" },
+      { path: "images", select: "url" },
+      { path: "specifications", select: "type value" },
+    ]);
+
+  const recommendedGroups = await Group.find()
+    .limit(4)
+    .select("name slug category subcategory")
+    .populate("category", "slug")
+    .populate("subcategory", "slug");
+
+  for (const group of recommendedGroups) {
+    const groupProducts = await Product.find({ group: group._id })
+      .limit(1)
       .populate({
         path: "images",
         select: "url",
       });
 
     if (groupProducts.length > 0 && groupProducts[0].images.length > 0) {
-      const productImage = groupProducts[0].images[0].url;
-      recommendedGroup.image = productImage;
+      group.image = groupProducts[0].images[0].url;
     }
   }
 
-  const productCounts = {};
-
-  for (const order of orders) {
-    for (const item of order.products) {
-      const productId = item.product.toString();
-      productCounts[productId] =
-        (productCounts[productId] || 0) + item.quantity;
-    }
-  }
-
-  const sortedProducts = Object.entries(productCounts).sort(
-    (a, b) => b[1] - a[1]
-  );
-
-  const top4Products = sortedProducts.slice(0, 4);
-
-  const recommendedProducts = [];
-  for (const [productId, quantity] of top4Products) {
-    const product = await Product.findById(productId)
-      .select("-__v -createdAt -updatedAt")
-      .populate([
-        { path: "category", select: "name slug" },
-        { path: "subcategory", select: "name slug" },
-        { path: "group", select: "name slug" },
-        { path: "brand", select: "name slug" },
-        { path: "images", select: "url" },
-        { path: "specifications", select: "type value" },
-      ]);
-    recommendedProducts.push(product);
-  }
-
+  // Vratiti rezultate u JSON formatu
   res.status(200).json({ recommendedGroups, recommendedProducts });
 });
 
