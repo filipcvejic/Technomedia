@@ -22,7 +22,7 @@ function MostWantedGroupsContainer({ recommendedGroups }) {
                 <div className="inner-category-image">
                   <img
                     src={`${import.meta.env.VITE_API_URL}/images/${
-                      group.image.split("\\")[2]
+                      group.image?.split("\\")[2]
                     }`}
                   />
                 </div>

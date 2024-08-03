@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import Slider from "react-slick";
+import { useEffect, useState } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./HomeScreen.css";
@@ -32,12 +31,6 @@ const HomeScreen = () => {
     "/images/pc-mockup-2.png",
     "/images/watches-mockup-2.png",
     "/images/phones-mockup-2.png",
-  ];
-
-  const rightImages = [
-    "/images/watch-special-offer.png",
-    "/images/ipad-special-offer.png",
-    "/images/macbook-special-offer.png",
   ];
 
   const bottomImages = [
@@ -178,25 +171,25 @@ const HomeScreen = () => {
       <RecommendedProductsList
         recommendedProducts={recommendedRecords?.recommendedProducts}
       />
-      <div class="special-discounts-container">
-        <h1 class="special-discounts-title">
+      <div className="special-discounts-container">
+        <h1 className="special-discounts-title">
           Special discounts and promotions
         </h1>
-        <div class="special-discounts">
-          <div class="headphones-discount">
+        <div className="special-discounts">
+          <div className="headphones-discount">
             <img
               src="/images/headphones-discount.png"
               alt="Headphones Discount"
             />
           </div>
-          <div class="phones-discount">
+          <div className="phones-discount">
             <img src="/images/phones-discount.png" alt="Phones Discount" />
           </div>
-          <div class="mini-discounts">
-            <div class="stoves-discount">
+          <div className="mini-discounts">
+            <div className="stoves-discount">
               <img src="/images/stoves-discount.png" alt="Stoves Discount" />
             </div>
-            <div class="speakers-discount">
+            <div className="speakers-discount">
               <img
                 src="/images/speakers-discount.png"
                 alt="Speakers Discount"
