@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "routes": [
+    {
+      "src": "/api/cron",
+      "dest": "/routes/cronRoutes.js"
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/cron",
+      "schedule": "*/1 * * * *"
+    }
+  ]
+}
