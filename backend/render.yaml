@@ -1,0 +1,33 @@
+# Exported from Render on 2024-08-03T19:59:47Z
+services:
+  - type: web
+    name: Technomedia
+    runtime: node
+    repo: https://github.com/filipcvejic/Technomedia
+    plan: free
+    envVars:
+      - key: GOOGLE_PASSWORD
+        sync: false
+      - key: GOOGLE_EMAIL
+        sync: false
+      - key: CLIENT_API_BASE_URL
+        sync: false
+      - key: SERVER_API_BASE_URL
+        sync: false
+      - key: NODE_ENV
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: MONGO_URI
+        sync: false
+      - key: PORT
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+    region: frankfurt
+    buildCommand: npm run build
+    startCommand: npm start
+    rootDir: backend
+version: "1"
