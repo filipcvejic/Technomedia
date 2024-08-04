@@ -651,34 +651,71 @@ const addBrand = asyncHandler(async (req, res) => {
   res.status(200).json({ newBrand, message: "Brand has created successfuly" });
 });
 
-const getAllChartInfo = asyncHandler(async (req, res, next) => {
+const getMonthlyEarnings = asyncHandler(async (req, res, next) => {
   const { year } = req.params;
 
   const orders = await Order.find();
-
   const filteredOrders = orders.filter((order) => {
     return new Date(order.createdAt).getFullYear() === parseInt(year, 10);
   });
 
   const monthlyEarnings = Array(12).fill(0);
-  const categoryCount = {};
-  const productCount = {};
-
   for (const order of filteredOrders) {
     const month = new Date(order.createdAt).getMonth();
     monthlyEarnings[month] += order.amount;
+  }
 
+  res.json({ monthlyEarnings });
+});
+
+const getCategoryInfo = asyncHandler(async (req, res, next) => {
+  const { year } = req.params;
+
+  const orders = await Order.find();
+  const filteredOrders = orders.filter((order) => {
+    return new Date(order.createdAt).getFullYear() === parseInt(year, 10);
+  });
+
+  const categoryCount = {};
+  for (const order of filteredOrders) {
     for (const item of order.products) {
       const product = await Product.findById(item.product).populate("category");
-
-      const price = Math.ceil(product.price);
-
       const category = product.category.name;
       if (categoryCount[category]) {
         categoryCount[category] += item.quantity;
       } else {
         categoryCount[category] = item.quantity;
       }
+    }
+  }
+
+  const sortedCategoryEntries = Object.entries(categoryCount).sort(
+    (a, b) => b[1] - a[1]
+  );
+
+  const topCategories = sortedCategoryEntries.slice(0, 3);
+  const categoryLabels = topCategories.map(([category]) => category);
+  const categoryData = topCategories.map(([, quantity]) => quantity);
+
+  res.json({
+    labels: categoryLabels,
+    data: categoryData,
+  });
+});
+
+const getTopProducts = asyncHandler(async (req, res, next) => {
+  const { year } = req.params;
+
+  const orders = await Order.find();
+  const filteredOrders = orders.filter((order) => {
+    return new Date(order.createdAt).getFullYear() === parseInt(year, 10);
+  });
+
+  const productCount = {};
+  for (const order of filteredOrders) {
+    for (const item of order.products) {
+      const product = await Product.findById(item.product).populate("category");
+      const price = Math.ceil(product.price);
 
       if (productCount[product.name]) {
         productCount[product.name].quantity += item.quantity;
@@ -692,12 +729,10 @@ const getAllChartInfo = asyncHandler(async (req, res, next) => {
     }
   }
 
-  const categoryLabels = Object.keys(categoryCount);
-  const categoryData = Object.values(categoryCount);
-
   const sortedProductCount = Object.entries(productCount).sort(
     (a, b) => b[1].quantity - a[1].quantity
   );
+
   const topProductsData = sortedProductCount
     .slice(0, 3)
     .map(([name, { quantity, productId, price }]) => ({
@@ -707,14 +742,7 @@ const getAllChartInfo = asyncHandler(async (req, res, next) => {
       price,
     }));
 
-  res.json({
-    monthlyEarnings,
-    categories: {
-      labels: categoryLabels,
-      data: categoryData,
-    },
-    topProducts: topProductsData,
-  });
+  res.json({ topProducts: topProductsData });
 });
 
 module.exports = {
@@ -733,5 +761,7 @@ module.exports = {
   addGroup,
   addBrand,
   getInfoForAddingProduct,
-  getAllChartInfo,
+  getMonthlyEarnings,
+  getCategoryInfo,
+  getTopProducts,
 };

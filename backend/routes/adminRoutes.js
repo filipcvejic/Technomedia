@@ -15,7 +15,9 @@ const {
   getUsers,
   updateUserProfile,
   deleteProduct,
-  getAllChartInfo,
+  getMonthlyEarnings,
+  getCategoryInfo,
+  getTopProducts,
 } = require("../controllers/adminController");
 const { adminProtect } = require("../middleware/authMiddleware");
 
@@ -34,9 +36,9 @@ router.delete("/delete-user/:userId", adminProtect, deleteUser);
 router.delete("/delete-product/:productId", adminProtect, deleteProduct);
 router.post(
   "/add-product",
-  upload.array("images", 3), // Ograničite broj slika na 3
-  cloudinaryUploadMiddleware, // Upload slika na Cloudinary
-  addProduct // Vaša funkcija za dodavanje proizvoda
+  upload.array("images", 3),
+  cloudinaryUploadMiddleware,
+  addProduct
 );
 router.put(
   "/edit-product/:productId",
@@ -53,6 +55,8 @@ router.delete("/:userId", adminProtect, deleteUser);
 router.get("/users", adminProtect, getUsers);
 router.get("/products", adminProtect, getAllProducts);
 router.get("/records/info", adminProtect, getInfoForAddingProduct);
-router.get("/chart-info/:year", adminProtect, getAllChartInfo);
+router.get("/earnings/:year", adminProtect, getMonthlyEarnings);
+router.get("/top-categories/:year", adminProtect, getCategoryInfo);
+router.get("/top-products/:year", adminProtect, getTopProducts);
 
 module.exports = router;
