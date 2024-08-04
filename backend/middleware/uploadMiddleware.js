@@ -3,7 +3,7 @@ const path = require("path");
 const fs = require("fs");
 const cloudinary = require("../helper/cloudinaryConfig");
 
-const uploadPath = path.join(__dirname, "uploads", "images");
+const uploadPath = path.resolve(__dirname, "..", "uploads", "images");
 
 if (!fs.existsSync(uploadPath)) {
   fs.mkdirSync(uploadPath, { recursive: true });
