@@ -4,6 +4,6 @@ const express = require("express");
 
 const router = express.Router();
 
-outer.get("/api/cron", cronController);
+router.get("/api/cron", cronController);
 
 module.exports = router;
