@@ -18,20 +18,10 @@ connectDB();
 const app = express();
 
 const corsOptions = {
-  origin: "https://technomedia-five.vercel.app",
+  origin: process.env.CLIENT_API_BASE_URL,
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 };
-
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, PATCH, DELETE"
-  );
-  next();
-});
 
 app.use(cors(corsOptions));
 app.use(cookieParser());
