@@ -19,13 +19,12 @@ const app = express();
 app.use(cookieParser());
 
 const corsOptions = {
-  origin: `${process.env.CLIENT_API_BASE_URL}`,
+  origin: process.env.CLIENT_API_BASE_URL,
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 };
 
 app.use(cors(corsOptions));
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("uploads"));
