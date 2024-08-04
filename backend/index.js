@@ -16,7 +16,6 @@ const port = process.env.PORT || 5000;
 connectDB();
 
 const app = express();
-app.use(cookieParser());
 
 const corsOptions = {
   origin: "https://technomedia-five.vercel.app",
@@ -35,6 +34,7 @@ app.use((req, res, next) => {
 });
 
 app.use(cors(corsOptions));
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("uploads"));
