@@ -123,11 +123,7 @@ const HomeScreen = () => {
                     <Link
                       to={`/${product.category.slug}/${product.subcategory.slug}/${product.group.slug}/${product.slug}`}
                     >
-                      <img
-                        src={`${import.meta.env.VITE_API_URL}/images/${
-                          product?.images[0].url.split("\\")[2]
-                        }`}
-                      />
+                      <img src={product?.images[0].url} />
                       <div className="deal-content-item-details">
                         <p className="deal-content-item-name">{product.name}</p>
                         <p className="deal-content-item-price">

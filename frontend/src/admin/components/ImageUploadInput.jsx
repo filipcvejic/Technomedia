@@ -61,10 +61,7 @@ function ImageUploadInput({ onImageUpload, initialImages }) {
                 <img
                   src={
                     typeof initialImages[index] === "string"
-                      ? `${import.meta.env.VITE_API_URL}/images/${
-                          normalizePath(initialImages[index])
-                          // initialImages[index].split("\\")[2]
-                        }`
+                      ? `${initialImages[index]}`
                       : URL.createObjectURL(initialImages[index])
                   }
                   alt={`Image ${index}`}

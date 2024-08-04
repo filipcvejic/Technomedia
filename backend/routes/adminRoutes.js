@@ -21,7 +21,10 @@ const { adminProtect } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-const upload = require("../middleware/uploadMiddleware");
+const {
+  cloudinaryUploadMiddleware,
+  upload,
+} = require("../middleware/uploadMiddleware");
 
 router.post("/login", loginAdmin);
 router.post("/logout", logoutAdmin);
@@ -31,14 +34,15 @@ router.delete("/delete-user/:userId", adminProtect, deleteUser);
 router.delete("/delete-product/:productId", adminProtect, deleteProduct);
 router.post(
   "/add-product",
-  adminProtect,
-  upload.array("images", 3),
-  addProduct
+  upload.array("images", 3), // Ograničite broj slika na 3
+  cloudinaryUploadMiddleware, // Upload slika na Cloudinary
+  addProduct // Vaša funkcija za dodavanje proizvoda
 );
 router.put(
   "/edit-product/:productId",
   adminProtect,
   upload.array("images", 3),
+  cloudinaryUploadMiddleware,
   editProduct
 );
 router.post("/add-category", adminProtect, addCategory);

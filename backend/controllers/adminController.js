@@ -203,8 +203,8 @@ const addProduct = asyncHandler(async (req, res, next) => {
 
   const images = [];
 
-  for (const file of req.files) {
-    const newImage = await Image.create({ url: file.path });
+  for (const imageUrl of req.body.images) {
+    const newImage = await Image.create({ url: imageUrl });
     images.push(newImage._id);
   }
 

@@ -22,9 +22,7 @@ function ProductItem({ data }) {
         <span className="product-image-container">
           <img
             className="product-image-photo"
-            src={`${import.meta.env.VITE_API_URL}/images/${
-              data.images[0].url.split("\\")[2]
-            }`}
+            src={data.images[0].url}
             alt={data.name}
           />
         </span>

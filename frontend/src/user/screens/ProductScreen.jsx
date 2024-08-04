@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import ProductItem from "../components/ProductItem";
 
@@ -97,20 +97,12 @@ function ProductScreen() {
                     }`}
                     onClick={() => changeMainImageHandler(index)}
                   >
-                    <img
-                      src={`${import.meta.env.VITE_API_URL}/images/${
-                        image.url.split("\\")[2]
-                      }`}
-                    />
+                    <img src={image.url} />
                   </div>
                 ))}
               </div>
               <div className="main-image">
-                <img
-                  src={`${import.meta.env.VITE_API_URL}/images/${
-                    product.images[activeImageIndex].url.split("\\")[2]
-                  }`}
-                />
+                <img src={product.images[activeImageIndex].url} />
               </div>
             </div>
             <div className="product-overview">

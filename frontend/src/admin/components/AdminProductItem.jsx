@@ -1,9 +1,7 @@
-import React, { useState } from "react";
-
+import { useState } from "react";
 import "./AdminProductItem.css";
 import { toast } from "react-toastify";
 import ProductFormModal from "./ProductFormModal";
-import { normalizePath } from "../../shared/utils/normalizePath";
 
 function AdminProductItem({ data, onDeleteProduct, onSubmitProduct }) {
   const [areProductActionsShown, setAreProductActionsShown] = useState(false);
@@ -42,8 +40,6 @@ function AdminProductItem({ data, onDeleteProduct, onSubmitProduct }) {
     setAreProductActionsShown(false);
   };
 
-  console.log(normalizePath(data.images[0].url));
-
   return (
     <div
       className={`admin-product-item ${areProductActionsShown ? "active" : ""}`}
@@ -53,9 +49,7 @@ function AdminProductItem({ data, onDeleteProduct, onSubmitProduct }) {
           <span className="admin-product-image-container">
             <img
               className="admin-product-image-photo"
-              src={`${import.meta.env.VITE_API_URL}/images/${
-                data.images[0].url.split("\\")[2]
-              }`}
+              src={data.images[0].url}
             />
           </span>
           <div className="admin-product-item-details">

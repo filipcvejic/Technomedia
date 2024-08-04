@@ -28,12 +28,7 @@ function MiniCart({ cart, onOutsideClick }) {
             totalAmount += item.product.price * item.quantity;
             return (
               <div className="single-mini-cart-item" key={item.product._id}>
-                <img
-                  src={`${import.meta.env.VITE_API_URL}/images/${normalizePath(
-                    item.product.images[0].url
-                  )}`}
-                  alt={item.product.name}
-                />
+                <img src={item.product.images[0].url} alt={item.product.name} />
                 <div className="single-item-details">
                   <a
                     className="item-link"

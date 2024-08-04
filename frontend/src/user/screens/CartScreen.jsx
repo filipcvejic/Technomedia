@@ -24,11 +24,7 @@ function CartScreen() {
                   className="cart-item-link"
                   to={`/${item.product.category.slug}/${item.product.subcategory.slug}/${item.product.group.slug}/${item.product.slug}`}
                 >
-                  <img
-                    src={`${import.meta.env.VITE_API_URL}/images/${
-                      item.product?.images[0].url.split("\\")[2]
-                    }`}
-                  />
+                  <img src={item.product?.images[0].url} />
                 </Link>
                 <div className="cart-item-details">
                   <Link

@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import Loader from "../../shared/components/Loader";
 import "./MostWantedGroupsContainer.css";
@@ -20,11 +19,7 @@ function MostWantedGroupsContainer({ recommendedGroups }) {
                   src={`/images/category-background-varient${index + 1}.png`}
                 />
                 <div className="inner-category-image">
-                  <img
-                    src={`${import.meta.env.VITE_API_URL}/images/${
-                      group.image?.split("\\")[2]
-                    }`}
-                  />
+                  <img src={group.image} />
                 </div>
               </div>
             </Link>
