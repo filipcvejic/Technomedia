@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-
+import { useEffect, useState } from "react";
 import "./AdminEarningsScreen.css";
 import SellingPerCategoryContainer from "../components/SellingPerCategoryContainer";
 import BestSellingProductsContainer from "../components/BestSellingProductsContainer";
@@ -18,22 +17,53 @@ function AdminEarningsScreen() {
   useEffect(() => {
     const getChartInfo = async () => {
       try {
-        const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/admin/chart-info/${year}`,
+        const earningsRequest = fetch(
+          `${import.meta.env.VITE_API_URL}/api/admin/earnings/${year}`,
+          {
+            credentials: "include",
+          }
+        );
+        const categoriesRequest = fetch(
+          `${import.meta.env.VITE_API_URL}/api/admin/top-categories/${year}`,
+          {
+            credentials: "include",
+          }
+        );
+        const productsRequest = fetch(
+          `${import.meta.env.VITE_API_URL}/api/admin/top-products/${year}`,
           {
             credentials: "include",
           }
         );
 
-        const responseData = await response.json();
+        const [earningsResponse, categoriesResponse, productsResponse] =
+          await Promise.all([
+            earningsRequest,
+            categoriesRequest,
+            productsRequest,
+          ]);
 
-        if (!response.ok) {
-          throw new Error(responseData);
+        if (
+          !earningsResponse.ok ||
+          !categoriesResponse.ok ||
+          !productsResponse.ok
+        ) {
+          throw new Error("One or more requests failed");
         }
 
-        setChartData(responseData);
+        const [monthlyEarnings, categories, topProducts] = await Promise.all([
+          earningsResponse.json(),
+          categoriesResponse.json(),
+          productsResponse.json(),
+        ]);
+
+        setChartData({
+          monthlyEarnings,
+          categories,
+          topProducts,
+        });
       } catch (err) {
-        toast.error(err);
+        toast.error(err.message || "An error occurred while fetching data");
       }
     };
 

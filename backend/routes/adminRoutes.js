@@ -34,9 +34,8 @@ router.delete("/delete-user/:userId", adminProtect, deleteUser);
 router.delete("/delete-product/:productId", adminProtect, deleteProduct);
 router.post(
   "/add-product",
-  upload.array("images", 3), // Ograničite broj slika na 3
-  cloudinaryUploadMiddleware, // Upload slika na Cloudinary
-  addProduct // Vaša funkcija za dodavanje proizvoda
+  upload.array("images", 3),
+  cloudinaryUploadMiddleware
 );
 router.put(
   "/edit-product/:productId",
