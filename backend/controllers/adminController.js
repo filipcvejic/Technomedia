@@ -654,7 +654,7 @@ const addBrand = asyncHandler(async (req, res) => {
 const getAllChartInfo = asyncHandler(async (req, res, next) => {
   const { year } = req.params;
 
-  const orders = await Order.find().populate("products.product");
+  const orders = await Order.find();
 
   const filteredOrders = orders.filter(
     (order) => new Date(order.createdAt).getFullYear() === parseInt(year, 10)
@@ -664,16 +664,16 @@ const getAllChartInfo = asyncHandler(async (req, res, next) => {
   const categoryCount = {};
   const productCount = {};
 
-  filteredOrders.forEach((order) => {
+  for (const order of filteredOrders) {
     const month = new Date(order.createdAt).getMonth();
     monthlyEarnings[month] += order.amount;
 
-    order.products.forEach((item) => {
-      const product = item.product;
-
+    for (const item of order.products) {
+      const product = await Product.findById(item.product)
+        .populate("category")
+        .lean();
       const price = Math.ceil(product.price);
       const category = product.category.name;
-
       if (categoryCount[category]) {
         categoryCount[category] += item.quantity;
       } else {
@@ -689,11 +689,11 @@ const getAllChartInfo = asyncHandler(async (req, res, next) => {
           price,
         };
       }
-    });
-  });
+    }
+  }
 
-  const categoryLabels = Object.keys(categoryCount).slice(0, 3);
-  const categoryData = categoryLabels.map((label) => categoryCount[label]);
+  const categoryLabels = Object.keys(categoryCount);
+  const categoryData = Object.values(categoryCount);
 
   const sortedProductCount = Object.entries(productCount).sort(
     (a, b) => b[1].quantity - a[1].quantity
