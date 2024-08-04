@@ -19,7 +19,7 @@ const app = express();
 app.use(cookieParser());
 
 const corsOptions = {
-  origin: process.env.CLIENT_API_BASE_URL,
+  origin: "https://technomedia-five.vercel.app",
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 };
