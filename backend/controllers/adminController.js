@@ -48,8 +48,6 @@ const logoutAdmin = asyncHandler(async (req, res) => {
 const getAdminProfile = asyncHandler(async (req, res) => {
   const foundAdmin = await Admin.findById(req.admin._id);
 
-  console.log(foundAdmin);
-
   if (!foundAdmin) {
     res.status(404).json({ message: "Admin not found" });
   }
@@ -669,9 +667,7 @@ const getAllChartInfo = asyncHandler(async (req, res, next) => {
     monthlyEarnings[month] += order.amount;
 
     for (const item of order.products) {
-      const product = await Product.findById(item.product)
-        .populate("category")
-        .lean();
+      const product = await Product.findById(item.product).populate("category");
       const price = Math.ceil(product.price);
       const category = product.category.name;
       if (categoryCount[category]) {
