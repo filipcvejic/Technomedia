@@ -940,7 +940,10 @@ const getRecommendedRecords = asyncHandler(async (req, res, next) => {
       path: "images",
       select: "url",
     });
-    group.image = groupProduct.images[0].url;
+
+    if (groupProduct) {
+      group.image = groupProduct.images[0].url;
+    }
   }
 
   res.status(200).json({
