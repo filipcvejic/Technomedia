@@ -15,6 +15,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import MockupTimer from "../components/MockupTimer";
 import { Link } from "react-router-dom";
+import Loader from "../../shared/components/Loader";
 
 const HomeScreen = () => {
   const [recommendedRecords, setRecommendedRecords] = useState([]);
@@ -117,22 +118,29 @@ const HomeScreen = () => {
               autoplay={{ delay: 3000, disableOnInteraction: false }}
               slidesPerView={1}
             >
-              {recommendedRecords?.recommendedProducts?.map(
-                (product, index) => (
-                  <SwiperSlide key={index}>
-                    <Link
-                      to={`/${product.category.slug}/${product.subcategory.slug}/${product.group.slug}/${product.slug}`}
-                    >
-                      <img src={product?.images[0].url} />
-                      <div className="deal-content-item-details">
-                        <p className="deal-content-item-name">{product.name}</p>
-                        <p className="deal-content-item-price">
-                          {product.price} EUR
-                        </p>
-                      </div>
-                    </Link>
-                  </SwiperSlide>
+              {recommendedRecords.recommendedProducts &&
+              recommendedRecords.recommendedProducts.length > 0 ? (
+                recommendedRecords?.recommendedProducts?.map(
+                  (product, index) => (
+                    <SwiperSlide key={index}>
+                      <Link
+                        to={`/${product.category.slug}/${product.subcategory.slug}/${product.group.slug}/${product.slug}`}
+                      >
+                        <img src={product?.images[0].url} />
+                        <div className="deal-content-item-details">
+                          <p className="deal-content-item-name">
+                            {product.name}
+                          </p>
+                          <p className="deal-content-item-price">
+                            {product.price} EUR
+                          </p>
+                        </div>
+                      </Link>
+                    </SwiperSlide>
+                  )
                 )
+              ) : (
+                <Loader />
               )}
             </Swiper>
           </div>

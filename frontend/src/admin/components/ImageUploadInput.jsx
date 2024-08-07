@@ -1,7 +1,6 @@
 import { useRef } from "react";
 
 import "./ImageUploadInput.css";
-import { normalizePath } from "../../shared/utils/normalizePath";
 
 function ImageUploadInput({ onImageUpload, initialImages }) {
   const fileInputRef = useRef(null);
@@ -49,7 +48,6 @@ function ImageUploadInput({ onImageUpload, initialImages }) {
           multiple
           ref={fileInputRef}
           onChange={fileSelectHandler}
-          // required
           hidden
         />
       </div>
