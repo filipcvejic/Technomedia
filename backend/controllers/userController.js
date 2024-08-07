@@ -911,132 +911,49 @@ const addOrder = asyncHandler(async (req, res, next) => {
 });
 
 const getRecommendedRecords = asyncHandler(async (req, res, next) => {
-  // const orders = await Order.find().select("-__v -createdAt -updatedAt -user");
-
-  // const groupCounts = {};
-
-  // const groupProducts = {};
-
-  // for (const order of orders) {
-  //   const orderGroups = new Set();
-  //   for (const item of order.products) {
-  //     const productId = item.product.toString();
-  //     const product = await Product.findById(productId).populate("group");
-  //     const group = product.group;
-  //     if (group) {
-  //       orderGroups.add(group._id.toString());
-  //       if (!groupProducts[group._id.toString()]) {
-  //         groupProducts[group._id.toString()] = product;
-  //       }
-  //     }
-  //   }
-
-  //   orderGroups.forEach((groupId) => {
-  //     groupCounts[groupId] = (groupCounts[groupId] || 0) + 1;
-  //   });
-  // }
-
-  // const sortedGroups = Object.entries(groupCounts).sort((a, b) => b[1] - a[1]);
-
-  // const top4Groups = sortedGroups.slice(0, 4);
-
-  // const recommendedGroups = [];
-  // for (const [groupId, count] of top4Groups) {
-  //   const group = await Group.findById(groupId)
-  //     .select("name slug category subcategory")
-  //     .populate("category", "slug")
-  //     .populate("subcategory", "slug")
-  //     .lean();
-
-  //   recommendedGroups.push(group);
-  // }
-
-  // for (const recommendedGroup of recommendedGroups) {
-  //   const groupProducts = await Product.find({
-  //     group: recommendedGroup._id,
-  //   })
-  //     .select("images")
-  //     .populate({
-  //       path: "images",
-  //       select: "url",
-  //     });
-
-  //   if (groupProducts.length > 0 && groupProducts[0].images.length > 0) {
-  //     const productImage = groupProducts[0].images[0].url;
-  //     recommendedGroup.image = productImage;
-  //   }
-  // }
-
-  // const productCounts = {};
-
-  // for (const order of orders) {
-  //   for (const item of order.products) {
-  //     const productId = item.product.toString();
-  //     productCounts[productId] =
-  //       (productCounts[productId] || 0) + item.quantity;
-  //   }
-  // }
-
-  // const sortedProducts = Object.entries(productCounts).sort(
-  //   (a, b) => b[1] - a[1]
-  // );
-
-  // const top4Products = sortedProducts.slice(0, 4);
-
-  // const recommendedProducts = [];
-  // for (const [productId, quantity] of top4Products) {
-  //   const product = await Product.findById(productId)
-  //     .select("-__v -createdAt -updatedAt")
-  //     .populate([
-  //       { path: "category", select: "name slug" },
-  //       { path: "subcategory", select: "name slug" },
-  //       { path: "group", select: "name slug" },
-  //       { path: "brand", select: "name slug" },
-  //       { path: "images", select: "url" },
-  //       { path: "specifications", select: "type value" },
-  //     ]);
-  //   recommendedProducts.push(product);
-  // }
-
-  // res.status(200).json({ recommendedGroups, recommendedProducts });
   const recommendedProducts = await Product.find()
     .limit(4)
+    .select("name slug price images category subcategory group")
     .populate([
-      { path: "category", select: "name slug" },
-      { path: "subcategory", select: "name slug" },
-      { path: "group", select: "name slug" },
-      { path: "brand", select: "name slug" },
+      { path: "category", select: "slug" },
+      { path: "subcategory", select: "slug" },
+      { path: "group", select: "slug" },
+      { path: "brand", select: "slug" },
       { path: "images", select: "url" },
-      { path: "specifications", select: "type value" },
     ]);
+
+  const modifiedRecommendedProducts = recommendedProducts.map((product) => {
+    return {
+      ...product.toObject(),
+      images: product.images.length > 0 ? [product.images[0]] : [],
+    };
+  });
 
   const recommendedGroups = await Group.find()
     .limit(4)
-    .select("name slug category subcategory")
+    .select("slug category subcategory")
     .populate("category", "slug")
     .populate("subcategory", "slug");
 
   for (const group of recommendedGroups) {
-    const groupProducts = await Product.find({ group: group._id })
-      .limit(1)
-      .populate({
-        path: "images",
-        select: "url",
-      });
+    const groupProducts = await Product.findOne({ group: group._id }).populate({
+      path: "images",
+      select: "url",
+    });
 
     if (groupProducts.length > 0 && groupProducts[0].images.length > 0) {
       group.image = groupProducts[0].images[0].url;
     }
   }
 
-  // Vratiti rezultate u JSON formatu
-  res.status(200).json({ recommendedGroups, recommendedProducts });
+  res.status(200).json({
+    recommendedGroups,
+    recommendedProducts: modifiedRecommendedProducts,
+  });
 });
 
 const addProductToWishList = asyncHandler(async (req, res, next) => {
   const { product } = req.body;
-
-  console.log(product);
 
   let wishList = await WishList.findOne({ user: req.user._id });
 
@@ -1085,8 +1002,6 @@ const removeProductFromWishList = asyncHandler(async (req, res, next) => {
     return res.status(404).json({ message: "Wish list not found" });
   }
 
-  console.log(wishList, productId);
-
   wishList.products = wishList.products.filter(
     (product) => product.toString() !== productId
   );
@@ -1102,8 +1017,6 @@ const addAllWishListProductsToCart = asyncHandler(async (req, res, next) => {
   const products = req.body;
 
   let wishList = await WishList.findOne({ user: req.user._id });
-
-  console.log(products, wishList);
 
   if (!wishList) {
     return res.status(404).json({ message: "Wish list not found" });
@@ -1143,8 +1056,6 @@ const addAllWishListProductsToCart = asyncHandler(async (req, res, next) => {
 
   await wishList.save();
   await cart.save();
-
-  console.log(cart);
 
   const updatedCart = await Cart.findById(cart._id).populate({
     path: "products.product",

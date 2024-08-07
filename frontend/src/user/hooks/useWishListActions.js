@@ -41,8 +41,6 @@ export function useWishListActions() {
   const moveAllToCartHandler = (products) => {
     const adjustedProducts = products.map((product) => product._id);
 
-    console.log(adjustedProducts);
-
     dispatch(moveAllToCart(adjustedProducts));
   };
 
