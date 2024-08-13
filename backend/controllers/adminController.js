@@ -658,6 +658,24 @@ const getAllChartInfo = asyncHandler(async (req, res, next) => {
     (order) => new Date(order.createdAt).getFullYear() === parseInt(year, 10)
   );
 
+  const productIds = [];
+  filteredOrders.forEach((order) => {
+    order.products.forEach((item) => {
+      if (!productIds.includes(item.product)) {
+        productIds.push(item.product);
+      }
+    });
+  });
+
+  const products = await Product.find({ _id: { $in: productIds } }).populate(
+    "category"
+  );
+
+  const productMap = {};
+  products.forEach((product) => {
+    productMap[product._id] = product;
+  });
+
   const monthlyEarnings = Array(12).fill(0);
   const categoryCount = {};
   const productCount = {};
@@ -667,9 +685,12 @@ const getAllChartInfo = asyncHandler(async (req, res, next) => {
     monthlyEarnings[month] += order.amount;
 
     for (const item of order.products) {
-      const product = await Product.findById(item.product).populate("category");
+      const product = productMap[item.product];
+      if (!product) continue;
+
       const price = Math.ceil(product.price);
       const category = product.category.name;
+
       if (categoryCount[category]) {
         categoryCount[category] += item.quantity;
       } else {
