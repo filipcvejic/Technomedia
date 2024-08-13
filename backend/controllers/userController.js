@@ -930,10 +930,12 @@ const getRecommendedRecords = asyncHandler(async (req, res, next) => {
   });
 
   const recommendedGroups = await Group.find()
-    .limit(4)
     .select("slug category subcategory")
     .populate("category", "slug")
-    .populate("subcategory", "slug");
+    .populate("subcategory", "slug")
+    .lean();
+
+  const filteredGroups = [];
 
   for (const group of recommendedGroups) {
     const groupProduct = await Product.findOne({ group: group._id }).populate({
@@ -941,13 +943,14 @@ const getRecommendedRecords = asyncHandler(async (req, res, next) => {
       select: "url",
     });
 
-    if (groupProduct) {
+    if (groupProduct && groupProduct.images.length > 0) {
       group.image = groupProduct.images[0].url;
+      filteredGroups.push(group);
     }
   }
 
   res.status(200).json({
-    recommendedGroups,
+    recommendedGroups: filteredGroups.slice(0, 4),
     recommendedProducts: modifiedRecommendedProducts,
   });
 });
