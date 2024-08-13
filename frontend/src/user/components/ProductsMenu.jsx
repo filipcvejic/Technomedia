@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./ProductsMenu.css";
+import { Link } from "react-router-dom";
 
 function ProductsMenu({ records, fetchRecords }) {
   const [isProductsMenuExpanded, setIsProductsMenuExpanded] = useState(false);
@@ -82,7 +83,7 @@ function ProductsMenu({ records, fetchRecords }) {
                 }`}
                 onMouseEnter={() => setActiveCategory(record._id)}
               >
-                <a className="single-category-name" href={`/${record.slug}`}>
+                <Link className="single-category-name" to={`/${record.slug}`}>
                   {record.name}
                   {activeCategory === record._id && (
                     <svg
@@ -106,7 +107,7 @@ function ProductsMenu({ records, fetchRecords }) {
                       />
                     </svg>
                   )}
-                </a>
+                </Link>
                 {activeCategory === record._id && (
                   <ul className="products-subcategories-menu">
                     {records?.map((record) => {
@@ -118,12 +119,12 @@ function ProductsMenu({ records, fetchRecords }) {
                               className="single-products-subcategory"
                               key={subcategory._id}
                             >
-                              <a
+                              <Link
                                 className="single-subcategory-name"
-                                href={`/${record.slug}/${subcategory.slug}`}
+                                to={`/${record.slug}/${subcategory.slug}`}
                               >
                                 {subcategory.name}
-                              </a>
+                              </Link>
                               <ul className="product-groups-menu">
                                 {subcategory.groups?.map((group) => {
                                   return (
@@ -131,12 +132,12 @@ function ProductsMenu({ records, fetchRecords }) {
                                       key={group._id}
                                       className="single-products-group"
                                     >
-                                      <a
+                                      <Link
                                         className="single-group-name"
-                                        href={`/${record.slug}/${subcategory.slug}/${group.slug}`}
+                                        to={`/${record.slug}/${subcategory.slug}/${group.slug}`}
                                       >
                                         {group.name}
-                                      </a>
+                                      </Link>
                                     </li>
                                   );
                                 })}

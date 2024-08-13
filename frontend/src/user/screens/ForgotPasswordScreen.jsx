@@ -31,7 +31,7 @@ function ForgotPasswordScreen() {
       }
 
       toast.success(data.message);
-      navigate("/login");
+      navigate("/login", { replace: true });
     } catch (err) {
       toast.error(err?.message);
     }

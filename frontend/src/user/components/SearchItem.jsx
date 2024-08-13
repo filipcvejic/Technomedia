@@ -2,6 +2,7 @@ import React from "react";
 import "./SearchItem.css";
 import WishListButton from "./WishListButton";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 export default function SearchItem({ data, searchTerm, onClose }) {
   const { wishList } = useSelector((state) => state.userWishList);
@@ -42,8 +43,8 @@ export default function SearchItem({ data, searchTerm, onClose }) {
           onCloseSearch={onClose}
         />
       </div>
-      <a
-        href={`/${data.category.slug}/${data.subcategory.slug}/${data.group.slug}/${data.slug}`}
+      <Link
+        to={`/${data.category.slug}/${data.subcategory.slug}/${data.group.slug}/${data.slug}`}
       >
         <span className="search-product-image-container">
           <img
@@ -52,14 +53,14 @@ export default function SearchItem({ data, searchTerm, onClose }) {
             alt={data.name}
           />
         </span>
-      </a>
+      </Link>
       <div className="search-product-item-details">
         <strong className="search-product-item-name">
-          <a
-            href={`/${data.category.slug}/${data.subcategory.slug}/${data.group.slug}/${data.slug}`}
+          <Link
+            to={`/${data.category.slug}/${data.subcategory.slug}/${data.group.slug}/${data.slug}`}
           >
             {formatProductName(data.name, searchTerm)}
-          </a>
+          </Link>
         </strong>
       </div>
       <div className="search-product-price-container">

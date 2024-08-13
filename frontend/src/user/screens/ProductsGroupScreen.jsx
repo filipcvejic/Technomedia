@@ -48,7 +48,7 @@ function ProductsGroupScreen() {
         setGroupData(data);
       } catch (err) {
         toast.error(err?.message);
-        navigate("/");
+        navigate("/", { replace: true });
       }
     };
 

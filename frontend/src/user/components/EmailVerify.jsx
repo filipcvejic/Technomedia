@@ -29,7 +29,7 @@ function EmailVerify() {
 
         toast.success(data.message);
         setVerified(true);
-        navigate("/login");
+        navigate("/login", { replace: true });
       } catch (error) {
         toast.error(err?.message);
       }

@@ -82,7 +82,7 @@ const Header = ({ records, fetchRecords }) => {
       dispatch(logout());
       dispatch(clearGuestCart());
       dispatch(clearWishList());
-      navigate("/");
+      navigate("/", { replace: true });
     } catch (err) {
       toast.error(err?.message);
     }

@@ -3,6 +3,7 @@ import "./ProductItem.css";
 import AddToCartButton from "./AddToCartButton";
 import { useSelector } from "react-redux";
 import WishListButton from "./WishListButton";
+import { Link } from "react-router-dom";
 
 function ProductItem({ data }) {
   const { wishList } = useSelector((state) => state.userWishList);
@@ -16,8 +17,8 @@ function ProductItem({ data }) {
       <div className="wish-list-action">
         <WishListButton exists={isProductExistsInWishList} product={data} />
       </div>
-      <a
-        href={`/${data.category.slug}/${data.subcategory.slug}/${data.group.slug}/${data.slug}`}
+      <Link
+        to={`/${data.category.slug}/${data.subcategory.slug}/${data.group.slug}/${data.slug}`}
       >
         <span className="product-image-container">
           <img
@@ -26,14 +27,14 @@ function ProductItem({ data }) {
             alt={data.name}
           />
         </span>
-      </a>
+      </Link>
       <div className="product-item-details">
         <strong className="product-item-name">
-          <a
-            href={`/${data.category.slug}/${data.subcategory.slug}/${data.group.slug}/${data.slug}`}
+          <Link
+            to={`/${data.category.slug}/${data.subcategory.slug}/${data.group.slug}/${data.slug}`}
           >
             {data.name}
-          </a>
+          </Link>
         </strong>
         <div className="product-item-ratings">
           <svg

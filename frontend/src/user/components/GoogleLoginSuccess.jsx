@@ -40,7 +40,7 @@ function GoogleLoginSuccess() {
 
         dispatch(setCredentials({ ...user }));
 
-        navigate("/");
+        navigate("/", { replace: true });
       } catch (err) {
         toast.error(err?.message);
       }

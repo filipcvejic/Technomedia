@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "../components/ProductsMenu";
 import ProductsMenu from "../components/ProductsMenu";
 
@@ -12,7 +13,7 @@ function Subheader({ records, fetchRecords }) {
           <ul className="nav-menu">
             {records?.slice(0, 5).map((record, index) => (
               <li key={index}>
-                <a href={`/${record.slug}`}>{record.name}</a>
+                <Link to={`/${record.slug}`}>{record.name}</Link>
               </li>
             ))}
           </ul>

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import "./SearchBar.css";
@@ -65,7 +65,7 @@ function SearchBar() {
 
   const onClickSearchHandler = () => {
     if (searchTerm.trim() !== "") {
-      navigate(`/search?q=${searchTerm}`);
+      navigate(`/search?q=${searchTerm}`, { replace: true });
     }
   };
 
@@ -77,7 +77,7 @@ function SearchBar() {
 
   const closeSearchBarHandler = () => {
     setIsSearchResultsMenuShown(false);
-  }
+  };
 
   return (
     <div className="search-form" ref={searcFormRef}>
@@ -105,9 +105,9 @@ function SearchBar() {
             <>
               <div className="search-menu-header">
                 <span>Products ({filteredProducts.length})</span>
-                <a href={`/search?q=${searchTerm}`}>
+                <Link to={`/search?q=${searchTerm}`}>
                   View All (+{filteredProducts.length})
-                </a>
+                </Link>
               </div>
               <div className="search-results">
                 {filteredProducts.map((product) => (

@@ -1,19 +1,16 @@
-import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
-import { logout } from "../features/auth/adminAuthSlice";
+import { useSelector } from "react-redux";
 
 import "./AdminHeader.css";
+import { Link } from "react-router-dom";
 
 const AdminHeader = () => {
   const { adminInfo } = useSelector((state) => state.adminAuth);
-
-  const dispatch = useDispatch();
 
   return (
     <div className="admin-header-wrapper">
       <div className="admin-header">
         <div className="admin-header-logo">
-          <a className="logo" href="/admin">
+          <Link className="logo" to={"/admin"}>
             <svg
               width="281"
               height="41"
@@ -26,7 +23,7 @@ const AdminHeader = () => {
                 fill="white"
               />
             </svg>
-          </a>
+          </Link>
         </div>
         <div className="admin-header-info">
           {adminInfo && (

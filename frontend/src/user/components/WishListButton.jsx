@@ -18,7 +18,7 @@ function WishListButton({ exists, product, onCloseSearch }) {
       if (onCloseSearch) {
         onCloseSearch();
       }
-      navigate("/login");
+      navigate("/login", { replace: true });
       return;
     }
 

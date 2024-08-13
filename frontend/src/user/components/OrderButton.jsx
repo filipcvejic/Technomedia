@@ -49,7 +49,7 @@ function OrderButton({ data, label }) {
         setOrderStatus(response.ok ? "success" : "failed");
         setTimeout(() => {
           setOrderStatus("");
-          navigate("/");
+          navigate("/", { replace: true });
         }, 1000);
       }
     } else {

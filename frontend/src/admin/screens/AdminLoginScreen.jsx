@@ -19,7 +19,7 @@ function AdminLoginScreen() {
 
   useEffect(() => {
     if (adminInfo) {
-      navigate("/admin");
+      navigate("/admin", { replace: true });
     }
   }, [navigate, adminInfo]);
 
@@ -52,7 +52,7 @@ function AdminLoginScreen() {
 
       dispatch(setCredentials({ ...data }));
       dispatch(setLoading(false));
-      navigate("/admin");
+      navigate("/admin", { replace: true });
     } catch (err) {
       toast.error(err?.message);
     }

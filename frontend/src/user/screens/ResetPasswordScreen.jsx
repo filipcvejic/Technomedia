@@ -18,7 +18,7 @@ function ResetPasswordScreen() {
         );
 
         if (!response.ok) {
-          navigate("/login");
+          navigate("/login", { replace: true });
           const data = await response.json();
           throw new Error(data.message);
         }
@@ -55,7 +55,7 @@ function ResetPasswordScreen() {
           throw new Error(data.message);
         }
         toast.success(data.message);
-        navigate("/login");
+        navigate("/login", { replace: true });
       } catch (err) {
         toast.error(err?.message);
       }

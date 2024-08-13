@@ -5,6 +5,7 @@ import { useRef } from "react";
 import RemoveFromCartButton from "./RemoveFromCartButton";
 import OrderButton from "./OrderButton";
 import { normalizePath } from "../../shared/utils/normalizePath";
+import { Link } from "react-router-dom";
 
 function MiniCart({ cart, onOutsideClick }) {
   const miniCartRef = useRef(null);
@@ -30,15 +31,15 @@ function MiniCart({ cart, onOutsideClick }) {
               <div className="single-mini-cart-item" key={item.product._id}>
                 <img src={item.product.images[0].url} alt={item.product.name} />
                 <div className="single-item-details">
-                  <a
+                  <Link
                     className="item-link"
-                    href={`/${item.product.category.slug}/${item.product.subcategory.slug}/${item.product.group.slug}/${item.product.slug}`}
+                    to={`/${item.product.category.slug}/${item.product.subcategory.slug}/${item.product.group.slug}/${item.product.slug}`}
                   >
                     <span>{item.product.name}</span>
                     <span className="single-item-price">
                       {item.product.price} EUR
                     </span>
-                  </a>
+                  </Link>
                   <div className="single-item-quantity">
                     <QuantityInput item={item} />
                     <RemoveFromCartButton item={item} />
@@ -56,7 +57,7 @@ function MiniCart({ cart, onOutsideClick }) {
         </div>
         <div className="mini-cart-actions">
           <OrderButton data={cart} label={"Continue on payment"} />
-          <a href="/cart">View and edit cart</a>
+          <Link to={"/cart"}>View and edit cart</Link>
         </div>
       </div>
     </div>

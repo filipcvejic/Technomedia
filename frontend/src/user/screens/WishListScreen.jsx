@@ -50,7 +50,7 @@ function WishListScreen() {
     if (wishList.length > 0) {
       moveAllToCart(wishList);
     }
-    navigate("/cart");
+    navigate("/cart", { replace: true });
   };
 
   return (
@@ -88,9 +88,9 @@ function WishListScreen() {
         >
           Add all to cart
         </button>
-        <a href="/wish-list" className="update-wish-list-button">
+        <Link to={"/wish-list"} className="update-wish-list-button">
           Update wish list
-        </a>
+        </Link>
       </div>
     </div>
   );

@@ -10,6 +10,7 @@ import VisaIcon from "../svgs/VisaIcon";
 import YoutubeIcon from "../svgs/YoutubeIcon";
 import Logo from "../svgs/Logo";
 import "./Footer.css";
+import { Link } from "react-router-dom";
 
 function Footer() {
   return (
@@ -25,40 +26,42 @@ function Footer() {
             <p>Phone: +38166370577</p>
             <p>
               Email:{" "}
-              <a href="mailto:info@filipcvejic.com">info@filipcvejic.com</a>
+              <Link to={"mailto:info@filipcvejic.com"}>
+                info@filipcvejic.com
+              </Link>
             </p>
           </div>
           <div className="connect-with-us-column">
             <h4>Connect With Us</h4>
             <ul className="social-icons">
               <li>
-                <a
-                  href="https://www.instagram.com/filip.cvejic"
+                <Link
+                  to={"https://www.instagram.com/filip.cvejic"}
                   target="_blank"
                 >
                   <InstagramIcon />
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="https://www.linkedin.com/company/vasprofil"
+                <Link
+                  to={"https://www.linkedin.com/company/vasprofil"}
                   target="_blank"
                 >
                   <LinkedInIcon />
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="https://github.com/filipcvejic" target="_blank">
+                <Link to={"https://github.com/filipcvejic"} target="_blank">
                   <GitHubIcon />
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="https://www.youtube.com/user/vasprofil"
+                <Link
+                  to={"https://www.youtube.com/user/vasprofil"}
                   target="_blank"
                 >
                   <YoutubeIcon />
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -79,57 +82,61 @@ function Footer() {
       <div className="footer-cards-wrapper">
         <ul className="footer-cards-content">
           <li>
-            <a
-              href="https://rs.visa.com/run-your-business/small-business-tools/payment-technology/visa-secure.html"
+            <Link
+              to={
+                "https://rs.visa.com/run-your-business/small-business-tools/payment-technology/visa-secure.html"
+              }
               rel="noindex nofollow"
               target="_blank"
             >
               <VisaIcon />
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="https://www.mastercard.rs/sr-rs/korisnici/podrska/sigurnost-i-zastita/identity-check.html"
+            <Link
+              to={
+                "https://www.mastercard.rs/sr-rs/korisnici/podrska/sigurnost-i-zastita/identity-check.html"
+              }
               rel="noindex nofollow"
               target="_blank"
             >
               <MasterCardIcon />
-            </a>
+            </Link>
           </li>
 
           <li>
-            <a
-              href="https://www.americanexpress.com/"
+            <Link
+              to={"https://www.americanexpress.com/"}
               rel="noindex nofollow"
               target="_blank"
             >
               <AmericanExpressIcon />
-            </a>
+            </Link>
           </li>
-          <a
-            href="https://www.paypal.com/"
+          <Link
+            to={"https://www.paypal.com/"}
             rel="noindex nofollow"
             target="_blank"
           >
             <PaypalIcon />
-          </a>
+          </Link>
           <li>
-            <a
-              href="https://www.coinbase.com/"
+            <Link
+              to={"https://www.coinbase.com/"}
               rel="noindex nofollow"
               target="_blank"
             >
               <CoinbaseIcon />
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="https://www.binance.com/"
+            <Link
+              to={"https://www.binance.com/"}
               rel="noindex nofollow"
               target="_blank"
             >
               <BinanceIcon />
-            </a>
+            </Link>
           </li>
         </ul>
       </div>

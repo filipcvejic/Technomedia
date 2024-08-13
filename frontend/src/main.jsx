@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import {
   Route,
@@ -36,54 +35,57 @@ import WishListScreen from "./user/screens/WishListScreen.jsx";
 
 const UserRoutes = () => (
   <Routes>
-    <Route path="/" element={<App />}>
-      <Route path="/" element={<UniversalRouteWrapper />}>
-        <Route path="/" element={<HomeScreen />} />
-        <Route path="/cart" element={<CartScreen />} />
-        <Route path="/wish-list" element={<WishListScreen />} />
-        <Route path="/login" element={<LoginScreen />} />
-        <Route path="/register" element={<RegisterScreen />} />
-        <Route path="/search" element={<SearchResultsScreen />} />
-        <Route path="/forgotpassword" element={<ForgotPasswordScreen />} />
+    <Route path="" element={<App />}>
+      <Route path="" element={<UniversalRouteWrapper />}>
+        <Route path="" element={<HomeScreen />} />
+        <Route path="cart" element={<CartScreen />} />
+        <Route path="wish-list" element={<WishListScreen />} />
+        <Route path="login" element={<LoginScreen />} />
+        <Route path="register" element={<RegisterScreen />} />
+        <Route path="search" element={<SearchResultsScreen />} />
+        <Route path="forgotpassword" element={<ForgotPasswordScreen />} />
         <Route
-          path="/resetpassword/:id/:token"
+          path="resetpassword/:id/:token"
           element={<ResetPasswordScreen />}
         />
-        <Route path="/users/:id/verify/:token" element={<EmailVerify />} />
+        <Route path="users/:id/verify/:token" element={<EmailVerify />} />
         <Route
-          path="/:categoryName/:subcategoryName/:groupName/:productName"
+          path=":categoryName/:subcategoryName/:groupName/:productName"
           element={<ProductScreen />}
         />
-        <Route path="/:categoryName" element={<ProductsCategoryScreen />} />
+        <Route path=":categoryName" element={<ProductsCategoryScreen />} />
         <Route
-          path="/:categoryName/:subcategoryName"
+          path=":categoryName/:subcategoryName"
           element={<ProductsSubcategoryScreen />}
         />
         <Route
-          path="/:categoryName/:subcategoryName/:groupName"
+          path=":categoryName/:subcategoryName/:groupName"
           element={<ProductsGroupScreen />}
         />
       </Route>
       <Route path="" element={<PrivateRoute />}>
-        <Route path="/profile" element={<ProfileScreen />} />
-        <Route path="/SSO/success" element={<GoogleLoginSuccess />} />
+        <Route path="profile" element={<ProfileScreen />} />
+        <Route path="SSO/success" element={<GoogleLoginSuccess />} />
       </Route>
-      <Route path="*" element={<Navigate to="/" />} />
+      <Route path="*" element={<Navigate to="/" replace={true} />} />
     </Route>
   </Routes>
 );
 
 const AdminRoutes = () => (
   <Routes>
-    <Route path="/" element={<AdminApp />}>
-      <Route path="/" element={<AdminPrivateRoute />}>
-        <Route path="/earnings" element={<AdminEarningsScreen />} />
-        <Route path="/users" element={<AdminUsersScreen />} />
-        <Route path="/products" element={<AdminProductsScreen />} />
-        <Route path="*" element={<Navigate to="/admin/earnings" />} />
+    <Route path="" element={<AdminApp />}>
+      <Route path="" element={<AdminPrivateRoute />}>
+        <Route path="earnings" element={<AdminEarningsScreen />} />
+        <Route path="users" element={<AdminUsersScreen />} />
+        <Route path="products" element={<AdminProductsScreen />} />
+        <Route
+          path="*"
+          element={<Navigate to="admin/earnings" replace={true} />}
+        />
       </Route>
     </Route>
-    <Route path="/login" element={<AdminLoginScreen />} />
+    <Route path="login" element={<AdminLoginScreen />} />
   </Routes>
 );
 

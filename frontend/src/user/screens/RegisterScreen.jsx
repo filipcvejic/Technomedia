@@ -22,7 +22,7 @@ const RegisterScreen = () => {
 
   useEffect(() => {
     if (userInfo) {
-      navigate("/");
+      navigate("/", { replace: true });
     }
   }, [navigate, userInfo]);
 
@@ -71,7 +71,7 @@ const RegisterScreen = () => {
 
           toast.warn(data.message);
           dispatch(setLoading(false));
-          navigate("/login");
+          navigate("/login", { replace: true });
         } catch (err) {
           toast.error(err?.message);
         }
