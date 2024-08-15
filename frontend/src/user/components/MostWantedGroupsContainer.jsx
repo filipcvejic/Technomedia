@@ -11,6 +11,7 @@ function MostWantedGroupsContainer({ recommendedGroups }) {
           {recommendedGroups?.map((group, index) => (
             <Link
               to={`/${group.category.slug}/${group.subcategory.slug}/${group.slug}`}
+              preventScrollReset={true}
               className="single-category"
               key={index}
             >

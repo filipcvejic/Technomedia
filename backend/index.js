@@ -6,6 +6,7 @@ const connectDB = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const googleRoutes = require("./routes/googleRoutes");
+const refreshRoute = require("./routes/refreshRoute");
 const cors = require("cors");
 const passport = require("passport");
 require("./auth/passportGoogleSSO");
@@ -32,6 +33,7 @@ app.use(express.static("uploads"));
 
 app.use(passport.initialize());
 
+app.use("/", refreshRoute);
 app.use("/api", userRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/v1", googleRoutes);

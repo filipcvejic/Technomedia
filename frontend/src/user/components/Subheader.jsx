@@ -3,8 +3,13 @@ import "../components/ProductsMenu";
 import ProductsMenu from "../components/ProductsMenu";
 
 import "./Subheader.css";
+import { useEffect } from "react";
 
 function Subheader({ records, fetchRecords }) {
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL}/refresh`);
+  }, []);
+
   return (
     <div className="subheader">
       <div className="wrapperr">
