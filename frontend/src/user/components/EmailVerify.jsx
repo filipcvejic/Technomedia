@@ -31,7 +31,7 @@ function EmailVerify() {
         setVerified(true);
         navigate("/login", { replace: true });
       } catch (error) {
-        toast.error(err?.message);
+        toast.error(error?.message);
       }
     };
 
