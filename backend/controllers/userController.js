@@ -333,7 +333,7 @@ const getAllProducts = asyncHandler(async (req, res, next) => {
     return res.status(404).json({ message: "Products not found" });
   }
 
-  res.status(200).json({ products });
+  res.json( products );
 });
 
 const getCategories = asyncHandler(async (req, res) => {
@@ -346,7 +346,7 @@ const getCategories = asyncHandler(async (req, res) => {
     return res.status(404).json({ message: "Categories not found" });
   }
 
-  res.status(200).json({ categories });
+  res.json( categories );
 });
 
 const addProductToCart = asyncHandler(async (req, res, next) => {
@@ -460,7 +460,7 @@ const syncCartProducts = asyncHandler(async (req, res, next) => {
     })
   );
 
-  res.status(200).json({ updatedCartProducts });
+  res.json( updatedCartProducts );
 });
 
 const removeProductFromCart = asyncHandler(async (req, res, next) => {
@@ -707,7 +707,7 @@ const getFilteredSearchProducts = asyncHandler(async (req, res, next) => {
     responseData.subcategories = subcategories;
   }
 
-  res.status(200).json(responseData);
+  res.json(responseData);
 });
 
 const getProductData = asyncHandler(async (req, res, next) => {
@@ -788,7 +788,7 @@ const getRecords = asyncHandler(async (req, res, next) => {
       },
     });
 
-  res.status(200).json(records);
+  res.json(records);
 });
 
 const getGroupData = asyncHandler(async (req, res, next) => {
@@ -835,7 +835,7 @@ const getGroupData = asyncHandler(async (req, res, next) => {
     return res.status(404).json({ message: "Products not found" });
   }
 
-  res.status(200).json(products);
+  res.json(products);
 });
 
 const addOrder = asyncHandler(async (req, res, next) => {
@@ -993,7 +993,7 @@ const addProductToWishList = asyncHandler(async (req, res, next) => {
       },
     ]);
 
-  res.status(200).json(addedProduct);
+  res.json(addedProduct);
 });
 
 const removeProductFromWishList = asyncHandler(async (req, res, next) => {
@@ -1078,7 +1078,7 @@ const addAllWishListProductsToCart = asyncHandler(async (req, res, next) => {
     quantity: item.quantity,
   }));
 
-  res.status(200).json(adjustedCartData);
+  res.json(adjustedCartData);
 });
 
 module.exports = {
